@@ -1,0 +1,114 @@
+{
+  "navigation": {
+    "home": "Hoyga",
+    "services": "Adeegyada",
+    "about": "Naga Saabsan",
+    "logistics": "Gaadiidka",
+    "stats": "Saamaynteena",
+    "contact": "Nala Soo Xiriir"
+  },
+  "hero": {
+    "title": "Ku Xirida Shiinaha iyo Afrika",
+    "subtitle": "Lammaanaha aad ku kalsoon tahay ee iibsiga, gaadiidka, iyo xalalka soo saarista. Waxaan ka soo iibineynaa alaabooyinka tayo leh Shiinaha oo aan si fudud ugu keenno suuqyada Afrika.",
+    "cta": "Bilow",
+    "ctaSecondary": "Wax Badan Ogow"
+  },
+  "services": {
+    "title": "Adeegyadayada",
+    "subtitle": "Xalalo dhamaystiran oo loogu talagalay baahiyaha ganacsiga caalamiga ah",
+    "procurement": {
+      "title": "Adeegyada Iibsiga",
+      "description": "Iibsiga tooska ah ee soo saarayaasha Shiinaha la xaqiijiyay oo leh hubinta tayada iyo qiimaha tartan ee baahiyaha ganacsigaaga."
+    },
+    "logistics": {
+      "title": "Raridda Alaabta & Gaadiidka",
+      "description": "Xalalka raridda oo dhan oo ay ku jiraan gaadiidka hawada iyo badda, kaydinta, iyo geynta u danbeysa ee Afrika oo dhan."
+    },
+    "warehousing": {
+      "title": "Xalalka Kaydinta",
+      "description": "Goobaha kaydinta ee badbaadada leh oo leh maaraynta alaabta iyo adeegyada qaybinta meelo istiraatiiji ah."
+    },
+    "customs": {
+      "title": "Nadiifinta Kastamka",
+      "description": "Khabiirada dilaalka kastamka iyo adeegyada dukumentiyada oo hubinaya nadiifinta fudud iyo hoggaansanaanta xeerarka."
+    }
+  },
+  "about": {
+    "title": "Naga Saabsan A&A",
+    "subtitle": "Buundooyinka Xiriirinta, Dhisida Iskaashiyada",
+    "description": "A&A waa shirkad hogaaminaysa iibsiga iyo gaadiidka oo ku takhasustay jidadka ganacsiga Shiinaha-Afrika. Iyada oo leh aqoon dheer oo ku saabsan iibsashada, raridda, iyo maaraynta soo saarista, waxaan ka caawineynaa ganacsiyada inay helaan alaabooyin tayo leh oo ka yimid Shiinaha oo si hufan loogu geeyo suuqyada Afrika.",
+    "mission": "Ujeedadayada",
+    "missionText": "In la fududeeyo ganacsiga caalamiga ah oo kalsooni leh, hufan, iyo qaali ahaan wax ku ool ah oo adeegyada iibsiga iyo gaadiidka oo awood siinaya ganacsiyada inay korodaan oo ay barwaaqoobaan.",
+    "vision": "Aragtidayada",
+    "visionText": "Inaan noqono buundada ugu kalsooni badan ee xidhaysa soo saarayaasha Shiinaha iyo suuqyada Afrika, iyagoo dejinaya heerar cusub ee fududeynta ganacsiga iyo adeega macaamiisha."
+  },
+  "logistics": {
+    "title": "Shabakada Gaadiidkayaga",
+    "subtitle": "Geynta aan seexan lahayn Shiinaha ilaa Afrika",
+    "steps": {
+      "sourcing": {
+        "title": "Iibsashada",
+        "description": "Alaabooyin tayo leh oo ka yimid soo saarayaasha Shiinaha la xaqiijiyay"
+      },
+      "shipping": {
+        "title": "Raridda",
+        "description": "Gaadiidka hawada iyo badda oo dhex mara qaaradaha"
+      },
+      "customs": {
+        "title": "Kastamka",
+        "description": "Nadiifinta xirfad leh iyo dukumentiyada"
+      },
+      "delivery": {
+        "title": "Geynta",
+        "description": "Geynta mayl u danbeysa ee suuqyada Afrika"
+      }
+    }
+  },
+  "stats": {
+    "title": "Diiwaanka Guusha",
+    "subtitle": "Tirooyinka isla hadlaya",
+    "years": {
+      "label": "Sanado Ganacsi",
+      "value": "15"
+    },
+    "shipments": {
+      "label": "Rarid Guulaysan",
+      "value": "5000"
+    },
+    "countries": {
+      "label": "Wadamada La Adeego",
+      "value": "12"
+    },
+    "satisfaction": {
+      "label": "Ku Qanacsanaanta Macaamiisha",
+      "value": "98"
+    }
+  },
+  "contact": {
+    "title": "Diyaar ma u tahay inaad Bilowdo Ganacsiga?",
+    "subtitle": "La soo xiriir kooxdayada si aad uga wada hadashaan baahiyaha iibsiga iyo gaadiidka",
+    "form": {
+      "name": "Magaca Buuxa",
+      "email": "Cinwaanka Emailka",
+      "phone": "Lambarka Taleefanka",
+      "company": "Magaca Shirkadda",
+      "message": "Noo sheeg baahiyahaaga",
+      "submit": "Dir Fariinta",
+      "sending": "Waa la diraya..."
+    },
+    "info": {
+      "title": "Macluumaadka Xiriirka",
+      "email": "info@aagroup.com",
+      "phone": "+1 (555) 123-4567",
+      "address": "123 Xaafadda Ganacsiga, Xarunta Ganacsi"
+    }
+  },
+  "footer": {
+    "tagline": "Lammaanaha aad ku kalsoon tahay ee ganacsiga Shiinaha-Afrika",
+    "quickLinks": "Xiriiriyeyaal Degdeg ah",
+    "services": "Adeegyada",
+    "contact": "Nala Soo Xiriir",
+    "followUs": "Na Raac",
+    "rights": "Dhammaan xuquuqaha way dhawran yihiin"
+  }
+}

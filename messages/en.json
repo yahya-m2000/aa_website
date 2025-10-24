@@ -1,0 +1,114 @@
+{
+  "navigation": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "logistics": "Logistics",
+    "stats": "Our Impact",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Connecting China to Africa",
+    "subtitle": "Your trusted partner in procurement, logistics, and supply chain solutions. We source quality products from China and deliver them seamlessly across African markets.",
+    "cta": "Get Started",
+    "ctaSecondary": "Learn More"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Comprehensive solutions for your global trade needs",
+    "procurement": {
+      "title": "Procurement Services",
+      "description": "Direct sourcing from verified Chinese manufacturers with quality assurance and competitive pricing for your business needs."
+    },
+    "logistics": {
+      "title": "Freight & Logistics",
+      "description": "End-to-end shipping solutions including air and sea freight, warehousing, and last-mile delivery across Africa."
+    },
+    "warehousing": {
+      "title": "Warehousing Solutions",
+      "description": "Secure storage facilities with inventory management and distribution services at strategic locations."
+    },
+    "customs": {
+      "title": "Customs Clearance",
+      "description": "Expert customs brokerage and documentation services ensuring smooth clearance and compliance with regulations."
+    }
+  },
+  "about": {
+    "title": "About A&A",
+    "subtitle": "Bridging Markets, Building Partnerships",
+    "description": "A&A is a leading procurement and logistics company specializing in China-Africa trade corridors. With deep expertise in sourcing, shipping, and supply chain management, we help businesses access quality products from China and deliver them efficiently to markets across Africa.",
+    "mission": "Our Mission",
+    "missionText": "To facilitate seamless international trade by providing reliable, efficient, and cost-effective procurement and logistics solutions that empower businesses to grow and thrive.",
+    "vision": "Our Vision",
+    "visionText": "To be the most trusted bridge connecting Chinese manufacturers with African markets, setting new standards in trade facilitation and customer service."
+  },
+  "logistics": {
+    "title": "Our Logistics Network",
+    "subtitle": "Seamless delivery from China to Africa",
+    "steps": {
+      "sourcing": {
+        "title": "Sourcing",
+        "description": "Quality products from verified Chinese suppliers"
+      },
+      "shipping": {
+        "title": "Shipping",
+        "description": "Air and sea freight across continents"
+      },
+      "customs": {
+        "title": "Customs",
+        "description": "Professional clearance and documentation"
+      },
+      "delivery": {
+        "title": "Delivery",
+        "description": "Final mile delivery across African markets"
+      }
+    }
+  },
+  "stats": {
+    "title": "Our Track Record",
+    "subtitle": "Numbers that speak for themselves",
+    "years": {
+      "label": "Years in Business",
+      "value": "15"
+    },
+    "shipments": {
+      "label": "Successful Shipments",
+      "value": "5000"
+    },
+    "countries": {
+      "label": "Countries Served",
+      "value": "12"
+    },
+    "satisfaction": {
+      "label": "Customer Satisfaction",
+      "value": "98"
+    }
+  },
+  "contact": {
+    "title": "Ready to Start Trading?",
+    "subtitle": "Get in touch with our team to discuss your procurement and logistics needs",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "company": "Company Name",
+      "message": "Tell us about your needs",
+      "submit": "Send Message",
+      "sending": "Sending..."
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": "info@aagroup.com",
+      "phone": "+1 (555) 123-4567",
+      "address": "123 Business District, Trade Center"
+    }
+  },
+  "footer": {
+    "tagline": "Your trusted partner in China-Africa trade",
+    "quickLinks": "Quick Links",
+    "services": "Services",
+    "contact": "Contact Us",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved"
+  }
+}

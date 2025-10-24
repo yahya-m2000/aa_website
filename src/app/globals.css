@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+:root {
+  /* Monochrome color palette with darker green accents - AAGroup branding */
+  --primary: 21 128 61; /* #15803D - Dark Green (Green-700) */
+  --primary-hover: 22 101 52; /* #166534 - Darker Green (Green-800) */
+  --primary-light: 34 197 94; /* #22C55E - Lighter for gradients (Green-500) */
+  --secondary: 0 0 0; /* Black */
+  --accent: 21 128 61; /* Dark Green (same as primary) */
+
+  /* Light mode only - Monochrome */
+  --background: 255 255 255; /* White */
+  --foreground: 0 0 0; /* Black */
+
+  --card: 255 255 255; /* White */
+  --card-foreground: 0 0 0; /* Black */
+
+  --muted: 250 250 250; /* Gray-50 - Very light gray */
+  --muted-foreground: 82 82 82; /* Gray-600 - Darker gray */
+
+  --border: 229 229 229; /* Gray-200 */
+  --input: 229 229 229; /* Gray-200 */
+  --ring: 21 128 61; /* Dark Green */
+
+  --radius: 0.5rem;
+
+  /* Force light color scheme */
+  color-scheme: light;
+}
+
+* {
+  border-color: rgb(var(--border));
+}
+
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--muted-foreground) / 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(var(--muted-foreground) / 0.5);
+}
+
+/* Text gradient utility - Monochromatic green gradient */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, rgb(var(--primary-light)), rgb(var(--primary)));
+}
+
+/* Container utilities */
+.container-custom {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Glass morphism effect */
+.glass {
+  background-color: rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgb(255 255 255 / 0.2);
+}
+
+/* 3D card effect */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card-3d:hover {
+  transform: rotateY(5deg) rotateX(5deg);
+}
+
+/* GPU Acceleration - Force hardware acceleration */
+.transform-gpu {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* Scroll bounce animation - Pure CSS, GPU accelerated */
+@keyframes scroll-bounce {
+  0%, 100% {
+    transform: translateY(0) translateZ(0);
+  }
+  50% {
+    transform: translateY(12px) translateZ(0);
+  }
+}
+
+.animate-scroll-bounce {
+  animation: scroll-bounce 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Radial gradient backgrounds */
+.bg-gradient-radial {
+  background-image: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Performance optimization for animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Optimize repaints */
+.isolate-layer {
+  isolation: isolate;
+}
