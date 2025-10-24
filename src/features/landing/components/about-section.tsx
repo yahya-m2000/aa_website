@@ -11,12 +11,8 @@ export function AboutSection() {
 
   return (
     <section id="about" className="relative py-20 md:py-32 overflow-hidden">
-      {/* Parallax Background */}
-      <ScrollReveal
-        parallax
-        parallaxOffset={100}
-        className="absolute inset-0 -z-10"
-      >
+      {/* Background */}
+      <ScrollReveal className="absolute inset-0 -z-10">
         <div className="relative w-full h-full">
           <Image
             src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80"
