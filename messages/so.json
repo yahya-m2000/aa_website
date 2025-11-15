@@ -15,22 +15,22 @@
   },
   "services": {
     "title": "Adeegyadayada",
-    "subtitle": "Xalalo dhamaystiran oo loogu talagalay baahiyaha ganacsiga caalamiga ah",
-    "procurement": {
-      "title": "Adeegyada Iibsiga",
-      "description": "Iibsiga tooska ah ee soo saarayaasha Shiinaha la xaqiijiyay oo leh hubinta tayada iyo qiimaha tartan ee baahiyaha ganacsigaaga."
+    "subtitle": "Xalalka iibsiga oo dhamaystiran oo loogu talagalay baahiyaha ganacsigaaga",
+    "sourcing": {
+      "title": "Raadinta Alaabta",
+      "description": "Waxaan ku aqoonsaneynaa oo ku xireynaa soo saarayaasha iyo soo qaadayaasha kalsooni leh ee Shiinaha ee u dhigma baahiyahaaga gaarka ah ee alaabta."
     },
-    "logistics": {
-      "title": "Raridda Alaabta & Gaadiidka",
-      "description": "Xalalka raridda oo dhan oo ay ku jiraan gaadiidka hawada iyo badda, kaydinta, iyo geynta u danbeysa ee Afrika oo dhan."
+    "quality": {
+      "title": "Hubinta Tayada",
+      "description": "Baaritaanada adag ee tayada iyo habka xaqiijinta si loo hubiyo in alaabtu ay buuxiso heerarka caalamiga ah ka hor raridda."
     },
-    "warehousing": {
-      "title": "Xalalka Kaydinta",
-      "description": "Goobaha kaydinta ee badbaadada leh oo leh maaraynta alaabta iyo adeegyada qaybinta meelo istiraatiiji ah."
+    "purchasing": {
+      "title": "Maaraynta Iibsiga",
+      "description": "Maaraynta dhammaystiran ee dalabyada iibsiga, habaynta lacag bixinta, iyo isku-dubaridka soo qaadayaasha magacaaga."
     },
-    "customs": {
-      "title": "Nadiifinta Kastamka",
-      "description": "Khabiirada dilaalka kastamka iyo adeegyada dukumentiyada oo hubinaya nadiifinta fudud iyo hoggaansanaanta xeerarka."
+    "negotiation": {
+      "title": "Wada Hadallada Qiimaha",
+      "description": "Adeegyada khibradda leh ee wada hadallada si aad u hesho qiimaha ugu wanaagsan iyo shuruudaha u fiican baahiyaha iibsigaaga."
     }
   },
   "about": {
@@ -69,11 +69,11 @@
     "subtitle": "Tirooyinka isla hadlaya",
     "years": {
       "label": "Sanado Ganacsi",
-      "value": "15"
+      "value": "2"
     },
     "shipments": {
       "label": "Rarid Guulaysan",
-      "value": "5000"
+      "value": "500"
     },
     "countries": {
       "label": "Wadamada La Adeego",
@@ -98,9 +98,9 @@
     },
     "info": {
       "title": "Macluumaadka Xiriirka",
-      "email": "info@aagroup.com",
-      "phone": "+1 (555) 123-4567",
-      "address": "123 Xaafadda Ganacsiga, Xarunta Ganacsi"
+      "email": "admin@aatradesolutions.com",
+      "phone": "+252 63 8571847",
+      "address": "Shacab Mall, Hargeysa, Somaliland"
     }
   },
   "footer": {

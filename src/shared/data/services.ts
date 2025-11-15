@@ -1,21 +1,21 @@
-import { Package, Truck, Warehouse, FileCheck } from 'lucide-react';
+import { Search, CheckCircle, ShoppingCart, TrendingUp } from 'lucide-react';
 
 export const services = [
   {
-    key: 'procurement',
-    icon: Package,
+    key: 'sourcing',
+    icon: Search,
   },
   {
-    key: 'logistics',
-    icon: Truck,
+    key: 'quality',
+    icon: CheckCircle,
   },
   {
-    key: 'warehousing',
-    icon: Warehouse,
+    key: 'purchasing',
+    icon: ShoppingCart,
   },
   {
-    key: 'customs',
-    icon: FileCheck,
+    key: 'negotiation',
+    icon: TrendingUp,
   },
 ] as const;
 

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
-import { ArrowRight, Ship } from 'lucide-react';
-import { Button } from '@/shared/components/ui';
-import { FadeIn, ScrollReveal } from '@/shared/components/ui';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+import { useState, useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
+import { ArrowRight, Ship } from "lucide-react";
+import { Button } from "@/shared/components/ui";
+import { FadeIn, ScrollReveal } from "@/shared/components/ui";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 function HeroSection() {
-  const t = useTranslations('hero');
+  const t = useTranslations("hero");
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -25,8 +25,8 @@ function HeroSection() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -36,10 +36,13 @@ function HeroSection() {
     >
       {/* Static background pattern - no animation */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgb(var(--primary)) 1px, transparent 0)`,
-          backgroundSize: '40px 40px',
-        }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(var(--primary)) 1px, transparent 0)`,
+            backgroundSize: "40px 40px",
+          }}
+        />
       </div>
 
       <div className="container-custom relative z-10 py-20 md:py-32">
@@ -47,7 +50,7 @@ function HeroSection() {
           {/* Left Content */}
           <div className="space-y-8">
             <FadeIn direction="up" delay={0.2}>
-              <div className="inline-flex items-center space-x-2 bg-[rgb(var(--primary))]/10 text-[rgb(var(--primary))] px-4 py-2 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center space-x-2 bg-[rgb(var(--primary))] text-white px-4 py-2 rounded-full text-sm font-medium">
                 <Ship className="w-4 h-4" />
                 <span>China-Africa Trade Solutions</span>
               </div>
@@ -55,13 +58,13 @@ function HeroSection() {
 
             <FadeIn direction="up" delay={0.4}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient">{t('title')}</span>
+                <span className="text-gradient">{t("title")}</span>
               </h1>
             </FadeIn>
 
             <FadeIn direction="up" delay={0.6}>
               <p className="text-lg md:text-xl text-[rgb(var(--muted-foreground))] leading-relaxed max-w-xl">
-                {t('subtitle')}
+                {t("subtitle")}
               </p>
             </FadeIn>
 
@@ -69,12 +72,12 @@ function HeroSection() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild variant="default" size="lg">
                   <a href="#contact" className="group">
-                    {t('cta')}
+                    {t("cta")}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </a>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <a href="#services">{t('ctaSecondary')}</a>
+                  <a href="#services">{t("ctaSecondary")}</a>
                 </Button>
               </div>
             </FadeIn>
@@ -82,9 +85,7 @@ function HeroSection() {
 
           {/* Right Content - Optimized Card */}
           <div className="relative">
-            <div
-              className="relative rounded-2xl overflow-hidden shadow-2xl border border-[rgb(var(--border))] transform-gpu hover:scale-[1.02] transition-transform duration-300"
-            >
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-[rgb(var(--border))] transform-gpu hover:scale-[1.02] transition-transform duration-300">
               {/* Image with overlay */}
               <div className="relative h-[400px] md:h-[500px] bg-[rgb(var(--primary))]">
                 <Image
@@ -101,8 +102,10 @@ function HeroSection() {
                   <div className="bg-white/20 rounded-xl p-4 border border-white/30 shadow-lg">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-white/90 text-sm font-medium">Active Shipments</p>
-                        <p className="text-white text-2xl font-bold">2,500+</p>
+                        <p className="text-white/90 text-sm font-medium">
+                          Active Shipments
+                        </p>
+                        <p className="text-white text-2xl font-bold">100+</p>
                       </div>
                       <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                         <Ship className="w-6 h-6 text-white" />

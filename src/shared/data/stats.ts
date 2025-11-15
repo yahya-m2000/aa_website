@@ -1,12 +1,12 @@
 export const stats = [
   {
     key: 'years',
-    value: 15,
+    value: 2,
     suffix: '+',
   },
   {
     key: 'shipments',
-    value: 5000,
+    value: 500,
     suffix: '+',
   },
   {

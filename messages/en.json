@@ -15,22 +15,22 @@
   },
   "services": {
     "title": "Our Services",
-    "subtitle": "Comprehensive solutions for your global trade needs",
-    "procurement": {
-      "title": "Procurement Services",
-      "description": "Direct sourcing from verified Chinese manufacturers with quality assurance and competitive pricing for your business needs."
+    "subtitle": "Comprehensive procurement solutions for your business needs",
+    "sourcing": {
+      "title": "Product Sourcing",
+      "description": "We identify and connect you with reliable manufacturers and suppliers in China that meet your specific product requirements."
     },
-    "logistics": {
-      "title": "Freight & Logistics",
-      "description": "End-to-end shipping solutions including air and sea freight, warehousing, and last-mile delivery across Africa."
+    "quality": {
+      "title": "Quality Control",
+      "description": "Rigorous quality inspections and verification processes to ensure products meet international standards before shipment."
     },
-    "warehousing": {
-      "title": "Warehousing Solutions",
-      "description": "Secure storage facilities with inventory management and distribution services at strategic locations."
+    "purchasing": {
+      "title": "Purchasing Management",
+      "description": "Complete purchase order management, payment processing, and coordination with suppliers on your behalf."
     },
-    "customs": {
-      "title": "Customs Clearance",
-      "description": "Expert customs brokerage and documentation services ensuring smooth clearance and compliance with regulations."
+    "negotiation": {
+      "title": "Price Negotiation",
+      "description": "Expert negotiation services to secure the best prices and favorable terms for your procurement needs."
     }
   },
   "about": {
@@ -69,11 +69,11 @@
     "subtitle": "Numbers that speak for themselves",
     "years": {
       "label": "Years in Business",
-      "value": "15"
+      "value": "2"
     },
     "shipments": {
       "label": "Successful Shipments",
-      "value": "5000"
+      "value": "500"
     },
     "countries": {
       "label": "Countries Served",
@@ -98,9 +98,9 @@
     },
     "info": {
       "title": "Contact Information",
-      "email": "info@aagroup.com",
-      "phone": "+1 (555) 123-4567",
-      "address": "123 Business District, Trade Center"
+      "email": "admin@aatradesolutions.com",
+      "phone": "+252 63 8571847",
+      "address": "Shacab Mall, Hargeisa, Somaliland"
     }
   },
   "footer": {

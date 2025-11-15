@@ -1,11 +1,11 @@
-import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/routing';
-import { Facebook, Twitter, Linkedin, Mail } from 'lucide-react';
-import Image from 'next/image';
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
+import { Facebook, Twitter, Linkedin, Mail } from "lucide-react";
+import Image from "next/image";
 
 export function Footer() {
-  const t = useTranslations('footer');
-  const tNav = useTranslations('navigation');
+  const t = useTranslations("footer");
+  const tNav = useTranslations("navigation");
   const currentYear = new Date().getFullYear();
 
   return (
@@ -23,21 +23,19 @@ export function Footer() {
                 className="h-10 w-auto brightness-0 invert"
               />
             </Link>
-            <p className="text-sm text-white/70">
-              {t('tagline')}
-            </p>
+            <p className="text-sm text-white/70">{t("tagline")}</p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">{t('quickLinks')}</h3>
+            <h3 className="text-lg font-semibold">{t("quickLinks")}</h3>
             <ul className="space-y-2">
               <li>
                 <a
                   href="#home"
                   className="text-sm text-white/70 hover:text-white transition-colors"
                 >
-                  {tNav('home')}
+                  {tNav("home")}
                 </a>
               </li>
               <li>
@@ -45,7 +43,7 @@ export function Footer() {
                   href="#services"
                   className="text-sm text-white/70 hover:text-white transition-colors"
                 >
-                  {tNav('services')}
+                  {tNav("services")}
                 </a>
               </li>
               <li>
@@ -53,7 +51,7 @@ export function Footer() {
                   href="#about"
                   className="text-sm text-white/70 hover:text-white transition-colors"
                 >
-                  {tNav('about')}
+                  {tNav("about")}
                 </a>
               </li>
               <li>
@@ -61,7 +59,7 @@ export function Footer() {
                   href="#contact"
                   className="text-sm text-white/70 hover:text-white transition-colors"
                 >
-                  {tNav('contact')}
+                  {tNav("contact")}
                 </a>
               </li>
             </ul>
@@ -69,7 +67,7 @@ export function Footer() {
 
           {/* Services */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">{t('services')}</h3>
+            <h3 className="text-lg font-semibold">{t("services")}</h3>
             <ul className="space-y-2">
               <li className="text-sm text-white/70">Procurement</li>
               <li className="text-sm text-white/70">Logistics</li>
@@ -80,7 +78,7 @@ export function Footer() {
 
           {/* Contact & Social */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">{t('contact')}</h3>
+            <h3 className="text-lg font-semibold">{t("contact")}</h3>
             <div className="space-y-2">
               <a
                 href="mailto:info@aagroup.com"
@@ -91,7 +89,7 @@ export function Footer() {
               </a>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-3">{t('followUs')}</h4>
+              <h4 className="text-sm font-semibold mb-3">{t("followUs")}</h4>
               <div className="flex space-x-3">
                 <a
                   href="#"
@@ -122,7 +120,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-white/10 text-center">
           <p className="text-sm text-white/60">
-            © {currentYear} A&A. {t('rights')}.
+            © {currentYear} A&A. {t("rights")}.
           </p>
         </div>
       </div>
