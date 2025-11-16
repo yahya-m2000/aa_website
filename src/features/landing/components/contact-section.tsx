@@ -15,6 +15,7 @@ import {
   CardContent,
 } from "@/shared/components/ui";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 
 export function ContactSection() {
   const t = useTranslations("contact");
@@ -151,6 +152,23 @@ export function ContactSection() {
 
                   <div className="flex items-start space-x-4">
                     <div className="w-12 h-12 rounded-lg bg-[rgb(var(--primary))]/10 flex items-center justify-center flex-shrink-0">
+                      <FaWhatsapp className="w-6 h-6 text-[rgb(var(--primary))]" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-1">WhatsApp</h4>
+                      <a
+                        href="https://api.whatsapp.com/send?phone=%2B252638571847"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--primary))] transition-colors"
+                      >
+                        +252 63 8571847
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 rounded-lg bg-[rgb(var(--primary))]/10 flex items-center justify-center flex-shrink-0">
                       <MapPin className="w-6 h-6 text-[rgb(var(--primary))]" />
                     </div>
                     <div>
@@ -174,11 +192,20 @@ export function ContactSection() {
                     procurement and logistics solutions.
                   </p>
                   <Button
+                    asChild
                     variant="outline"
                     size="lg"
                     className="bg-white text-[rgb(var(--primary))] hover:bg-white/90 border-white"
                   >
-                    Schedule a Consultation
+                    <a
+                      href="https://api.whatsapp.com/send?phone=%2B252638571847"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2"
+                    >
+                      <FaWhatsapp className="w-5 h-5" />
+                      Send us a message in WhatsApp
+                    </a>
                   </Button>
                 </CardContent>
               </Card>
