@@ -47,7 +47,7 @@ export async function GET() {
     // Step 2: Fetch posts using Page Access Token
     const graphApiUrl = `https://graph.facebook.com/v19.0/${pageId}/posts`;
     const params = new URLSearchParams({
-      fields: 'id,message,created_time,full_picture,permalink_url,attachments{media,type,subattachments}',
+      fields: 'id,message,created_time,full_picture,permalink_url,reactions.summary(true),shares,attachments{media,type,subattachments}',
       limit: '9',
       access_token: pageAccessToken,
     });

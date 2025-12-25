@@ -115,7 +115,7 @@ export function SocialFloatingButtons() {
 
               {/* Pulse animation */}
               {!isExpanded && (
-                <span className="absolute inset-0 animate-ping bg-[rgb(var(--primary))] opacity-20" />
+                <span className="absolute inset-0 animate-slow-pulse bg-[rgb(var(--primary))] opacity-20" />
               )}
 
               {/* Tooltip */}

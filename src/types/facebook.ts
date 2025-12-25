@@ -4,6 +4,14 @@ export interface FacebookPost {
   created_time: string;
   full_picture?: string;
   permalink_url: string;
+  reactions?: {
+    summary: {
+      total_count: number;
+    };
+  };
+  shares?: {
+    count: number;
+  };
   attachments?: {
     data: Array<{
       type: string;

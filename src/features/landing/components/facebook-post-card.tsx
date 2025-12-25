@@ -2,7 +2,7 @@
 
 import { FacebookPost } from "@/types/facebook";
 import { formatDistanceToNow } from "date-fns";
-import { Facebook, ExternalLink } from "lucide-react";
+import { Facebook, ExternalLink, ThumbsUp, Share2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -81,6 +81,28 @@ export function FacebookPostCard({ post }: FacebookPostCardProps) {
                 {isExpanded ? "Show less" : "Read more"}
               </button>
             )}
+          </div>
+        )}
+
+        {/* Engagement Stats */}
+        {(post.reactions || post.shares) && (
+          <div className="flex items-center gap-4 mb-3 pb-3 border-b border-[rgb(var(--border))]">
+            {post.reactions?.summary?.total_count ? (
+              <div className="flex items-center gap-1.5 text-[rgb(var(--muted-foreground))]">
+                <ThumbsUp className="w-4 h-4" />
+                <span className="text-sm font-medium">
+                  {post.reactions.summary.total_count.toLocaleString()}
+                </span>
+              </div>
+            ) : null}
+            {post.shares?.count ? (
+              <div className="flex items-center gap-1.5 text-[rgb(var(--muted-foreground))]">
+                <Share2 className="w-4 h-4" />
+                <span className="text-sm font-medium">
+                  {post.shares.count.toLocaleString()}
+                </span>
+              </div>
+            ) : null}
           </div>
         )}
 

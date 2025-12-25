@@ -108,11 +108,17 @@ export function FacebookFeedCustom() {
 
   // Posts carousel
   const displayPosts = posts.slice(0, 6);
+
+  // Responsive sizing
+  const cardWidth = typeof window !== 'undefined' && window.innerWidth < 640 ? 320 : 480;
+  const cardHeight = typeof window !== 'undefined' && window.innerWidth < 640 ? 380 : 450;
+  const offsetDistance = typeof window !== 'undefined' && window.innerWidth < 640 ? 280 : 420;
+
   return (
     <div className="space-y-6">
       {/* Carousel container */}
-      <div className="relative w-full py-8" style={{ minHeight: '500px' }}>
-        <div className="absolute inset-0 flex items-center justify-center">
+      <div className="relative w-full py-8" style={{ minHeight: cardHeight + 'px' }}>
+        <div className="absolute inset-0 flex items-center justify-center px-4 sm:px-0">
           {displayPosts.map((post, index) => {
             const offset = index - activeIndex;
             const isActive = offset === 0;
@@ -124,13 +130,14 @@ export function FacebookFeedCustom() {
                 key={post.id}
                 className="absolute transition-all duration-700 ease-out"
                 style={{
-                  transform: `translateX(${offset * 420}px) scale(${isActive ? 1 : 0.75})`,
+                  transform: `translateX(${offset * offsetDistance}px) scale(${isActive ? 1 : 0.75})`,
                   opacity: isActive ? 1 : isAdjacent ? 0.4 : 0,
                   pointerEvents: isActive ? 'auto' : 'none',
-                  width: '480px',
-                  height: '450px',
+                  width: cardWidth + 'px',
+                  maxWidth: '90vw',
+                  height: cardHeight + 'px',
                   left: '50%',
-                  marginLeft: '-240px',
+                  marginLeft: `-${cardWidth / 2}px`,
                   zIndex: isActive ? 20 : 0,
                 }}
               >

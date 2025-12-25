@@ -138,7 +138,7 @@ function HeroSection() {
 
           {/* Right Column - Custom Facebook Feed */}
           <FadeIn direction="up" delay={0.4}>
-            <div className="bg-white overflow-hidden lg:sticky lg:top-24">
+            <div className="bg-white overflow-hidden lg:sticky lg:top-24 mt-8 lg:mt-0">
               <div className="pb-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-3xl md:text-4xl font-bold">
