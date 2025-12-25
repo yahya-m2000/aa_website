@@ -7,6 +7,7 @@ import { FaWhatsapp } from "react-icons/fa";
 export function Footer() {
   const t = useTranslations("footer");
   const tNav = useTranslations("navigation");
+  const tServices = useTranslations("services");
   const currentYear = new Date().getFullYear();
 
   return (
@@ -78,17 +79,17 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">{t("services")}</h3>
             <ul className="space-y-2">
-              <li className="text-sm text-white/70">Product Sourcing</li>
-              <li className="text-sm text-white/70">Quality Control</li>
-              <li className="text-sm text-white/70">Purchasing Management</li>
-              <li className="text-sm text-white/70">Price Negotiation</li>
+              <li className="text-sm text-white/70">{tServices("sourcing.title")}</li>
+              <li className="text-sm text-white/70">{tServices("quality.title")}</li>
+              <li className="text-sm text-white/70">{tServices("purchasing.title")}</li>
+              <li className="text-sm text-white/70">{tServices("negotiation.title")}</li>
             </ul>
           </div>
 
-          {/* Contact & Social */}
+          {/* Contact & Social - Emphasized */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">{t("contact")}</h3>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <a
                 href="mailto:admin@aatradesolutions.com"
                 className="flex items-center space-x-2 text-sm text-white/70 hover:text-white transition-colors"
@@ -99,24 +100,26 @@ export function Footer() {
             </div>
             <div>
               <h4 className="text-sm font-semibold mb-3">{t("followUs")}</h4>
-              <div className="flex space-x-3">
+              <div className="space-y-2">
                 <a
-                  href="https://www.facebook.com/people/AA-Trade-Solutions/61579080154239/"
+                  href="https://www.facebook.com/aatradesolutions"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  className="flex items-center space-x-2 text-sm text-white/70 hover:text-white transition-colors"
                   aria-label="Facebook"
                 >
                   <Facebook className="w-4 h-4" />
+                  <span>Facebook</span>
                 </a>
                 <a
                   href="https://api.whatsapp.com/send?phone=%2B252638571847"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  className="flex items-center space-x-2 text-sm text-white/70 hover:text-white transition-colors"
                   aria-label="WhatsApp"
                 >
-                  <FaWhatsapp className="w-5 h-5" />
+                  <FaWhatsapp className="w-4 h-4" />
+                  <span>WhatsApp</span>
                 </a>
               </div>
             </div>

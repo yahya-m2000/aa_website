@@ -22,7 +22,7 @@
   --input: 229 229 229; /* Gray-200 */
   --ring: 59 24 147; /* Purple */
 
-  --radius: 0.5rem;
+  --radius: 0;
 
   /* Force light color scheme */
   color-scheme: light;
@@ -54,7 +54,6 @@ html {
 
 ::-webkit-scrollbar-thumb {
   background-color: rgb(var(--muted-foreground) / 0.3);
-  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -67,6 +66,40 @@ html {
   -webkit-background-clip: text;
   color: transparent;
   background-image: linear-gradient(to right, rgb(var(--primary-light)), rgb(var(--primary)));
+}
+
+/* Logo gradient hover effect */
+.logo-gradient-hover {
+  position: relative;
+  display: inline-block;
+}
+
+.logo-gradient-hover img {
+  filter: brightness(0);
+  transition: all 0.3s ease;
+}
+
+.logo-gradient-hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, rgb(var(--primary-light)), rgb(var(--primary)));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  mask-image: var(--logo-mask);
+  -webkit-mask-image: var(--logo-mask);
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.logo-gradient-hover:hover::after {
+  opacity: 1;
 }
 
 /* Container utilities */

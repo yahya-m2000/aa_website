@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { ArrowRight, Ship } from "lucide-react";
+import { Ship, Facebook } from "lucide-react";
+import { FaWhatsapp, FaFacebookF } from "react-icons/fa";
 import { Button } from "@/shared/components/ui";
-import { FadeIn, ScrollReveal } from "@/shared/components/ui";
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { FadeIn } from "@/shared/components/ui";
+import { FacebookFeedCustom } from "./facebook-feed-custom";
 
 function HeroSection() {
   const t = useTranslations("hero");
@@ -14,7 +14,6 @@ function HeroSection() {
 
   useEffect(() => {
     let ticking = false;
-
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
@@ -34,7 +33,7 @@ function HeroSection() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white pt-16 md:pt-20"
     >
-      {/* Static background pattern - no animation */}
+      {/* Static background pattern */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div
           className="absolute inset-0"
@@ -45,91 +44,122 @@ function HeroSection() {
         />
       </div>
 
-      <div className="container-custom relative z-10 py-20 md:py-32">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Content */}
+      <div className="container-custom relative z-10 py-12 md:py-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+          {/* Left Column - Hero Content */}
           <div className="space-y-8">
             <FadeIn direction="up" delay={0.2}>
-              <div className="inline-flex items-center space-x-2 bg-[rgb(var(--primary))] text-white px-4 py-2 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center space-x-2 bg-[rgb(var(--primary))] text-white px-4 py-2 text-sm font-medium mb-6">
                 <Ship className="w-4 h-4" />
-                <span>China-Africa Trade Solutions</span>
+                <span>{t("badge")}</span>
               </div>
             </FadeIn>
 
-            <FadeIn direction="up" delay={0.4}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            <FadeIn direction="up" delay={0.3}>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
                 <span className="text-gradient">{t("title")}</span>
               </h1>
             </FadeIn>
 
-            <FadeIn direction="up" delay={0.6}>
+            <FadeIn direction="up" delay={0.4}>
               <p className="text-lg md:text-xl text-[rgb(var(--muted-foreground))] leading-relaxed max-w-xl">
                 {t("subtitle")}
               </p>
             </FadeIn>
 
-            <FadeIn direction="up" delay={0.8}>
+            {/* CTA Buttons - 2 Buttons Only */}
+            <FadeIn direction="up" delay={0.5}>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild variant="default" size="lg">
-                  <a href="#contact" className="group">
-                    {t("cta")}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <Button
+                  asChild
+                  variant="default"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
+                  <a
+                    href="https://www.facebook.com/aatradesolutions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2"
+                  >
+                    <Facebook className="w-5 h-5" />
+                    {t("facebook")}
                   </a>
                 </Button>
-                <Button asChild variant="outline" size="lg">
-                  <a href="#services">{t("ctaSecondary")}</a>
+                <Button
+                  asChild
+                  variant="default"
+                  size="lg"
+                  className="bg-[#25D366] hover:bg-[#25D366]/90 w-full sm:w-auto"
+                >
+                  <a
+                    href="https://api.whatsapp.com/send?phone=%2B252638571847"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2"
+                  >
+                    <FaWhatsapp className="w-5 h-5" />
+                    {t("whatsapp")}
+                  </a>
                 </Button>
+              </div>
+            </FadeIn>
+
+            {/* Quick Stats */}
+            <FadeIn direction="up" delay={0.6}>
+              <div className="grid grid-cols-3 gap-6 max-w-xl pt-8 border-t border-[rgb(var(--border))]">
+                <div>
+                  <p className="text-2xl md:text-3xl font-bold text-[rgb(var(--primary))]">
+                    500+
+                  </p>
+                  <p className="text-sm text-[rgb(var(--muted-foreground))]">
+                    {t("shipmentsLabel")}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl md:text-3xl font-bold text-[rgb(var(--primary))]">
+                    12+
+                  </p>
+                  <p className="text-sm text-[rgb(var(--muted-foreground))]">
+                    {t("countriesLabel")}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl md:text-3xl font-bold text-[rgb(var(--primary))]">
+                    98%
+                  </p>
+                  <p className="text-sm text-[rgb(var(--muted-foreground))]">
+                    {t("satisfactionLabel")}
+                  </p>
+                </div>
               </div>
             </FadeIn>
           </div>
 
-          {/* Right Content - Optimized Card */}
-          <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-[rgb(var(--border))] transform-gpu hover:scale-[1.02] transition-transform duration-300">
-              {/* Image with overlay */}
-              <div className="relative h-[400px] md:h-[500px] bg-[rgb(var(--primary))]">
-                <Image
-                  src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80"
-                  alt="Logistics and shipping"
-                  fill
-                  className="object-cover mix-blend-overlay opacity-60"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-
-                {/* Stats card - removed backdrop-blur for performance */}
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-white/20 rounded-xl p-4 border border-white/30 shadow-lg">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-white/90 text-sm font-medium">
-                          Active Shipments
-                        </p>
-                        <p className="text-white text-2xl font-bold">100+</p>
-                      </div>
-                      <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                        <Ship className="w-6 h-6 text-white" />
-                      </div>
-                    </div>
-                  </div>
+          {/* Right Column - Custom Facebook Feed */}
+          <FadeIn direction="up" delay={0.4}>
+            <div className="bg-white overflow-hidden lg:sticky lg:top-24">
+              <div className="pb-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-3xl md:text-4xl font-bold">
+                    <span className="text-gradient">{t("latestFromFacebook")}</span>
+                  </h3>
+                  <FaFacebookF className="w-6 h-6 text-[rgb(var(--primary))]" />
                 </div>
+                <FacebookFeedCustom />
               </div>
             </div>
-
-            {/* Decorative elements - NO BLUR, static gradients */}
-            <div className="absolute -z-10 -top-4 -right-4 w-72 h-72 bg-gradient-radial from-[rgb(var(--primary))]/20 to-transparent rounded-full opacity-60 pointer-events-none" />
-            <div className="absolute -z-10 -bottom-4 -left-4 w-72 h-72 bg-gradient-radial from-[rgb(var(--primary))]/20 to-transparent rounded-full opacity-60 pointer-events-none" />
-          </div>
+          </FadeIn>
         </div>
       </div>
 
-      {/* Fixed Scroll indicator - Pure CSS animation */}
+      {/* Scroll indicator */}
       <div
         className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-opacity duration-300"
         style={{ opacity: isScrolled ? 0 : 1 }}
       >
-        <div className="w-6 h-10 border-2 border-[rgb(var(--primary))] rounded-full flex items-start justify-center p-2">
-          <div className="w-1.5 h-1.5 bg-[rgb(var(--primary))] rounded-full animate-scroll-bounce" />
+        <div className="w-6 h-10 border-2 border-[rgb(var(--primary))] flex items-start justify-center p-2">
+          <div className="w-1.5 h-1.5 bg-[rgb(var(--primary))] animate-scroll-bounce" />
         </div>
       </div>
     </section>

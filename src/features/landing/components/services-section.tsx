@@ -19,7 +19,7 @@ const ServiceCard = memo(({
 }) => (
   <Card className="group h-full hover:shadow-2xl hover:scale-105 transition-all duration-300 hover:border-[rgb(var(--primary))] cursor-pointer">
     <CardHeader className="space-y-4">
-      <div className="w-14 h-14 rounded-lg bg-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+      <div className="w-14 h-14 bg-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
         <Icon className="w-7 h-7 text-[rgb(var(--primary))] group-hover:text-[rgb(var(--primary-hover))] transition-colors" />
       </div>
       <div>

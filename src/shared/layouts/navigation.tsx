@@ -3,7 +3,7 @@
 import { useState, useCallback, memo } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, Facebook } from "lucide-react";
 import { Button } from "@/shared/components/ui";
 import { cn } from "@/core/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,8 +13,6 @@ const navItems = [
   { key: "home", href: "#home" },
   { key: "services", href: "#services" },
   { key: "about", href: "#about" },
-  { key: "logistics", href: "#logistics" },
-  { key: "stats", href: "#stats" },
   { key: "contact", href: "#contact" },
 ] as const;
 
@@ -23,7 +21,7 @@ const DesktopNavItem = memo(
   ({ href, label }: { href: string; label: string }) => (
     <a
       href={href}
-      className="px-4 py-2 text-sm font-medium text-[rgb(var(--foreground))]/70 hover:text-[rgb(var(--primary))] hover:bg-[rgb(var(--muted))] rounded-lg transition-all duration-200"
+      className="px-4 py-2 text-sm font-medium text-[rgb(var(--foreground))]/70 hover:text-[rgb(var(--primary))] hover:bg-[rgb(var(--muted))] transition-all duration-200"
     >
       {label}
     </a>
@@ -72,7 +70,7 @@ const LanguageMenu = memo(
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-[rgb(var(--border))] overflow-hidden"
+          className="absolute right-0 mt-2 w-32 bg-white shadow-lg border border-[rgb(var(--border))] overflow-hidden"
         >
           <Link
             href={pathname}
@@ -130,7 +128,7 @@ function Navigation({ locale }: { locale: string }) {
             {/* Mobile Menu Button - Left */}
             <button
               onClick={toggleMobileMenu}
-              className="absolute left-0 p-2.5 text-[rgb(var(--foreground))] hover:bg-[rgb(var(--muted))] rounded-lg transition-colors"
+              className="absolute left-0 p-2.5 text-[rgb(var(--foreground))] hover:bg-[rgb(var(--muted))] transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -150,7 +148,7 @@ function Navigation({ locale }: { locale: string }) {
                 alt="A&A Logo"
                 width={240}
                 height={80}
-                className="h-12 w-auto transition-all duration-200 brightness-0 group-hover:brightness-100 group-hover:saturate-150 group-hover:[filter:brightness(0)_saturate(100%)_invert(37%)_sepia(93%)_saturate(1352%)_hue-rotate(87deg)_brightness(97%)_contrast(86%)]"
+                className="h-12 w-auto transition-all duration-200 brightness-0 group-hover:[filter:brightness(0)_saturate(100%)_invert(16%)_sepia(98%)_saturate(2537%)_hue-rotate(260deg)_brightness(91%)_contrast(96%)]"
                 priority
               />
             </Link>
@@ -168,7 +166,7 @@ function Navigation({ locale }: { locale: string }) {
                 alt="A&A Logo"
                 width={240}
                 height={80}
-                className="h-10 w-auto transition-all duration-200 brightness-0 group-hover:brightness-100 group-hover:saturate-150 group-hover:[filter:brightness(0)_saturate(100%)_invert(37%)_sepia(93%)_saturate(1352%)_hue-rotate(87deg)_brightness(97%)_contrast(86%)]"
+                className="h-10 w-auto transition-all duration-200 brightness-0 group-hover:[filter:brightness(0)_saturate(100%)_invert(16%)_sepia(98%)_saturate(2537%)_hue-rotate(260deg)_brightness(91%)_contrast(96%)]"
                 priority
               />
             </Link>
@@ -184,12 +182,12 @@ function Navigation({ locale }: { locale: string }) {
               ))}
             </div>
 
-            {/* Desktop Language Toggle & CTA */}
+            {/* Desktop Language Toggle */}
             <div className="flex items-center space-x-3">
               <div className="relative">
                 <button
                   onClick={toggleLangMenu}
-                  className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-[rgb(var(--foreground))]/70 hover:text-[rgb(var(--primary))] hover:bg-[rgb(var(--muted))] rounded-lg transition-all duration-200"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-[rgb(var(--foreground))]/70 hover:text-[rgb(var(--primary))] hover:bg-[rgb(var(--muted))] transition-all duration-200"
                 >
                   <Globe className="w-4 h-4" />
                   <span className="uppercase">{locale}</span>

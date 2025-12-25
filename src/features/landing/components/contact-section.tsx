@@ -1,17 +1,10 @@
 "use client";
 import { memo } from "react";
-
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   FadeIn,
   Button,
-  Input,
-  Label,
-  Textarea,
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
 } from "@/shared/components/ui";
 import { Mail, Phone, MapPin } from "lucide-react";
@@ -19,183 +12,123 @@ import { FaWhatsapp } from "react-icons/fa";
 
 export function ContactSection() {
   const t = useTranslations("contact");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsSubmitting(false);
-    alert("Message sent! (This is a demo)");
-  };
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-white">
+    <section id="contact" className="py-20 md:py-32 bg-[rgb(var(--muted))]">
       <div className="container-custom">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <FadeIn direction="up">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              {t("title")}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              <span className="text-gradient">{t("title")}</span>
             </h2>
-            <p className="text-lg text-[rgb(var(--muted-foreground))]">
+            <p className="text-xl text-[rgb(var(--muted-foreground))]">
               {t("subtitle")}
             </p>
           </FadeIn>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Contact Form */}
-          <FadeIn direction="left" delay={0.2}>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl">{t("form.submit")}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">{t("form.name")}</Label>
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder={t("form.name")}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">{t("form.email")}</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder={t("form.email")}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">{t("form.phone")}</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder={t("form.phone")}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="company">{t("form.company")}</Label>
-                    <Input
-                      id="company"
-                      type="text"
-                      placeholder={t("form.company")}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">{t("form.message")}</Label>
-                    <Textarea
-                      id="message"
-                      placeholder={t("form.message")}
-                      required
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    variant="default"
-                    size="lg"
-                    className="w-full"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? t("form.sending") : t("form.submit")}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </FadeIn>
-
+        <div className="max-w-5xl mx-auto">
           {/* Contact Information */}
-          <FadeIn direction="right" delay={0.4}>
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-bold mb-6">{t("info.title")}</h3>
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 rounded-lg bg-[rgb(var(--primary))]/10 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-6 h-6 text-[rgb(var(--primary))]" />
+          <FadeIn direction="up" delay={0.2}>
+            <div className="space-y-12">
+              {/* Contact Cards Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardContent className="p-8 text-center">
+                    <div className="w-16 h-16 bg-[rgb(var(--primary))]/10 flex items-center justify-center mx-auto mb-4">
+                      <Mail className="w-8 h-8 text-[rgb(var(--primary))]" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Email</h4>
-                      <a
-                        href={`mailto:${t("info.email")}`}
-                        className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--primary))] transition-colors"
-                      >
-                        {t("info.email")}
-                      </a>
-                    </div>
-                  </div>
+                    <h4 className="font-bold text-lg mb-2">{t("info.email")}</h4>
+                    <a
+                      href={`mailto:${t("info.emailValue")}`}
+                      className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--primary))] transition-colors text-sm break-all"
+                    >
+                      {t("info.emailValue")}
+                    </a>
+                  </CardContent>
+                </Card>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 rounded-lg bg-[rgb(var(--primary))]/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-6 h-6 text-[rgb(var(--primary))]" />
+                <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardContent className="p-8 text-center">
+                    <div className="w-16 h-16 bg-[rgb(var(--primary))]/10 flex items-center justify-center mx-auto mb-4">
+                      <Phone className="w-8 h-8 text-[rgb(var(--primary))]" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Phone</h4>
-                      <a
-                        href={`tel:${t("info.phone")}`}
-                        className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--primary))] transition-colors"
-                      >
-                        {t("info.phone")}
-                      </a>
-                    </div>
-                  </div>
+                    <h4 className="font-bold text-lg mb-2">{t("info.phone")}</h4>
+                    <a
+                      href={`tel:${t("info.phoneValue")}`}
+                      className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--primary))] transition-colors text-sm"
+                    >
+                      {t("info.phoneValue")}
+                    </a>
+                  </CardContent>
+                </Card>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 rounded-lg bg-[rgb(var(--primary))]/10 flex items-center justify-center flex-shrink-0">
-                      <FaWhatsapp className="w-6 h-6 text-[rgb(var(--primary))]" />
+                <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardContent className="p-8 text-center">
+                    <div className="w-16 h-16 bg-[#25D366]/10 flex items-center justify-center mx-auto mb-4">
+                      <FaWhatsapp className="w-8 h-8 text-[#25D366]" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">WhatsApp</h4>
-                      <a
-                        href="https://api.whatsapp.com/send?phone=%2B252638571847"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--primary))] transition-colors"
-                      >
-                        +252 63 8571847
-                      </a>
-                    </div>
-                  </div>
+                    <h4 className="font-bold text-lg mb-2">{t("info.whatsapp")}</h4>
+                    <a
+                      href="https://api.whatsapp.com/send?phone=%2B252638571847"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[rgb(var(--muted-foreground))] hover:text-[#25D366] transition-colors text-sm"
+                    >
+                      {t("info.phoneValue")}
+                    </a>
+                  </CardContent>
+                </Card>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 rounded-lg bg-[rgb(var(--primary))]/10 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-6 h-6 text-[rgb(var(--primary))]" />
+                <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardContent className="p-8 text-center">
+                    <div className="w-16 h-16 bg-[rgb(var(--primary))]/10 flex items-center justify-center mx-auto mb-4">
+                      <MapPin className="w-8 h-8 text-[rgb(var(--primary))]" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Address</h4>
-                      <p className="text-[rgb(var(--muted-foreground))]">
-                        {t("info.address")}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                    <h4 className="font-bold text-lg mb-2">{t("info.address")}</h4>
+                    <p className="text-[rgb(var(--muted-foreground))] text-sm">
+                      {t("info.addressValue")}
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
 
               {/* CTA Card */}
-              <Card className="bg-[rgb(var(--primary))] text-white border-0">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold mb-2">
-                    Ready to streamline your supply chain?
+              <Card className="relative overflow-hidden text-white border-0 shadow-2xl">
+                {/* Gradient Background */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgb(88, 36, 220) 0%, rgb(59, 24, 147) 50%, rgb(47, 19, 118) 100%)",
+                  }}
+                />
+
+                {/* Dot Pattern Overlay */}
+                <div
+                  className="absolute inset-0 opacity-10"
+                  style={{
+                    backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+                    backgroundSize: "32px 32px",
+                  }}
+                />
+
+                {/* Decorative Circles */}
+                <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+                <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+
+                <CardContent className="relative p-12 text-center">
+                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+                    <span className="text-white">{t("cta.title")}</span>
                   </h3>
-                  <p className="text-white/90 mb-6">
-                    Let's discuss how we can help your business grow with our
-                    procurement and logistics solutions.
+                  <p className="text-white/90 mb-10 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                    {t("cta.description")}
                   </p>
                   <Button
                     asChild
-                    variant="outline"
+                    variant="default"
                     size="lg"
-                    className="bg-white text-[rgb(var(--primary))] hover:bg-white/90 border-white"
+                    className="bg-[#25D366] hover:bg-[#25D366]/90"
                   >
                     <a
                       href="https://api.whatsapp.com/send?phone=%2B252638571847"
@@ -204,7 +137,7 @@ export function ContactSection() {
                       className="inline-flex items-center gap-2"
                     >
                       <FaWhatsapp className="w-5 h-5" />
-                      Send us a message in WhatsApp
+                      {t("cta.button")}
                     </a>
                   </Button>
                 </CardContent>

@@ -1,9 +1,9 @@
 {
   "navigation": {
     "home": "Home",
+    "facebook": "Facebook",
     "services": "Services",
     "about": "About",
-    "logistics": "Logistics",
     "stats": "Our Impact",
     "contact": "Contact"
   },
@@ -11,7 +11,14 @@
     "title": "Connecting China to Africa",
     "subtitle": "Your trusted partner in procurement, logistics, and supply chain solutions. We source quality products from China and deliver them seamlessly across African markets.",
     "cta": "Get Started",
-    "ctaSecondary": "Learn More"
+    "ctaSecondary": "Learn More",
+    "facebook": "View Our Facebook",
+    "whatsapp": "WhatsApp",
+    "latestFromFacebook": "Latest from Facebook",
+    "badge": "China-Africa Trade Solutions",
+    "shipmentsLabel": "Shipments",
+    "countriesLabel": "Countries",
+    "satisfactionLabel": "Satisfaction"
   },
   "services": {
     "title": "Our Services",
@@ -85,8 +92,8 @@
     }
   },
   "contact": {
-    "title": "Ready to Start Trading?",
-    "subtitle": "Get in touch with our team to discuss your procurement and logistics needs",
+    "title": "Get in Touch",
+    "subtitle": "Contact us for product sourcing, procurement services, and shipping solutions from China to Africa",
     "form": {
       "name": "Full Name",
       "email": "Email Address",
@@ -98,9 +105,18 @@
     },
     "info": {
       "title": "Contact Information",
-      "email": "admin@aatradesolutions.com",
-      "phone": "+252 63 8571847",
-      "address": "Shacab Mall, Hargeisa, Somaliland"
+      "email": "Email",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp",
+      "address": "Address",
+      "emailValue": "admin@aatradesolutions.com",
+      "phoneValue": "+252 63 8571847",
+      "addressValue": "Shacab Mall, Hargeisa, Somaliland"
+    },
+    "cta": {
+      "title": "Ready to Get a Quote?",
+      "description": "Whether you need product sourcing, procurement services, or shipping solutions from China to Africa, we're here to help. Get in touch for a free consultation and quote.",
+      "button": "WhatsApp"
     }
   },
   "footer": {
@@ -110,5 +126,14 @@
     "contact": "Contact Us",
     "followUs": "Follow Us",
     "rights": "All rights reserved"
+  },
+  "social": {
+    "contactUs": "Contact Us",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp"
+  },
+  "facebookFeed": {
+    "viewOnFacebook": "View on Facebook",
+    "viewAllPosts": "View All Posts on Facebook"
   }
 }

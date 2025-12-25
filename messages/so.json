@@ -5,13 +5,21 @@
     "about": "Naga Saabsan",
     "logistics": "Gaadiidka",
     "stats": "Saamaynteena",
-    "contact": "Nala Soo Xiriir"
+    "contact": "Nala Soo Xiriir",
+    "facebook": "Facebook"
   },
   "hero": {
     "title": "Ku Xirida Shiinaha iyo Afrika",
     "subtitle": "Lammaanaha aad ku kalsoon tahay ee iibsiga, gaadiidka, iyo xalalka soo saarista. Waxaan ka soo iibineynaa alaabooyinka tayo leh Shiinaha oo aan si fudud ugu keenno suuqyada Afrika.",
     "cta": "Bilow",
-    "ctaSecondary": "Wax Badan Ogow"
+    "ctaSecondary": "Wax Badan Ogow",
+    "facebook": "Arag Facebook-kayaga",
+    "whatsapp": "WhatsApp",
+    "latestFromFacebook": "Ugu Dambeeyay Facebook",
+    "badge": "Xalalka Ganacsiga Shiinaha-Afrika",
+    "shipmentsLabel": "Rarid",
+    "countriesLabel": "Wadamo",
+    "satisfactionLabel": "Ku Qanacsanaan"
   },
   "services": {
     "title": "Adeegyadayada",
@@ -85,8 +93,8 @@
     }
   },
   "contact": {
-    "title": "Diyaar ma u tahay inaad Bilowdo Ganacsiga?",
-    "subtitle": "La soo xiriir kooxdayada si aad uga wada hadashaan baahiyaha iibsiga iyo gaadiidka",
+    "title": "Nala Soo Xiriir",
+    "subtitle": "Nala soo xiriir raadinta alaabada, adeegyada iibsiga, iyo xalalka raridda ee Shiinaha ilaa Afrika",
     "form": {
       "name": "Magaca Buuxa",
       "email": "Cinwaanka Emailka",
@@ -98,9 +106,18 @@
     },
     "info": {
       "title": "Macluumaadka Xiriirka",
-      "email": "admin@aatradesolutions.com",
-      "phone": "+252 63 8571847",
-      "address": "Shacab Mall, Hargeysa, Somaliland"
+      "email": "Email",
+      "phone": "Telefoon",
+      "whatsapp": "WhatsApp",
+      "address": "Cinwaanka",
+      "emailValue": "admin@aatradesolutions.com",
+      "phoneValue": "+252 63 8571847",
+      "addressValue": "Shacab Mall, Hargeysa, Somaliland"
+    },
+    "cta": {
+      "title": "Diyaar ma u tahay inaad Hesho Qiime?",
+      "description": "Haddii aad u baahan tahay raadinta alaabada, adeegyada iibsiga, ama xalalka raridda ee Shiinaha ilaa Afrika, waxaan halkan u jirna in aan ku caawino. Nala soo xiriir si aad u hesho talo bilaash ah iyo qiime.",
+      "button": "WhatsApp"
     }
   },
   "footer": {
@@ -110,5 +127,14 @@
     "contact": "Nala Soo Xiriir",
     "followUs": "Na Raac",
     "rights": "Dhammaan xuquuqaha way dhawran yihiin"
+  },
+  "social": {
+    "contactUs": "Nala Soo Xiriir",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp"
+  },
+  "facebookFeed": {
+    "viewOnFacebook": "Arag Facebook",
+    "viewAllPosts": "Arag Dhammaan Qoraallada Facebook"
   }
 }

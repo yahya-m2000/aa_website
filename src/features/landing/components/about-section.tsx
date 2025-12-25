@@ -49,8 +49,8 @@ export function AboutSection() {
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             {/* Mission */}
             <ScrollReveal>
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-[rgb(var(--border))] hover:shadow-2xl transition-shadow duration-300">
-                <div className="w-12 h-12 rounded-lg bg-[rgb(var(--primary))] flex items-center justify-center mb-6">
+              <div className="bg-white p-8 shadow-xl border border-[rgb(var(--border))] hover:shadow-2xl transition-shadow duration-300">
+                <div className="w-12 h-12 bg-[rgb(var(--primary))] flex items-center justify-center mb-6">
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4">{t("mission")}</h3>
@@ -62,8 +62,8 @@ export function AboutSection() {
 
             {/* Vision */}
             <ScrollReveal>
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-[rgb(var(--border))] hover:shadow-2xl transition-shadow duration-300">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[rgb(var(--primary))] to-[rgb(var(--primary-hover))] flex items-center justify-center mb-6">
+              <div className="bg-white p-8 shadow-xl border border-[rgb(var(--border))] hover:shadow-2xl transition-shadow duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-[rgb(var(--primary))] to-[rgb(var(--primary-hover))] flex items-center justify-center mb-6">
                   <Eye className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4">{t("vision")}</h3>
