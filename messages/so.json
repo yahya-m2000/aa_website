@@ -6,7 +6,8 @@
     "logistics": "Gaadiidka",
     "stats": "Saamaynteena",
     "contact": "Nala Soo Xiriir",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "downloadApp": "Soo Deji App-ka"
   },
   "hero": {
     "title": "Ku Xirida Shiinaha iyo Afrika",
@@ -136,5 +137,24 @@
   "facebookFeed": {
     "viewOnFacebook": "Arag Facebook",
     "viewAllPosts": "Arag Dhammaan Qoraallada Facebook"
+  },
+  "download": {
+    "badge": "Aplikeeshanka Android",
+    "title": "Soo Deji Aplikeeshanka A&A",
+    "subtitle": "Hel aplikeeshanka mobilka ee A&A ee Android si aad u maareyso raridyada, dalabyada, iyo qiimayaasha meel kastoo aad joogto.",
+    "fileLabel": "Faylka APK ee Android",
+    "fileNote": "Kani waa fayl APK ah. Rakibiddu waxay u baahan tahay inaad ka ogolaato aplikeeshanada isha aan la garanayn dejinta Android-kaaga.",
+    "button": "Soo Deji APK",
+    "size": "Cabbirka",
+    "version": "Nooca",
+    "updated": "La Cusboonaysiiyay",
+    "instructionsTitle": "Sida Loo Rakibo",
+    "steps": {
+      "one": "Ku soo deji faylka APK badhanka kore.",
+      "two": "Fur faylka la soo dejiyay ee ka socda ogeysiisyadaada ama galka Downloads.",
+      "three": "Haddii lagu weydiiyo, dalool \"Install from unknown sources\" browser-kaaga.",
+      "four": "Raac tilmaamaha shaashadda si aad u dhammaystirto rakibidda."
+    },
+    "backHome": "Ku Noqo Bogga Hore"
   }
 }

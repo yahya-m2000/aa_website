@@ -72,6 +72,14 @@ export function Footer() {
                   {tNav("contact")}
                 </a>
               </li>
+              <li>
+                <Link
+                  href="/download"
+                  className="text-sm text-white/70 hover:text-white transition-colors"
+                >
+                  {tNav("downloadApp")}
+                </Link>
+              </li>
             </ul>
           </div>
 

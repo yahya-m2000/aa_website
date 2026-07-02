@@ -5,7 +5,8 @@
     "services": "Services",
     "about": "About",
     "stats": "Our Impact",
-    "contact": "Contact"
+    "contact": "Contact",
+    "downloadApp": "Download App"
   },
   "hero": {
     "title": "Connecting China to Africa",
@@ -135,5 +136,24 @@
   "facebookFeed": {
     "viewOnFacebook": "View on Facebook",
     "viewAllPosts": "View All Posts on Facebook"
+  },
+  "download": {
+    "badge": "Android App",
+    "title": "Download the A&A App",
+    "subtitle": "Get the A&A mobile app for Android and manage your shipments, orders, and quotes on the go.",
+    "fileLabel": "Android APK File",
+    "fileNote": "This is an APK file. Install requires allowing apps from unknown sources in your Android settings.",
+    "button": "Download APK",
+    "size": "Size",
+    "version": "Version",
+    "updated": "Updated",
+    "instructionsTitle": "How to Install",
+    "steps": {
+      "one": "Download the APK file using the button above.",
+      "two": "Open the downloaded file from your notifications or Downloads folder.",
+      "three": "If prompted, enable \"Install from unknown sources\" for your browser.",
+      "four": "Follow the on-screen instructions to complete installation."
+    },
+    "backHome": "Back to Home"
   }
 }

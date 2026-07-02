@@ -3,7 +3,7 @@
 import { useState, useCallback, memo } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import { Menu, X, Globe, Facebook } from "lucide-react";
+import { Menu, X, Globe, Facebook, Smartphone } from "lucide-react";
 import { Button } from "@/shared/components/ui";
 import { cn } from "@/core/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -184,6 +184,13 @@ function Navigation({ locale }: { locale: string }) {
 
             {/* Desktop Language Toggle */}
             <div className="flex items-center space-x-3">
+              <Link
+                href="/download"
+                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium bg-[rgb(var(--primary))] text-white hover:bg-[rgb(var(--primary-hover))] transition-all duration-200"
+              >
+                <Smartphone className="w-4 h-4" />
+                <span>{t("downloadApp")}</span>
+              </Link>
               <div className="relative">
                 <button
                   onClick={toggleLangMenu}
@@ -232,6 +239,23 @@ function Navigation({ locale }: { locale: string }) {
                   </motion.div>
                 ))}
               </nav>
+
+              {/* Download App - Mobile */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navItems.length * 0.05, duration: 0.3 }}
+                className="mb-12"
+              >
+                <Link
+                  href="/download"
+                  onClick={closeMobileMenu}
+                  className="inline-flex items-center gap-2 px-5 py-3 text-base font-semibold bg-[rgb(var(--primary))] text-white"
+                >
+                  <Smartphone className="w-5 h-5" />
+                  {t("downloadApp")}
+                </Link>
+              </motion.div>
 
               {/* Language Selector - Minimal */}
               <motion.div
