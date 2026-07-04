@@ -140,7 +140,7 @@
   "download": {
     "badge": "Android App",
     "title": "Download the A&A App",
-    "subtitle": "Get the A&A mobile app for Android and manage your shipments, orders, and quotes on the go.",
+    "subtitle": "Get the A&A mobile app for Android.",
     "fileLabel": "Android APK File",
     "fileNote": "This is an APK file. Install requires allowing apps from unknown sources in your Android settings.",
     "button": "Download APK",
