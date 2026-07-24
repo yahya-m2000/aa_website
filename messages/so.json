@@ -10,7 +10,7 @@
     "downloadApp": "Soo Deji App-ka"
   },
   "hero": {
-    "title": "Ku Xirida Shiinaha iyo Afrika",
+    "title": "Iibsiga iyo <stone>gaadiidka</stone> oo horumarinaya ganacsigaaga <stone>Shiinaha ilaa Afrika.</stone>",
     "subtitle": "Lammaanaha aad ku kalsoon tahay ee iibsiga, gaadiidka, iyo xalalka soo saarista. Waxaan ka soo iibineynaa alaabooyinka tayo leh Shiinaha oo aan si fudud ugu keenno suuqyada Afrika.",
     "cta": "Bilow",
     "ctaSecondary": "Wax Badan Ogow",
@@ -20,7 +20,9 @@
     "badge": "Xalalka Ganacsiga Shiinaha-Afrika",
     "shipmentsLabel": "Rarid",
     "countriesLabel": "Wadamo",
-    "satisfactionLabel": "Ku Qanacsanaan"
+    "satisfactionLabel": "Ku Qanacsanaan",
+    "introVideoLabel": "Daawo Sheekadayada",
+    "trustLabel": "Lammaane Iibsi oo La Isku Halleyn Karo"
   },
   "services": {
     "title": "Adeegyadayada",
@@ -49,7 +51,8 @@
     "mission": "Ujeedadayada",
     "missionText": "In la fududeeyo ganacsiga caalamiga ah oo kalsooni leh, hufan, iyo qaali ahaan wax ku ool ah oo adeegyada iibsiga iyo gaadiidka oo awood siinaya ganacsiyada inay korodaan oo ay barwaaqoobaan.",
     "vision": "Aragtidayada",
-    "visionText": "Inaan noqono buundada ugu kalsooni badan ee xidhaysa soo saarayaasha Shiinaha iyo suuqyada Afrika, iyagoo dejinaya heerar cusub ee fududeynta ganacsiga iyo adeega macaamiisha."
+    "visionText": "Inaan noqono buundada ugu kalsooni badan ee xidhaysa soo saarayaasha Shiinaha iyo suuqyada Afrika, iyagoo dejinaya heerar cusub ee fududeynta ganacsiga iyo adeega macaamiisha.",
+    "imagePlaceholderLabel": "Sawirrada Kooxda & Bakhaarka"
   },
   "logistics": {
     "title": "Shabakada Gaadiidkayaga",
@@ -103,7 +106,9 @@
       "company": "Magaca Shirkadda",
       "message": "Noo sheeg baahiyahaaga",
       "submit": "Dir Fariinta",
-      "sending": "Waa la diraya..."
+      "sending": "Waa la diraya...",
+      "success": "Fariinta waa la diray! Waan kula soo xiriiri doonaa dhawaan.",
+      "error": "Wax baa qaldamay. Fadlan isku day mar kale ama nagala soo xiriir WhatsApp."
     },
     "info": {
       "title": "Macluumaadka Xiriirka",
@@ -135,8 +140,41 @@
     "whatsapp": "WhatsApp"
   },
   "facebookFeed": {
+    "title": "Facebook-kayaga",
+    "subtitle": "Cusboonaysiinta iyo raridyada ugu dambeeyay ee bogganaga",
     "viewOnFacebook": "Arag Facebook",
-    "viewAllPosts": "Arag Dhammaan Qoraallada Facebook"
+    "viewAllPosts": "Arag Dhammaan Qoraallada Facebook",
+    "loading": "Waa la soo rarayaa qoraallada ugu dambeeyay...",
+    "tryAgain": "Isku Day Mar Kale",
+    "noPosts": "Qoraal lama helin",
+    "noPostsDescription": "Dib u soo booqo si aad u aragto cusboonaysiinta bogganaga Facebook.",
+    "errorDescription": "Ma soo raran karo qoraallada ugu dambeeyay hadda.",
+    "visitPage": "Booqo Bogga Facebook",
+    "readMore": "Sii akhri",
+    "showLess": "Soo koobid"
+  },
+  "testimonials": {
+    "title": "Waxa Ay Naga Sheegaan Macaamiisheena",
+    "subtitle": "Ay ku kalsoon yihiin ganacsiyada Afrika oo dhan",
+    "videoLabel": "Muuqaalka Marag-furka Macmiilka",
+    "placeholderNotice": "Marag-furid meel-haye ah — ku beddel hadal macmiil dhab ah",
+    "items": {
+      "sample1": {
+        "quote": "Marag-furid meel-haye ah — ku beddel hadal macmiil dhab ah.",
+        "name": "Magaca Macmiilka",
+        "role": "Shirkadda, Dalka"
+      },
+      "sample2": {
+        "quote": "Marag-furid meel-haye ah — ku beddel hadal macmiil dhab ah.",
+        "name": "Magaca Macmiilka",
+        "role": "Shirkadda, Dalka"
+      },
+      "sample3": {
+        "quote": "Marag-furid meel-haye ah — ku beddel hadal macmiil dhab ah.",
+        "name": "Magaca Macmiilka",
+        "role": "Shirkadda, Dalka"
+      }
+    }
   },
   "download": {
     "badge": "Aplikeeshanka Android",

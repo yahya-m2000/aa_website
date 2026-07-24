@@ -2,7 +2,7 @@
 
 import { FacebookPost } from "@/types/facebook";
 import { formatDistanceToNow } from "date-fns";
-import { Facebook, ExternalLink, ThumbsUp, Share2 } from "lucide-react";
+import { ArrowUpRight, ThumbsUp, Share2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -48,49 +48,66 @@ export function FacebookPostCard({ post }: FacebookPostCardProps) {
   const postImage = getPostImage();
 
   return (
-    <div className="group bg-white border border-[rgb(var(--border))] shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col w-full h-full">
+    <a
+      href={post.permalink_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative flex flex-col w-full h-full rounded-(--radius) overflow-hidden bg-[rgb(var(--card))]"
+    >
       {/* Image */}
-      {postImage && (
-        <div className="relative w-full h-[200px] bg-[rgb(var(--muted))] overflow-hidden flex-shrink-0">
+      {postImage ? (
+        <div className="relative w-full aspect-4/3 overflow-hidden shrink-0">
           <Image
             src={postImage}
             alt="Facebook post"
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
             onError={() => setImageError(true)}
             unoptimized // Facebook images are external
           />
-          {/* Overlay on hover */}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/0 to-black/0" />
+
+          {/* Timestamp chip, echoes the Stats photo-tile treatment */}
+          <span className="absolute bottom-3 left-4 text-xs uppercase tracking-widest text-white/90 font-medium">
+            {timeAgo}
+          </span>
+        </div>
+      ) : (
+        <div className="px-4 pt-4">
+          <span className="text-xs uppercase tracking-widest text-[rgb(var(--muted-foreground))] font-medium">
+            {timeAgo}
+          </span>
         </div>
       )}
 
       {/* Content */}
       <div className="p-4 flex flex-col flex-1 min-h-0">
-        {/* Message */}
         {message && (
-          <div className="flex-1 mb-3 overflow-hidden">
-            <p className="text-sm text-[rgb(var(--foreground))] leading-relaxed line-clamp-4">
+          <div className="flex-1 mb-4 overflow-hidden">
+            <p className="text-[rgb(var(--foreground))] leading-relaxed line-clamp-4">
               {displayMessage}
             </p>
             {shouldTruncate && (
               <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="text-sm text-[rgb(var(--primary))] hover:underline mt-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsExpanded(!isExpanded);
+                }}
+                className="text-sm text-[rgb(var(--accent))] font-semibold hover:underline mt-2"
               >
-                {isExpanded ? "Show less" : "Read more"}
+                {isExpanded ? t("showLess") : t("readMore")}
               </button>
             )}
           </div>
         )}
 
-        {/* Engagement Stats */}
-        {(post.reactions || post.shares) && (
-          <div className="flex items-center gap-4 mb-3 pb-3 border-b border-[rgb(var(--border))]">
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-4 mt-auto border-t border-[rgb(var(--border))]">
+          <div className="flex items-center gap-4">
             {post.reactions?.summary?.total_count ? (
               <div className="flex items-center gap-1.5 text-[rgb(var(--muted-foreground))]">
                 <ThumbsUp className="w-4 h-4" />
-                <span className="text-sm font-medium">
+                <span className="font-display text-sm font-bold">
                   {post.reactions.summary.total_count.toLocaleString()}
                 </span>
               </div>
@@ -98,31 +115,18 @@ export function FacebookPostCard({ post }: FacebookPostCardProps) {
             {post.shares?.count ? (
               <div className="flex items-center gap-1.5 text-[rgb(var(--muted-foreground))]">
                 <Share2 className="w-4 h-4" />
-                <span className="text-sm font-medium">
+                <span className="font-display text-sm font-bold">
                   {post.shares.count.toLocaleString()}
                 </span>
               </div>
             ) : null}
           </div>
-        )}
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-[rgb(var(--border))] mt-auto flex-shrink-0">
-          <span className="text-xs text-[rgb(var(--muted-foreground))]">
-            {timeAgo}
+          <span className="inline-flex items-center justify-center w-8 h-8 shrink-0 rounded-full bg-[rgb(var(--muted))] transition-colors duration-300 group-hover:bg-[rgb(var(--accent))]">
+            <ArrowUpRight className="w-4 h-4 text-[rgb(var(--foreground))] transition-colors duration-300 group-hover:text-[rgb(var(--accent-foreground))]" />
           </span>
-          <a
-            href={post.permalink_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-[rgb(var(--primary))] hover:text-[rgb(var(--primary))]/80 transition-colors"
-          >
-            <Facebook className="w-3.5 h-3.5" />
-            <span>{t("viewOnFacebook")}</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
         </div>
       </div>
-    </div>
+    </a>
   );
 }

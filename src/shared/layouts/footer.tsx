@@ -3,6 +3,7 @@ import { Link } from "@/i18n/routing";
 import { Facebook, Mail } from "lucide-react";
 import Image from "next/image";
 import { FaWhatsapp } from "react-icons/fa";
+import { socialLinks } from "@/shared/data";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -58,6 +59,14 @@ export function Footer() {
               </li>
               <li>
                 <a
+                  href="#logistics"
+                  className="text-sm text-white/70 hover:text-white transition-colors"
+                >
+                  {tNav("logistics")}
+                </a>
+              </li>
+              <li>
+                <a
                   href="#stats"
                   className="text-sm text-white/70 hover:text-white transition-colors"
                 >
@@ -99,18 +108,18 @@ export function Footer() {
             <h3 className="text-lg font-semibold">{t("contact")}</h3>
             <div className="space-y-3">
               <a
-                href="mailto:admin@aatradesolutions.com"
+                href={`mailto:${socialLinks.email}`}
                 className="flex items-center space-x-2 text-sm text-white/70 hover:text-white transition-colors"
               >
                 <Mail className="w-4 h-4" />
-                <span>admin@aatradesolutions.com</span>
+                <span>{socialLinks.email}</span>
               </a>
             </div>
             <div>
               <h4 className="text-sm font-semibold mb-3">{t("followUs")}</h4>
               <div className="space-y-2">
                 <a
-                  href="https://www.facebook.com/aatradesolutions"
+                  href={socialLinks.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-2 text-sm text-white/70 hover:text-white transition-colors"
@@ -120,7 +129,7 @@ export function Footer() {
                   <span>Facebook</span>
                 </a>
                 <a
-                  href="https://api.whatsapp.com/send?phone=%2B252638571847"
+                  href={socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-2 text-sm text-white/70 hover:text-white transition-colors"

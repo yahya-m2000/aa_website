@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, useEffect, useRef, memo } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import { Menu, X, Globe, Facebook, Smartphone } from "lucide-react";
-import { Button } from "@/shared/components/ui";
+import { Menu, X, Globe, Smartphone } from "lucide-react";
 import { cn } from "@/core/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -12,20 +11,32 @@ import Image from "next/image";
 const navItems = [
   { key: "home", href: "#home" },
   { key: "services", href: "#services" },
+  { key: "logistics", href: "#logistics" },
   { key: "about", href: "#about" },
+  { key: "stats", href: "#stats" },
   { key: "contact", href: "#contact" },
 ] as const;
 
-// Memoized desktop navigation item
+// Memoized desktop navigation item. On the homepage, hash links scroll
+// directly. On any other route, they route to "/" + hash so section
+// anchors still resolve instead of silently doing nothing.
 const DesktopNavItem = memo(
-  ({ href, label }: { href: string; label: string }) => (
-    <a
-      href={href}
+  ({
+    href,
+    label,
+    isHome,
+  }: {
+    href: string;
+    label: string;
+    isHome: boolean;
+  }) => (
+    <Link
+      href={isHome ? href : `/${href}`}
       className="px-4 py-2 text-sm font-medium text-[rgb(var(--foreground))]/70 hover:text-[rgb(var(--primary))] hover:bg-[rgb(var(--muted))] transition-all duration-200"
     >
       {label}
-    </a>
-  )
+    </Link>
+  ),
 );
 DesktopNavItem.displayName = "DesktopNavItem";
 
@@ -34,20 +45,22 @@ const MobileNavItem = memo(
   ({
     href,
     label,
+    isHome,
     onClick,
   }: {
     href: string;
     label: string;
+    isHome: boolean;
     onClick: () => void;
   }) => (
-    <a
-      href={href}
+    <Link
+      href={isHome ? href : `/${href}`}
       onClick={onClick}
       className="block text-2xl font-semibold text-[rgb(var(--foreground))] hover:text-[rgb(var(--primary))] transition-colors duration-300"
     >
       {label}
-    </a>
-  )
+    </Link>
+  ),
 );
 MobileNavItem.displayName = "MobileNavItem";
 
@@ -70,14 +83,14 @@ const LanguageMenu = memo(
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="absolute right-0 mt-2 w-32 bg-white shadow-lg border border-[rgb(var(--border))] overflow-hidden"
+          className="absolute right-0 mt-2 w-32 rounded-(--radius) bg-white shadow-lg border border-[rgb(var(--border))] overflow-hidden"
         >
           <Link
             href={pathname}
             locale="en"
             className={cn(
               "block px-4 py-2 text-sm hover:bg-[rgb(var(--muted))] transition-colors",
-              locale === "en" && "bg-[rgb(var(--muted))] font-semibold"
+              locale === "en" && "bg-[rgb(var(--muted))] font-semibold",
             )}
             onClick={onClose}
           >
@@ -88,7 +101,7 @@ const LanguageMenu = memo(
             locale="so"
             className={cn(
               "block px-4 py-2 text-sm hover:bg-[rgb(var(--muted))] transition-colors",
-              locale === "so" && "bg-[rgb(var(--muted))] font-semibold"
+              locale === "so" && "bg-[rgb(var(--muted))] font-semibold",
             )}
             onClick={onClose}
           >
@@ -97,7 +110,7 @@ const LanguageMenu = memo(
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  ),
 );
 LanguageMenu.displayName = "LanguageMenu";
 
@@ -105,23 +118,42 @@ function Navigation({ locale }: { locale: string }) {
   const t = useTranslations("navigation");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastScrollY.current) <= 5) return;
+      setHidden(y > lastScrollY.current && y > 80);
+      lastScrollY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
   const toggleMobileMenu = useCallback(
     () => setMobileMenuOpen((prev) => !prev),
-    []
+    [],
   );
   const toggleLangMenu = useCallback(
     () => setLangMenuOpen((prev) => !prev),
-    []
+    [],
   );
   const closeLangMenu = useCallback(() => setLangMenuOpen(false), []);
 
   return (
     <>
       {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-[rgb(var(--border))]">
+      <nav
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl transition-transform duration-500 ease-in-out",
+          hidden && !mobileMenuOpen && "-translate-y-full",
+        )}
+      >
         <div className="container-custom">
           {/* Mobile Layout - Centered logo with hamburger on left */}
           <div className="flex md:hidden relative items-center justify-center h-16">
@@ -148,7 +180,7 @@ function Navigation({ locale }: { locale: string }) {
                 alt="A&A Logo"
                 width={240}
                 height={80}
-                className="h-12 w-auto transition-all duration-200 brightness-0 group-hover:[filter:brightness(0)_saturate(100%)_invert(16%)_sepia(98%)_saturate(2537%)_hue-rotate(260deg)_brightness(91%)_contrast(96%)]"
+                className="h-12 w-auto transition-all duration-200 brightness-0 group-hover:opacity-70"
                 priority
               />
             </Link>
@@ -156,37 +188,39 @@ function Navigation({ locale }: { locale: string }) {
 
           {/* Desktop Layout - Normal flex layout */}
           <div className="hidden md:flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link
-              href="/"
-              className="flex items-center group transition-all duration-200"
-            >
-              <Image
-                src="/logo.png"
-                alt="A&A Logo"
-                width={240}
-                height={80}
-                className="h-10 w-auto transition-all duration-200 brightness-0 group-hover:[filter:brightness(0)_saturate(100%)_invert(16%)_sepia(98%)_saturate(2537%)_hue-rotate(260deg)_brightness(91%)_contrast(96%)]"
-                priority
-              />
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="flex items-center space-x-1">
-              {navItems.map((item) => (
-                <DesktopNavItem
-                  key={item.key}
-                  href={item.href}
-                  label={t(item.key)}
+            {/* Logo + Navigation, justified left */}
+            <div className="flex items-center gap-10">
+              <Link
+                href="/"
+                className="flex items-center group transition-all duration-200"
+              >
+                <Image
+                  src="/logo.png"
+                  alt="A&A Logo"
+                  width={240}
+                  height={80}
+                  className="h-10 w-auto transition-all duration-200 brightness-0 group-hover:opacity-70"
+                  priority
                 />
-              ))}
+              </Link>
+
+              <div className="flex items-center space-x-1">
+                {navItems.map((item) => (
+                  <DesktopNavItem
+                    key={item.key}
+                    href={item.href}
+                    label={t(item.key)}
+                    isHome={isHome}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Desktop Language Toggle */}
             <div className="flex items-center space-x-3">
               <Link
                 href="/download"
-                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium bg-[rgb(var(--primary))] text-white hover:bg-[rgb(var(--primary-hover))] transition-all duration-200"
+                className="btn-sweep flex items-center space-x-2 rounded-full px-4 py-2 text-sm font-medium text-white transition-all duration-200"
               >
                 <Smartphone className="w-4 h-4" />
                 <span>{t("downloadApp")}</span>
@@ -234,6 +268,7 @@ function Navigation({ locale }: { locale: string }) {
                     <MobileNavItem
                       href={item.href}
                       label={t(item.key)}
+                      isHome={isHome}
                       onClick={closeMobileMenu}
                     />
                   </motion.div>
@@ -250,7 +285,7 @@ function Navigation({ locale }: { locale: string }) {
                 <Link
                   href="/download"
                   onClick={closeMobileMenu}
-                  className="inline-flex items-center gap-2 px-5 py-3 text-base font-semibold bg-[rgb(var(--primary))] text-white"
+                  className="btn-sweep inline-flex items-center gap-2 rounded-full px-5 py-3 text-base font-semibold text-white"
                 >
                   <Smartphone className="w-5 h-5" />
                   {t("downloadApp")}
@@ -271,7 +306,7 @@ function Navigation({ locale }: { locale: string }) {
                     "text-lg font-medium transition-colors duration-300",
                     locale === "en"
                       ? "text-[rgb(var(--primary))]"
-                      : "text-[rgb(var(--foreground))]/50 hover:text-[rgb(var(--foreground))]"
+                      : "text-[rgb(var(--foreground))]/50 hover:text-[rgb(var(--foreground))]",
                   )}
                   onClick={closeMobileMenu}
                 >
@@ -285,7 +320,7 @@ function Navigation({ locale }: { locale: string }) {
                     "text-lg font-medium transition-colors duration-300",
                     locale === "so"
                       ? "text-[rgb(var(--primary))]"
-                      : "text-[rgb(var(--foreground))]/50 hover:text-[rgb(var(--foreground))]"
+                      : "text-[rgb(var(--foreground))]/50 hover:text-[rgb(var(--foreground))]",
                   )}
                   onClick={closeMobileMenu}
                 >

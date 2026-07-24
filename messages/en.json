@@ -3,13 +3,14 @@
     "home": "Home",
     "facebook": "Facebook",
     "services": "Services",
+    "logistics": "Logistics",
     "about": "About",
     "stats": "Our Impact",
     "contact": "Contact",
     "downloadApp": "Download App"
   },
   "hero": {
-    "title": "Connecting China to Africa",
+    "title": "Sourcing and <stone>logistics</stone> that move your business from <stone>China to Africa.</stone>",
     "subtitle": "Your trusted partner in procurement, logistics, and supply chain solutions. We source quality products from China and deliver them seamlessly across African markets.",
     "cta": "Get Started",
     "ctaSecondary": "Learn More",
@@ -19,7 +20,9 @@
     "badge": "China-Africa Trade Solutions",
     "shipmentsLabel": "Shipments",
     "countriesLabel": "Countries",
-    "satisfactionLabel": "Satisfaction"
+    "satisfactionLabel": "Satisfaction",
+    "introVideoLabel": "Watch Our Story",
+    "trustLabel": "Trusted Procurement Partner"
   },
   "services": {
     "title": "Our Services",
@@ -48,7 +51,8 @@
     "mission": "Our Mission",
     "missionText": "To facilitate seamless international trade by providing reliable, efficient, and cost-effective procurement and logistics solutions that empower businesses to grow and thrive.",
     "vision": "Our Vision",
-    "visionText": "To be the most trusted bridge connecting Chinese manufacturers with African markets, setting new standards in trade facilitation and customer service."
+    "visionText": "To be the most trusted bridge connecting Chinese manufacturers with African markets, setting new standards in trade facilitation and customer service.",
+    "imagePlaceholderLabel": "Team & Warehouse Photography"
   },
   "logistics": {
     "title": "Our Logistics Network",
@@ -102,7 +106,9 @@
       "company": "Company Name",
       "message": "Tell us about your needs",
       "submit": "Send Message",
-      "sending": "Sending..."
+      "sending": "Sending...",
+      "success": "Message sent! We will be in touch soon.",
+      "error": "Something went wrong. Please try again or contact us via WhatsApp."
     },
     "info": {
       "title": "Contact Information",
@@ -134,8 +140,41 @@
     "whatsapp": "WhatsApp"
   },
   "facebookFeed": {
+    "title": "From Our Facebook",
+    "subtitle": "Recent updates and shipments from our page",
     "viewOnFacebook": "View on Facebook",
-    "viewAllPosts": "View All Posts on Facebook"
+    "viewAllPosts": "View All Posts on Facebook",
+    "loading": "Loading latest posts...",
+    "tryAgain": "Try Again",
+    "noPosts": "No posts available",
+    "noPostsDescription": "Check back soon for updates from our Facebook page.",
+    "errorDescription": "We couldn't load the latest posts right now.",
+    "visitPage": "Visit Facebook Page",
+    "readMore": "Read more",
+    "showLess": "Show less"
+  },
+  "testimonials": {
+    "title": "What Our Clients Say",
+    "subtitle": "Trusted by businesses across Africa",
+    "videoLabel": "Customer Testimonial Video",
+    "placeholderNotice": "Placeholder testimonial — replace with a real customer quote",
+    "items": {
+      "sample1": {
+        "quote": "Placeholder testimonial — replace with a real customer quote.",
+        "name": "Client Name",
+        "role": "Company, Country"
+      },
+      "sample2": {
+        "quote": "Placeholder testimonial — replace with a real customer quote.",
+        "name": "Client Name",
+        "role": "Company, Country"
+      },
+      "sample3": {
+        "quote": "Placeholder testimonial — replace with a real customer quote.",
+        "name": "Client Name",
+        "role": "Company, Country"
+      }
+    }
   },
   "download": {
     "badge": "Android App",

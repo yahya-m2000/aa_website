@@ -5,6 +5,7 @@ import { Facebook, X, MessageCircle } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { socialLinks } from "@/shared/data";
 
 export function SocialFloatingButtons() {
   const t = useTranslations("social");
@@ -48,15 +49,15 @@ export function SocialFloatingButtons() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 50 }}
                     transition={{ delay: 0.05 }}
-                    href="https://www.facebook.com/aatradesolutions"
+                    href={socialLinks.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center justify-between bg-white text-[rgb(var(--primary))] pl-4 pr-3 py-2 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 min-w-[160px]"
+                    className="flex items-center justify-between rounded-full bg-white text-[rgb(var(--foreground))] border border-[rgb(var(--border))] pl-4 pr-1.5 py-1.5 shadow-md hover:shadow-lg transition-shadow min-w-40"
                     aria-label="Visit our Facebook page"
                   >
                     <span className="text-sm font-semibold">{t("facebook")}</span>
-                    <div className="w-10 h-10 bg-[rgb(var(--primary))] text-white flex items-center justify-center">
-                      <Facebook className="w-5 h-5" />
+                    <div className="w-9 h-9 rounded-full bg-[rgb(var(--accent))] text-[rgb(var(--accent-foreground))] flex items-center justify-center">
+                      <Facebook className="w-4 h-4" />
                     </div>
                   </motion.a>
 
@@ -66,15 +67,15 @@ export function SocialFloatingButtons() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 50 }}
                     transition={{ delay: 0.1 }}
-                    href="https://api.whatsapp.com/send?phone=%2B252638571847"
+                    href={socialLinks.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center justify-between bg-white text-[#25D366] pl-4 pr-3 py-2 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 min-w-[160px]"
+                    className="flex items-center justify-between rounded-full bg-white text-[rgb(var(--foreground))] border border-[rgb(var(--border))] pl-4 pr-1.5 py-1.5 shadow-md hover:shadow-lg transition-shadow min-w-40"
                     aria-label="Contact us on WhatsApp"
                   >
                     <span className="text-sm font-semibold">{t("whatsapp")}</span>
-                    <div className="w-10 h-10 bg-[#25D366] text-white flex items-center justify-center">
-                      <FaWhatsapp className="w-6 h-6" />
+                    <div className="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center">
+                      <FaWhatsapp className="w-5 h-5" />
                     </div>
                   </motion.a>
                 </motion.div>
@@ -82,51 +83,31 @@ export function SocialFloatingButtons() {
             </AnimatePresence>
 
             {/* Toggle Button */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleExpanded}
-              className="relative w-16 h-16 bg-gradient-to-br from-[rgb(var(--primary-light))] to-[rgb(var(--primary))] text-white shadow-2xl hover:shadow-3xl transition-all flex items-center justify-center group"
-              aria-label={isExpanded ? "Close menu" : "Open social menu"}
-            >
-              <AnimatePresence mode="wait">
-                {isExpanded ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -180, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 180, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <X className="w-7 h-7" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="open"
-                    initial={{ rotate: -180, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 180, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <MessageCircle className="w-7 h-7" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Pulse animation */}
+            <div className="group relative">
+              {/* Pulse ring - only while collapsed, scales outward and fades */}
               {!isExpanded && (
-                <span className="absolute inset-0 animate-slow-pulse bg-[rgb(var(--primary))] opacity-20" />
+                <span className="absolute inset-0 rounded-full bg-[rgb(var(--accent))] animate-pulse-ring pointer-events-none" />
               )}
 
-              {/* Tooltip */}
-              <motion.div
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="absolute right-full mr-3 bg-black text-white text-xs font-medium px-3 py-1.5 whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
+              <motion.button
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={toggleExpanded}
+                className="relative w-16 h-16 rounded-full bg-[rgb(var(--accent))] text-[rgb(var(--accent-foreground))] shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center"
+                aria-label={isExpanded ? "Close menu" : "Open social menu"}
               >
+                {isExpanded ? (
+                  <X className="w-7 h-7" />
+                ) : (
+                  <MessageCircle className="w-7 h-7" />
+                )}
+              </motion.button>
+
+              {/* Tooltip */}
+              <span className="absolute right-full top-1/2 -translate-y-1/2 mr-3 rounded-full bg-[rgb(var(--primary))] text-white text-xs font-medium px-3 py-1.5 whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 {t("contactUs")}
-              </motion.div>
-            </motion.button>
+              </span>
+            </div>
           </div>
         </motion.div>
       )}

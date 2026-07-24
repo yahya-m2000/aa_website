@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { Ship, Facebook } from "lucide-react";
-import { FaWhatsapp, FaFacebookF } from "react-icons/fa";
-import { Button } from "@/shared/components/ui";
-import { FadeIn } from "@/shared/components/ui";
-import { FacebookFeedCustom } from "./facebook-feed-custom";
+import { ShieldCheck } from "lucide-react";
+import { SplitHeading } from "@/shared/components/ui";
+import { stats } from "@/shared/data";
 
 function HeroSection() {
   const t = useTranslations("hero");
+  const tStats = useTranslations("stats");
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,143 +27,77 @@ function HeroSection() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const years = stats.find((s) => s.key === "years");
+  const satisfaction = stats.find((s) => s.key === "satisfaction");
+
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white pt-16 md:pt-20"
+      className="relative min-h-screen flex items-center overflow-hidden pt-16 md:pt-20"
     >
-      {/* Static background pattern */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(var(--primary)) 1px, transparent 0)`,
-            backgroundSize: "40px 40px",
-          }}
-        />
-      </div>
+      <div className="container-custom w-full relative z-10 py-16 md:py-24">
+        <div className="max-w-4xl">
+          <SplitHeading
+            as="h1"
+            variant="immediate"
+            className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight [&_.text-stone]:text-[rgb(var(--stone))]"
+          >
+            {t.rich("title", {
+              stone: (chunks) => (
+                <span className="text-stone text-[rgb(var(--stone))]">
+                  {chunks}
+                </span>
+              ),
+            })}
+          </SplitHeading>
 
-      <div className="container-custom relative z-10 py-12 md:py-20">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          {/* Left Column - Hero Content */}
-          <div className="space-y-8">
-            <FadeIn direction="up" delay={0.2}>
-              <div className="inline-flex items-center space-x-2 bg-[rgb(var(--primary))] text-white px-4 py-2 text-sm font-medium mb-6">
-                <Ship className="w-4 h-4" />
-                <span>{t("badge")}</span>
-              </div>
-            </FadeIn>
-
-            <FadeIn direction="up" delay={0.3}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
-                <span className="text-gradient">{t("title")}</span>
-              </h1>
-            </FadeIn>
-
-            <FadeIn direction="up" delay={0.4}>
-              <p className="text-lg md:text-xl text-[rgb(var(--muted-foreground))] leading-relaxed max-w-xl">
-                {t("subtitle")}
-              </p>
-            </FadeIn>
-
-            {/* CTA Buttons - 2 Buttons Only */}
-            <FadeIn direction="up" delay={0.5}>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  asChild
-                  variant="default"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                >
-                  <a
-                    href="https://www.facebook.com/aatradesolutions"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2"
-                  >
-                    <Facebook className="w-5 h-5" />
-                    {t("facebook")}
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  variant="default"
-                  size="lg"
-                  className="bg-[#25D366] hover:bg-[#25D366]/90 w-full sm:w-auto"
-                >
-                  <a
-                    href="https://api.whatsapp.com/send?phone=%2B252638571847"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2"
-                  >
-                    <FaWhatsapp className="w-5 h-5" />
-                    {t("whatsapp")}
-                  </a>
-                </Button>
-              </div>
-            </FadeIn>
-
-            {/* Quick Stats */}
-            <FadeIn direction="up" delay={0.6}>
-              <div className="grid grid-cols-3 gap-6 max-w-xl pt-8 border-t border-[rgb(var(--border))]">
-                <div>
-                  <p className="text-2xl md:text-3xl font-bold text-[rgb(var(--primary))]">
-                    500+
-                  </p>
-                  <p className="text-sm text-[rgb(var(--muted-foreground))]">
-                    {t("shipmentsLabel")}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-2xl md:text-3xl font-bold text-[rgb(var(--primary))]">
-                    12+
-                  </p>
-                  <p className="text-sm text-[rgb(var(--muted-foreground))]">
-                    {t("countriesLabel")}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-2xl md:text-3xl font-bold text-[rgb(var(--primary))]">
-                    98%
-                  </p>
-                  <p className="text-sm text-[rgb(var(--muted-foreground))]">
-                    {t("satisfactionLabel")}
-                  </p>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-
-          {/* Right Column - Custom Facebook Feed */}
-          <FadeIn direction="up" delay={0.4}>
-            <div className="bg-white overflow-hidden lg:sticky lg:top-24 mt-8 lg:mt-0">
-              <div className="pb-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-3xl md:text-4xl font-bold">
-                    <span className="text-gradient">{t("latestFromFacebook")}</span>
-                  </h3>
-                  <FaFacebookF className="w-6 h-6 text-[rgb(var(--primary))]" />
-                </div>
-                <FacebookFeedCustom />
-              </div>
+          {/* Social-proof strip */}
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mt-10">
+            <div className="flex items-center gap-2 text-[rgb(var(--muted-foreground))]">
+              <ShieldCheck className="w-5 h-5 text-[rgb(var(--foreground))]" />
+              <span className="text-xs uppercase tracking-widest font-medium">
+                {t("trustLabel")}
+              </span>
             </div>
-          </FadeIn>
+            {years && (
+              <div className="flex items-baseline gap-1.5">
+                <span className="font-display text-2xl font-bold">
+                  {years.value}
+                  {years.suffix}
+                </span>
+                <span className="text-xs uppercase tracking-widest text-[rgb(var(--muted-foreground))]">
+                  {tStats("years.label")}
+                </span>
+              </div>
+            )}
+            {satisfaction && (
+              <div className="flex items-baseline gap-1.5">
+                <span className="font-display text-2xl font-bold">
+                  {satisfaction.value}
+                  {satisfaction.suffix}
+                </span>
+                <span className="text-xs uppercase tracking-widest text-[rgb(var(--muted-foreground))]">
+                  {tStats("satisfaction.label")}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll Indicator */}
       <div
-        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-opacity duration-300"
-        style={{ opacity: isScrolled ? 0 : 1 }}
+        className={`absolute bottom-8 left-1/2 -translate-x-1/2 transition-opacity duration-300 ${
+          isScrolled ? "opacity-0" : "opacity-100"
+        }`}
       >
-        <div className="w-6 h-10 border-2 border-[rgb(var(--primary))] flex items-start justify-center p-2">
-          <div className="w-1.5 h-1.5 bg-[rgb(var(--primary))] animate-scroll-bounce" />
+        <div className="w-6 h-10 rounded-full border-2 border-[rgb(var(--foreground))]/20 flex items-start justify-center p-1.5">
+          <div className="w-1 h-2 rounded-full bg-[rgb(var(--foreground))]/40 animate-scroll-bounce" />
         </div>
       </div>
     </section>
   );
 }
 
-export default HeroSection;
 export { HeroSection };
+export default HeroSection;

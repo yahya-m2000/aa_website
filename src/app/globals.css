@@ -1,28 +1,45 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+}
+
 :root {
-  /* Purple color palette - AAGroup branding */
-  --primary: 59 24 147; /* #3b1893 - Purple */
-  --primary-hover: 47 19 118; /* #2f1376 - Darker Purple */
-  --primary-light: 88 36 220; /* #5824dc - Lighter Purple for gradients */
-  --secondary: 0 0 0; /* Black */
-  --accent: 59 24 147; /* Purple (same as primary) */
+  /*
+   * Monochrome-first palette with a purple accent. --primary (near-black)
+   * is the DEFAULT color for buttons, links, active states, and focus
+   * rings. --accent (A&A brand purple) is reserved for rare, deliberate
+   * touches only: one primary CTA per section, a stat divider, small
+   * brand chrome. Never default to --accent for body/inline text on a
+   * dark surface without checking contrast first.
+   */
+  --primary: 12 12 12; /* #0c0c0c near-black - default UI color */
+  --primary-hover: 23 23 23; /* #171717 charcoal hover */
+  --secondary: 12 12 12; /* #0c0c0c - footer/dark-section bg */
 
-  /* Light mode only - Monochrome */
+  --accent: 59 24 147; /* #3b1893 A&A brand purple, accent (use sparingly) */
+  --accent-hover: 47 19 118; /* #2f1376 darker purple hover */
+  --accent-foreground: 255 255 255; /* white text ON accent - purple is dark enough for white text */
+
+  /* Light mode only */
   --background: 255 255 255; /* White */
-  --foreground: 0 0 0; /* Black */
+  --foreground: 12 12 12; /* #0c0c0c */
 
-  --card: 255 255 255; /* White */
-  --card-foreground: 0 0 0; /* Black */
+  --card: 244 242 249; /* #f4f2f9 washed purple tint (same hue as --accent) - card/alt-section bg */
+  --card-foreground: 12 12 12;
 
-  --muted: 250 250 250; /* Gray-50 - Very light gray */
-  --muted-foreground: 82 82 82; /* Gray-600 - Darker gray */
+  --muted: 242 240 246; /* #f2f0f6 washed purple tint, slightly deeper - section band bg */
+  --muted-foreground: 96 96 96; /* #606060 ash-gray */
 
-  --border: 229 229 229; /* Gray-200 */
-  --input: 229 229 229; /* Gray-200 */
-  --ring: 59 24 147; /* Purple */
+  --border: 227 227 227; /* #e3e3e3 silver */
+  --input: 227 227 227;
+  --ring: 12 12 12;
 
-  --radius: 0;
+  --stone: 149 149 149; /* #959595 - secondary/rhythm text (e.g. hero word coloring) */
+  --metallic: 48 48 48; /* #303030 - secondary text on dark sections */
+
+  --radius: 0.5rem; /* soft 8px card/input rounding; buttons use rounded-full */
 
   /* Force light color scheme */
   color-scheme: light;
@@ -35,12 +52,30 @@
 body {
   background-color: rgb(var(--background));
   color: rgb(var(--foreground));
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-/* Smooth scrolling for anchor links */
-html {
-  scroll-behavior: smooth;
+h1, h2, h3, .font-display {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Native scroll-behavior is intentionally NOT set to smooth here - Lenis
+ * (see src/core/providers/smooth-scroll-provider.tsx) owns scroll physics
+ * site-wide. Setting both would fight each other.
+ */
+
+/* Clips split-heading words during their rise-in animation so the
+   translateY doesn't reveal text outside its line box. Extra bottom
+   padding (offset by a matching negative margin, so layout/spacing is
+   unaffected) reserves room for descenders (g, p, y, j, q) that would
+   otherwise get clipped by the tight line box, especially combined with
+   this site's tight leading-none/leading-[0.95] heading styles. */
+[data-split-heading] .line {
+  overflow: hidden;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
 }
 
 /* Custom scrollbar */
@@ -60,55 +95,35 @@ html {
   background-color: rgb(var(--muted-foreground) / 0.5);
 }
 
-/* Text gradient utility - Monochromatic green gradient */
+/* Text gradient utility - reserved for rare accent-word treatments only */
 .text-gradient {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, rgb(var(--primary-light)), rgb(var(--primary)));
+  background-image: linear-gradient(to right, rgb(var(--primary-hover)), rgb(var(--primary)));
 }
 
-/* Logo gradient hover effect */
-.logo-gradient-hover {
+/* Button fill-sweep hover: two-tone vertical gradient stack sliding via
+   background-position. Used by the default (near-black) button variant. */
+.btn-sweep {
   position: relative;
-  display: inline-block;
+  background-image: linear-gradient(to bottom, rgb(var(--primary-hover)) 50%, rgb(var(--primary)) 50%);
+  background-size: 100% 200%;
+  background-position: 0 -100%;
+  transition: background-position 0.55s ease, color 0.55s ease;
 }
 
-.logo-gradient-hover img {
-  filter: brightness(0);
-  transition: all 0.3s ease;
-}
-
-.logo-gradient-hover::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to right, rgb(var(--primary-light)), rgb(var(--primary)));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  mask-image: var(--logo-mask);
-  -webkit-mask-image: var(--logo-mask);
-  mask-size: contain;
-  -webkit-mask-size: contain;
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  pointer-events: none;
-}
-
-.logo-gradient-hover:hover::after {
-  opacity: 1;
+.btn-sweep:hover {
+  background-position: 0 0;
 }
 
 /* Container utilities */
 .container-custom {
-  max-width: 80rem;
+  max-width: 140rem;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 @media (min-width: 640px) {
@@ -182,16 +197,19 @@ html {
   isolation: isolate;
 }
 
-/* Slow pulse animation for contact button */
-@keyframes slow-pulse {
-  0%, 100% {
-    opacity: 0.2;
+/* Radiating pulse ring for the floating contact button - scales outward
+   from the button's own size and fades, rather than flickering in place. */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.45;
   }
-  50% {
+  100% {
+    transform: scale(1.6);
     opacity: 0;
   }
 }
 
-.animate-slow-pulse {
-  animation: slow-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-pulse-ring {
+  animation: pulse-ring 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

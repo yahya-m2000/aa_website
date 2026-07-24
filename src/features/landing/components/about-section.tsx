@@ -2,76 +2,85 @@
 import { memo } from "react";
 
 import { useTranslations } from "next-intl";
-import { FadeIn, ScrollReveal } from "@/shared/components/ui";
+import { FadeIn, MediaPlaceholder, SplitHeading, Parallax } from "@/shared/components/ui";
 import { Target, Eye } from "lucide-react";
-import Image from "next/image";
 
 export function AboutSection() {
   const t = useTranslations("about");
 
   return (
-    <section id="about" className="relative py-20 md:py-32 overflow-hidden">
-      {/* Background */}
-      <ScrollReveal className="absolute inset-0 -z-10">
-        <div className="relative w-full h-full">
-          <Image
-            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80"
-            alt="Business background"
-            fill
-            className="object-cover opacity-10"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
-        </div>
-      </ScrollReveal>
-
-      <div className="container-custom relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-16">
+    <section id="about" className="py-20 md:py-32">
+      <div className="container-custom">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left: copy */}
+          <div>
+            <SplitHeading
+              as="h2"
+              className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4"
+            >
+              {t("title")}
+            </SplitHeading>
             <FadeIn direction="up">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                {t("title")}
-              </h2>
-              <p className="text-xl md:text-2xl text-[rgb(var(--primary))] font-semibold">
+              <p className="text-xl text-[rgb(var(--foreground))] font-semibold mb-6">
                 {t("subtitle")}
               </p>
             </FadeIn>
+
+            <FadeIn direction="up" delay={0.1}>
+              <p className="text-lg text-[rgb(var(--muted-foreground))] leading-relaxed mb-10">
+                {t("description")}
+              </p>
+            </FadeIn>
+
+            <div className="space-y-8">
+              <FadeIn direction="up" delay={0.2}>
+                <div className="group flex gap-4">
+                  <div className="w-12 h-12 rounded-full shrink-0 bg-[rgb(var(--muted))] flex items-center justify-center transition-all duration-300 group-hover:bg-[rgb(var(--primary))] group-hover:scale-110">
+                    <Target className="w-6 h-6 text-[rgb(var(--foreground))] transition-colors duration-300 group-hover:text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl font-bold mb-1">
+                      {t("mission")}
+                    </h3>
+                    <p className="text-[rgb(var(--muted-foreground))] leading-relaxed">
+                      {t("missionText")}
+                    </p>
+                  </div>
+                </div>
+              </FadeIn>
+
+              <FadeIn direction="up" delay={0.3}>
+                <div className="group flex gap-4">
+                  <div className="w-12 h-12 rounded-full shrink-0 bg-[rgb(var(--muted))] flex items-center justify-center transition-all duration-300 group-hover:bg-[rgb(var(--primary))] group-hover:scale-110">
+                    <Eye className="w-6 h-6 text-[rgb(var(--foreground))] transition-colors duration-300 group-hover:text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl font-bold mb-1">
+                      {t("vision")}
+                    </h3>
+                    <p className="text-[rgb(var(--muted-foreground))] leading-relaxed">
+                      {t("visionText")}
+                    </p>
+                  </div>
+                </div>
+              </FadeIn>
+            </div>
           </div>
 
-          {/* Description */}
-          <FadeIn direction="up" delay={0.2}>
-            <p className="text-lg text-[rgb(var(--muted-foreground))] leading-relaxed mb-16 text-center">
-              {t("description")}
-            </p>
-          </FadeIn>
-
-          {/* Mission & Vision Grid */}
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-            {/* Mission */}
-            <ScrollReveal>
-              <div className="bg-white p-8 shadow-xl border border-[rgb(var(--border))] hover:shadow-2xl transition-shadow duration-300">
-                <div className="w-12 h-12 bg-[rgb(var(--primary))] flex items-center justify-center mb-6">
-                  <Target className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">{t("mission")}</h3>
-                <p className="text-[rgb(var(--muted-foreground))] leading-relaxed">
-                  {t("missionText")}
-                </p>
-              </div>
-            </ScrollReveal>
-
-            {/* Vision */}
-            <ScrollReveal>
-              <div className="bg-white p-8 shadow-xl border border-[rgb(var(--border))] hover:shadow-2xl transition-shadow duration-300">
-                <div className="w-12 h-12 bg-gradient-to-br from-[rgb(var(--primary))] to-[rgb(var(--primary-hover))] flex items-center justify-center mb-6">
-                  <Eye className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">{t("vision")}</h3>
-                <p className="text-[rgb(var(--muted-foreground))] leading-relaxed">
-                  {t("visionText")}
-                </p>
-              </div>
-            </ScrollReveal>
+          {/* Right: photography placeholder, subtle scroll parallax */}
+          <div className="relative aspect-4/5 rounded-(--radius) overflow-hidden">
+            <Parallax
+              speed={50}
+              className="absolute inset-0"
+              innerClassName="absolute inset-x-0 -top-20 -bottom-20"
+            >
+              <MediaPlaceholder
+                type="image"
+                label={t("imagePlaceholderLabel")}
+                aspectRatio="aspect-auto"
+                className="h-full rounded-none border-0"
+              />
+            </Parallax>
           </div>
         </div>
       </div>
