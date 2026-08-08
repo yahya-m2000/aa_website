@@ -11,7 +11,7 @@ export const stats = [
   },
   {
     key: 'countries',
-    value: 12,
+    value: 5,
     suffix: '',
   },
   {
