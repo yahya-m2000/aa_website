@@ -2,8 +2,8 @@
 import { memo } from "react";
 
 import { useTranslations } from "next-intl";
-import { Quote } from "lucide-react";
-import { FadeIn, StaggerContainer, StaggerItem, MediaPlaceholder, SplitHeading, Parallax } from "@/shared/components/ui";
+import { Quote, UserRound } from "lucide-react";
+import { FadeIn, StaggerContainer, StaggerItem, LocalVideoBackground, SplitHeading } from "@/shared/components/ui";
 import { testimonials } from "@/shared/data";
 
 export function TestimonialsSection() {
@@ -28,18 +28,11 @@ export function TestimonialsSection() {
           <FadeIn direction="up">
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-16 md:mb-24">
               <div className="lg:col-span-5 order-2 lg:order-1 relative aspect-4/5 rounded-(--radius) overflow-hidden">
-                <Parallax
-                  speed={40}
-                  className="absolute inset-0"
-                  innerClassName="absolute inset-x-0 -top-14 -bottom-14"
-                >
-                  <MediaPlaceholder
-                    type="video"
-                    label={t("videoLabel")}
-                    variant="fill"
-                    className="rounded-none border-0"
-                  />
-                </Parallax>
+                <LocalVideoBackground
+                  src="/aa_promotion_material/aa_promo.mp4"
+                  captionsEn="/aa_promotion_material/aa_promo_eng.vtt"
+                  captionsSo="/aa_promotion_material/aa_promo_som.vtt"
+                />
               </div>
               <div className="lg:col-span-7 order-1 lg:order-2">
                 <Quote
@@ -76,13 +69,9 @@ export function TestimonialsSection() {
                   {t(`items.${testimonial.id}.quote`)}
                 </p>
                 <div className="flex items-center gap-3">
-                  <MediaPlaceholder
-                    type="image"
-                    label=""
-                    size="compact"
-                    aspectRatio="aspect-square"
-                    className="w-10 h-10 rounded-full shrink-0"
-                  />
+                  <div className="w-10 h-10 rounded-full shrink-0 bg-[rgb(var(--muted))] flex items-center justify-center">
+                    <UserRound className="w-5 h-5 text-[rgb(var(--muted-foreground))]" strokeWidth={1.5} />
+                  </div>
                   <div>
                     <p className="font-semibold text-sm">
                       {t(`items.${testimonial.id}.name`)}
@@ -96,10 +85,6 @@ export function TestimonialsSection() {
             </StaggerItem>
           ))}
         </StaggerContainer>
-
-        <p className="text-xs text-[rgb(var(--muted-foreground))] mt-10 uppercase tracking-widest">
-          {t("placeholderNotice")}
-        </p>
       </div>
     </section>
   );

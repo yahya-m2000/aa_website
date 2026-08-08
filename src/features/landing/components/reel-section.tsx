@@ -3,8 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { gsap } from "gsap";
-import { PlayCircle } from "lucide-react";
-import { FadeIn, MediaPlaceholder, Parallax } from "@/shared/components/ui";
+import { FadeIn, LocalVideoBackground } from "@/shared/components/ui";
 import { prefersReducedMotion } from "@/core/providers/smooth-scroll-provider";
 
 function ReelSection() {
@@ -56,26 +55,13 @@ function ReelSection() {
       <div ref={wrapRef} className="px-[5vw]">
         <div
           ref={frameRef}
-          className="relative rounded-(--radius) overflow-hidden"
+          className="relative aspect-video rounded-(--radius) overflow-hidden"
         >
-          <Parallax
-            speed={25}
-            className="relative aspect-video"
-            innerClassName="absolute inset-x-0 -top-8 -bottom-8"
-          >
-            <MediaPlaceholder
-              type="video"
-              label="Intro Video Placeholder"
-              variant="fill"
-              className="rounded-none border-0"
-            />
-          </Parallax>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <PlayCircle
-              className="w-16 h-16 text-[rgb(var(--foreground))]"
-              strokeWidth={1}
-            />
-          </div>
+          <LocalVideoBackground
+            src="/aa_promotion_material/aa_story.mp4"
+            captionsEn="/aa_promotion_material/aa_story_eng.vtt"
+            captionsSo="/aa_promotion_material/aa_story_som.vtt"
+          />
         </div>
       </div>
     </section>

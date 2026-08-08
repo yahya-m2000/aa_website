@@ -1,8 +1,9 @@
 "use client";
 import { memo } from "react";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { FadeIn, MediaPlaceholder, SplitHeading, Parallax } from "@/shared/components/ui";
+import { FadeIn, SplitHeading, Parallax } from "@/shared/components/ui";
 import { Target, Eye } from "lucide-react";
 
 export function AboutSection() {
@@ -74,12 +75,16 @@ export function AboutSection() {
               className="absolute inset-0"
               innerClassName="absolute inset-x-0 -top-20 -bottom-20"
             >
-              <MediaPlaceholder
-                type="image"
-                label={t("imagePlaceholderLabel")}
-                aspectRatio="aspect-auto"
-                className="h-full rounded-none border-0"
-              />
+              <div className="relative h-full w-full">
+                <Image
+                  src="/aa_promotion_material/3.jpeg"
+                  alt={t("imagePlaceholderLabel")}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
+                  priority
+                />
+              </div>
             </Parallax>
           </div>
         </div>

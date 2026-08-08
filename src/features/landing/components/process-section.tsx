@@ -83,8 +83,12 @@ export function ProcessSection() {
             return (
               <StaggerItem key={step.key}>
                 <div className="relative">
-                  <ScrubNumeral index={index} />
-                  <Icon className="w-7 h-7 text-[rgb(var(--accent))] -mt-8 mb-4" />
+                  <div className="flex items-center gap-4 mb-4">
+                    <ScrubNumeral index={index} />
+                    <span className="flex items-center justify-center w-12 h-12 rounded-full bg-[rgb(var(--accent))]/10 shrink-0">
+                      <Icon className="w-6 h-6 text-[rgb(var(--accent))]" />
+                    </span>
+                  </div>
                   <h3 className="font-display text-xl font-bold mb-2">
                     {t(`steps.${step.key}.title`)}
                   </h3>

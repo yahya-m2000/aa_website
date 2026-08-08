@@ -8,6 +8,7 @@ export * from './input';
 export * from './label';
 export * from './textarea';
 export * from './media-placeholder';
+export * from './local-video-background';
 export * from './split-heading';
 export * from './parallax';
 export * from './animated-dot-grid';

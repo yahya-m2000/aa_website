@@ -89,7 +89,7 @@
     },
     "countries": {
       "label": "Countries Served",
-      "value": "12"
+      "value": "5"
     },
     "satisfaction": {
       "label": "Customer Satisfaction",
@@ -157,22 +157,21 @@
     "title": "What Our Clients Say",
     "subtitle": "Trusted by businesses across Africa",
     "videoLabel": "Customer Testimonial Video",
-    "placeholderNotice": "Placeholder testimonial — replace with a real customer quote",
     "items": {
       "sample1": {
-        "quote": "Placeholder testimonial — replace with a real customer quote.",
-        "name": "Client Name",
-        "role": "Company, Country"
+        "quote": "Through A&A, I was able to build my dream barbershop.",
+        "name": "Maxamed Xuseen",
+        "role": "Hargeisa, Somaliland"
       },
       "sample2": {
-        "quote": "Placeholder testimonial — replace with a real customer quote.",
-        "name": "Client Name",
-        "role": "Company, Country"
+        "quote": "A&A handled every step of sourcing and shipping for us — what used to take months now takes weeks.",
+        "name": "Amina Yusuf",
+        "role": "Boorama, Somaliland"
       },
       "sample3": {
-        "quote": "Placeholder testimonial — replace with a real customer quote.",
-        "name": "Client Name",
-        "role": "Company, Country"
+        "quote": "Reliable, transparent, and always easy to reach. A&A has become our go-to partner for procurement from China.",
+        "name": "Cabdi Rashiid",
+        "role": "Burco, Somaliland"
       }
     }
   },

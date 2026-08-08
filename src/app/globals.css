@@ -39,6 +39,16 @@
   --stone: 149 149 149; /* #959595 - secondary/rhythm text (e.g. hero word coloring) */
   --metallic: 48 48 48; /* #303030 - secondary text on dark sections */
 
+  /* Semantic status colors — admin CMS only (order/payment status badges). Not part of the
+   * public site's palette; kept as true semantic hues (not accent-purple) so status meaning
+   * reads instantly regardless of the one-purple-CTA-per-screen rule above. */
+  --success: 22 101 52; /* #166534 green - Completed/Payment Confirmed */
+  --success-bg: 220 252 231; /* #dcfce7 pale green */
+  --warning: 161 98 7; /* #a16207 amber - Awaiting Payment/Order Created */
+  --warning-bg: 254 249 195; /* #fef9c3 pale amber */
+  --danger: 153 27 27; /* #991b1b red - Cancelled/Expired */
+  --danger-bg: 254 226 226; /* #fee2e2 pale red */
+
   --radius: 0.5rem; /* soft 8px card/input rounding; buttons use rounded-full */
 
   /* Force light color scheme */
@@ -212,4 +222,93 @@ h1, h2, h3, .font-display {
 
 .animate-pulse-ring {
   animation: pulse-ring 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/*
+ * Admin CMS mount/transition animations — hand-rolled native CSS rather than
+ * tailwindcss-animate's utility classes. That plugin uses Tailwind v3's plugin() API
+ * (addUtilities/theme() callbacks), which this project's Tailwind v4 setup does not load
+ * (globals.css has no @config directive pointing at tailwind.config.ts, and v4's engine
+ * doesn't auto-discover a JS config the way v3 did) — registering it in the config's
+ * `plugins` array was silently a no-op. These do the same job without depending on
+ * v3-plugin compatibility with v4.
+ */
+@keyframes admin-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes admin-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes admin-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes admin-zoom-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+.admin-fade-in {
+  animation: admin-fade-in 200ms ease-out both;
+}
+
+.admin-page-transition {
+  animation: admin-fade-slide-in 300ms ease-out both;
+}
+
+.admin-dialog-overlay[data-state='open'] {
+  animation: admin-fade-in 150ms ease-out both;
+}
+.admin-dialog-overlay[data-state='closed'] {
+  animation: admin-fade-in 150ms ease-out reverse both;
+}
+
+.admin-dialog-content[data-state='open'] {
+  animation:
+    admin-fade-in 150ms ease-out both,
+    admin-zoom-in 150ms ease-out both;
+}
+.admin-dialog-content[data-state='closed'] {
+  animation: admin-zoom-out 150ms ease-in both;
+}
+
+.admin-toast-in {
+  animation: admin-fade-slide-in 250ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-fade-in,
+  .admin-page-transition,
+  .admin-dialog-overlay,
+  .admin-dialog-content,
+  .admin-toast-in {
+    animation: none !important;
+  }
 }

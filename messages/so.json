@@ -89,7 +89,7 @@
     },
     "countries": {
       "label": "Wadamada La Adeego",
-      "value": "12"
+      "value": "5"
     },
     "satisfaction": {
       "label": "Ku Qanacsanaanta Macaamiisha",
@@ -157,22 +157,21 @@
     "title": "Waxa Ay Naga Sheegaan Macaamiisheena",
     "subtitle": "Ay ku kalsoon yihiin ganacsiyada Afrika oo dhan",
     "videoLabel": "Muuqaalka Marag-furka Macmiilka",
-    "placeholderNotice": "Marag-furid meel-haye ah — ku beddel hadal macmiil dhab ah",
     "items": {
       "sample1": {
-        "quote": "Marag-furid meel-haye ah — ku beddel hadal macmiil dhab ah.",
-        "name": "Magaca Macmiilka",
-        "role": "Shirkadda, Dalka"
+        "quote": "Iyada oo A&A la kaashanayo, waxaan awooday inaan dhiso dukaanka timaha ee ay ku riyoonayey.",
+        "name": "Maxamed Xuseen",
+        "role": "Hargeisa, Somaliland"
       },
       "sample2": {
-        "quote": "Marag-furid meel-haye ah — ku beddel hadal macmiil dhab ah.",
-        "name": "Magaca Macmiilka",
-        "role": "Shirkadda, Dalka"
+        "quote": "A&A ayaa maamulay dhammaan tallaabooyinka iibsiga iyo rarida — waxa hore qaadan jiray bilo hadda waxay qaadataa toddobaadyo.",
+        "name": "Amina Yusuf",
+        "role": "Boorama, Somaliland"
       },
       "sample3": {
-        "quote": "Marag-furid meel-haye ah — ku beddel hadal macmiil dhab ah.",
-        "name": "Magaca Macmiilka",
-        "role": "Shirkadda, Dalka"
+        "quote": "Waa la isku halayn karaa, waana la fahmi karaa, waxaana had iyo jeer la soo gaari karaa. A&A waxay noqotay lammaanahayaga rasmiga ah ee iibsiga Shiinaha.",
+        "name": "Cabdi Rashiid",
+        "role": "Burco, Somaliland"
       }
     }
   },

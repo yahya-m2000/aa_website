@@ -155,12 +155,26 @@ function Navigation({ locale }: { locale: string }) {
         )}
       >
         <div className="container-custom">
-          {/* Mobile Layout - Centered logo with hamburger on left */}
-          <div className="flex md:hidden relative items-center justify-center h-16">
+          {/* Compact layout (mobile + tablet) - hamburger left, logo
+              centered, download always visible right. Covers up to `lg`
+              (1024px), not just `md` (768px): the full desktop row below
+              (6 nav links + logo + download button + language toggle)
+              doesn't actually fit without wrapping until ~1024px -
+              confirmed via real viewport screenshots, "Our Impact" wraps
+              to two lines and collides with the download button anywhere
+              from 768px to ~1020px.
+
+              Uses a 3-column grid (not absolute positioning) so the logo
+              is centered against the true row width rather than centered
+              only relative to itself as the sole flex child - the prior
+              flex+absolute version left the logo and download button
+              bunched left-of-center with a large dead gap on the right,
+              confirmed via real viewport screenshots at 400px/iPad widths. */}
+          <div className="grid grid-cols-[auto_1fr_auto] lg:hidden items-center h-16">
             {/* Mobile Menu Button - Left */}
             <button
               onClick={toggleMobileMenu}
-              className="absolute left-0 p-2.5 text-[rgb(var(--foreground))] hover:bg-[rgb(var(--muted))] transition-colors"
+              className="justify-self-start p-2.5 text-[rgb(var(--foreground))] hover:bg-[rgb(var(--muted))] transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -173,7 +187,7 @@ function Navigation({ locale }: { locale: string }) {
             {/* Logo - Centered */}
             <Link
               href="/"
-              className="flex items-center group transition-all duration-200"
+              className="justify-self-center flex items-center group transition-all duration-200"
             >
               <Image
                 src="/logo.png"
@@ -184,10 +198,25 @@ function Navigation({ locale }: { locale: string }) {
                 priority
               />
             </Link>
+
+            {/* Download App - always visible, not tucked in the hamburger menu.
+                Icon-only below 400px (label would collide with the logo at
+                narrow widths, especially in Somali's longer "Soo Deji App-ka" —
+                confirmed via real viewport screenshots at 360-375px), full
+                label from 400px up where there's room. */}
+            <Link
+              href="/download"
+              aria-label={t("downloadApp")}
+              className="btn-sweep justify-self-end flex items-center gap-1.5 rounded-full p-2.5 text-xs font-semibold text-white min-[400px]:px-3 min-[400px]:py-2"
+            >
+              <Smartphone className="w-4 h-4 min-[400px]:w-3.5 min-[400px]:h-3.5" />
+              <span className="hidden min-[400px]:inline">{t("downloadApp")}</span>
+            </Link>
           </div>
 
-          {/* Desktop Layout - Normal flex layout */}
-          <div className="hidden md:flex items-center justify-between h-20">
+          {/* Full Desktop Layout - only from `lg` (1024px) up, where the
+              full nav-link row actually has room to fit on one line. */}
+          <div className="hidden lg:flex items-center justify-between h-20">
             {/* Logo + Navigation, justified left */}
             <div className="flex items-center gap-10">
               <Link
@@ -253,7 +282,7 @@ function Navigation({ locale }: { locale: string }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed top-16 left-0 right-0 bottom-0 z-40 md:hidden bg-white/95 backdrop-blur-xl overflow-y-auto"
+            className="fixed top-16 left-0 right-0 bottom-0 z-40 lg:hidden bg-white/95 backdrop-blur-xl overflow-y-auto"
           >
             <div className="min-h-full flex flex-col justify-center px-8 py-12">
               {/* Navigation Links */}

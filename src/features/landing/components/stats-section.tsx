@@ -1,16 +1,27 @@
 "use client";
 import { memo } from "react";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import {
   StaggerContainer,
   StaggerItem,
   AnimatedCounter,
-  MediaPlaceholder,
   SplitHeading,
   Parallax,
 } from "@/shared/components/ui";
+import { cn } from "@/core/utils";
 import { stats } from "@/shared/data";
+
+// One real promo photo for "years in business"; Unsplash stock for the
+// rest, matched thematically (unsplash.com CDN already whitelisted in
+// next.config.ts's remotePatterns).
+const STAT_IMAGES: Record<(typeof stats)[number]["key"], string> = {
+  years: "/aa_promotion_material/1-team-warehouse.jpeg",
+  shipments: "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=800&q=80", // shipping containers
+  countries: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80", // world map / globe
+  satisfaction: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80", // handshake
+};
 
 export function StatsSection() {
   const t = useTranslations("stats");
@@ -42,13 +53,21 @@ export function StatsSection() {
                   className="absolute inset-0"
                   innerClassName="absolute inset-x-0 -top-10 -bottom-10"
                 >
-                  <MediaPlaceholder
-                    type="image"
-                    label=""
-                    variant="fill"
-                    size="compact"
-                    className="grayscale group-hover:grayscale-0 transition-[filter] duration-500"
-                  />
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={STAT_IMAGES[stat.key]}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 25vw, 50vw"
+                      className={cn(
+                        "object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500",
+                        // The years photo has its subject (the A&A box + carrier) on the
+                        // left half of the frame — center-cropping into this portrait
+                        // tile would cut the logo off, so anchor left instead.
+                        stat.key === "years" ? "object-left" : "object-center"
+                      )}
+                    />
+                  </div>
                 </Parallax>
                 {/* Dark scrim so white text stays legible over any photo */}
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-black/40" />
