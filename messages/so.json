@@ -7,7 +7,8 @@
     "stats": "Saamaynteena",
     "contact": "Nala Soo Xiriir",
     "facebook": "Facebook",
-    "downloadApp": "Soo Deji App-ka"
+    "downloadApp": "Soo Deji App-ka",
+    "downloadBannerText": "Soo deji app-ka A&A — dalabo si degdeg ah"
   },
   "hero": {
     "title": "Iibsiga iyo <stone>gaadiidka</stone> oo horumarinaya ganacsigaaga <stone>Shiinaha ilaa Afrika.</stone>",
@@ -177,6 +178,7 @@
   },
   "download": {
     "badge": "Aplikeeshanka Android",
+    "betaBadge": "Beta",
     "title": "Soo Deji Aplikeeshanka A&A",
     "subtitle": "Hel aplikeeshanka mobilka ee A&A ee Android si aad u maareyso raridyada, dalabyada, iyo qiimayaasha meel kastoo aad joogto.",
     "fileLabel": "Faylka APK ee Android",
@@ -192,6 +194,10 @@
       "three": "Haddii lagu weydiiyo, dalool \"Install from unknown sources\" browser-kaaga.",
       "four": "Raac tilmaamaha shaashadda si aad u dhammaystirto rakibidda."
     },
-    "backHome": "Ku Noqo Bogga Hore"
+    "backHome": "Ku Noqo Bogga Hore",
+    "playStoreComingSoon": "Google Play — dhawaan ayuu iman doonaa",
+    "betaNote": "Waanu ku jirnaa marxaladda beta-ga, marka hadda aplikeeshanku wuxuu u diyaar yahay sida fayl APK ah oo si toos ah loo soo dejiyo hoos. Diiwaangelinta Google Play Store ayaa socota.",
+    "scanTitle": "Iskaan si aad taleefankaaga uga furto",
+    "scanSubtitle": "Kaamaradaada ku toosi koodhkan si aad si toos ah ugu gudubto boggan taleefankaaga gacanta."
   }
 }

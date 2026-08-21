@@ -155,26 +155,26 @@ function Navigation({ locale }: { locale: string }) {
         )}
       >
         <div className="container-custom">
-          {/* Compact layout (mobile + tablet) - hamburger left, logo
-              centered, download always visible right. Covers up to `lg`
-              (1024px), not just `md` (768px): the full desktop row below
-              (6 nav links + logo + download button + language toggle)
-              doesn't actually fit without wrapping until ~1024px -
-              confirmed via real viewport screenshots, "Our Impact" wraps
-              to two lines and collides with the download button anywhere
-              from 768px to ~1020px.
+          {/* Compact layout (mobile + tablet) - hamburger left, logo truly
+              centered. Covers up to `lg` (1024px), not just `md` (768px):
+              the full desktop row below (6 nav links + logo + download
+              button + language toggle) doesn't actually fit without
+              wrapping until ~1024px - confirmed via real viewport
+              screenshots, "Our Impact" wraps to two lines and collides
+              with the download button anywhere from 768px to ~1020px.
 
-              Uses a 3-column grid (not absolute positioning) so the logo
-              is centered against the true row width rather than centered
-              only relative to itself as the sole flex child - the prior
-              flex+absolute version left the logo and download button
-              bunched left-of-center with a large dead gap on the right,
-              confirmed via real viewport screenshots at 400px/iPad widths. */}
-          <div className="grid grid-cols-[auto_1fr_auto] lg:hidden items-center h-16">
+              The download button used to live in this row too (right
+              column of a 3-col grid), but since it's wider than the
+              hamburger button on the left, the logo in the middle column
+              was never actually centered on the row - it was centered
+              only within a middle track that was itself off-center. Moved
+              the download CTA into its own DownloadAppBanner below instead
+              of trying to balance three unequal-width columns. */}
+          <div className="relative flex lg:hidden items-center justify-center h-16">
             {/* Mobile Menu Button - Left */}
             <button
               onClick={toggleMobileMenu}
-              className="justify-self-start p-2.5 text-[rgb(var(--foreground))] hover:bg-[rgb(var(--muted))] transition-colors"
+              className="absolute left-0 p-2.5 text-[rgb(var(--foreground))] hover:bg-[rgb(var(--muted))] transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -184,10 +184,10 @@ function Navigation({ locale }: { locale: string }) {
               )}
             </button>
 
-            {/* Logo - Centered */}
+            {/* Logo - truly centered now that nothing sits on the right */}
             <Link
               href="/"
-              className="justify-self-center flex items-center group transition-all duration-200"
+              className="flex items-center group transition-all duration-200"
             >
               <Image
                 src="/logo.png"
@@ -197,20 +197,6 @@ function Navigation({ locale }: { locale: string }) {
                 className="h-12 w-auto transition-all duration-200 brightness-0 group-hover:opacity-70"
                 priority
               />
-            </Link>
-
-            {/* Download App - always visible, not tucked in the hamburger menu.
-                Icon-only below 400px (label would collide with the logo at
-                narrow widths, especially in Somali's longer "Soo Deji App-ka" —
-                confirmed via real viewport screenshots at 360-375px), full
-                label from 400px up where there's room. */}
-            <Link
-              href="/download"
-              aria-label={t("downloadApp")}
-              className="btn-sweep justify-self-end flex items-center gap-1.5 rounded-full p-2.5 text-xs font-semibold text-white min-[400px]:px-3 min-[400px]:py-2"
-            >
-              <Smartphone className="w-4 h-4 min-[400px]:w-3.5 min-[400px]:h-3.5" />
-              <span className="hidden min-[400px]:inline">{t("downloadApp")}</span>
             </Link>
           </div>
 
@@ -272,6 +258,20 @@ function Navigation({ locale }: { locale: string }) {
             </div>
           </div>
         </div>
+
+        {/* Download-app banner - mobile/tablet only, replaces the download
+            button that used to live in the compact row above. Full-bleed
+            (outside container-custom) so it reads as a distinct strip, not
+            more nav content. Uses the brand accent (not btn-sweep's near-
+            black) so it visually pops against the neutral nav above it. */}
+        <Link
+          href="/download"
+          className="lg:hidden flex items-center justify-center gap-2 bg-[rgb(var(--accent))] px-4 py-2.5 text-sm font-semibold text-[rgb(var(--accent-foreground))] transition-colors hover:bg-[rgb(var(--accent-hover))]"
+        >
+          <Smartphone className="w-4 h-4 shrink-0 animate-bounce-subtle" />
+          <span>{t("downloadBannerText")}</span>
+          <span aria-hidden="true">→</span>
+        </Link>
       </nav>
 
       {/* Mobile Menu - Full Screen Overlay (outside nav) */}

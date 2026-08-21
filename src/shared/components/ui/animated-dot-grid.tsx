@@ -83,6 +83,13 @@ export function AnimatedDotGrid() {
     const canvas: HTMLCanvasElement = canvasEl;
     const ctx: CanvasRenderingContext2D = ctx2d;
 
+    // Touch devices have no real "hover" - a finger dragging to scroll would
+    // otherwise fire pointermove and trigger the tilt/dot-growth as an
+    // unintended side effect of scrolling. Skip pointer-tracking there
+    // entirely and let the grid animate on its own (idle drift + connector
+    // lines still run) rather than reacting to touch input at all.
+    const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -133,8 +140,10 @@ export function AnimatedDotGrid() {
       pointer.x = -9999;
       pointer.y = -9999;
     }
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("pointerleave", onPointerLeave);
+    if (!isCoarsePointer) {
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+      window.addEventListener("pointerleave", onPointerLeave);
+    }
 
     if (reduced) {
       ctx.clearRect(0, 0, width, height);

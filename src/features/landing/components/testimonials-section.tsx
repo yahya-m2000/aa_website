@@ -6,6 +6,12 @@ import { Quote, UserRound } from "lucide-react";
 import { FadeIn, StaggerContainer, StaggerItem, LocalVideoBackground, SplitHeading } from "@/shared/components/ui";
 import { testimonials } from "@/shared/data";
 
+// Hosted as a GitHub Release asset, not committed to the repo — see
+// reel-section.tsx's STORY_VIDEO_URL comment for why (~17.5MB, would bloat
+// every clone). Captions stay local since they're negligible in size.
+const PROMO_VIDEO_URL =
+  "https://github.com/yahya-m2000/aa_website/releases/download/promo-videos-v1.0.0/aa_promo.mp4";
+
 export function TestimonialsSection() {
   const t = useTranslations("testimonials");
   const [featured, ...rest] = testimonials;
@@ -29,7 +35,7 @@ export function TestimonialsSection() {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-16 md:mb-24">
               <div className="lg:col-span-5 order-2 lg:order-1 relative aspect-4/5 rounded-(--radius) overflow-hidden">
                 <LocalVideoBackground
-                  src="/aa_promotion_material/aa_promo.mp4"
+                  src={PROMO_VIDEO_URL}
                   captionsEn="/aa_promotion_material/aa_promo_eng.vtt"
                   captionsSo="/aa_promotion_material/aa_promo_som.vtt"
                 />

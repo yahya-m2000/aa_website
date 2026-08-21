@@ -6,7 +6,9 @@ import { Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/core/utils';
 
 export interface LocalVideoBackgroundProps {
-  /** Path under /public, e.g. /aa_promotion_material/aa_promo.mp4 */
+  /** Video URL - a GitHub Release asset URL for the real promo videos (kept
+   * out of the repo to avoid bloating clones), or a /public path for
+   * anything small enough to commit directly. */
   src: string;
   /** Path to the English WebVTT caption track, e.g. /aa_promotion_material/aa_promo_eng.vtt */
   captionsEn?: string;

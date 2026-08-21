@@ -12,3 +12,4 @@ export * from './local-video-background';
 export * from './split-heading';
 export * from './parallax';
 export * from './animated-dot-grid';
+export * from './qr-code';

@@ -6,6 +6,12 @@ import { gsap } from "gsap";
 import { FadeIn, LocalVideoBackground } from "@/shared/components/ui";
 import { prefersReducedMotion } from "@/core/providers/smooth-scroll-provider";
 
+// Hosted as a GitHub Release asset, not committed to the repo — at ~27MB,
+// tracking this file in git would bloat every clone forever. Captions stay
+// local (public/) since they're a couple KB each, no reason to move those.
+const STORY_VIDEO_URL =
+  "https://github.com/yahya-m2000/aa_website/releases/download/promo-videos-v1.0.0/aa_story.mp4";
+
 function ReelSection() {
   const t = useTranslations("hero");
   const sectionRef = useRef<HTMLElement>(null);
@@ -58,7 +64,7 @@ function ReelSection() {
           className="relative aspect-video rounded-(--radius) overflow-hidden"
         >
           <LocalVideoBackground
-            src="/aa_promotion_material/aa_story.mp4"
+            src={STORY_VIDEO_URL}
             captionsEn="/aa_promotion_material/aa_story_eng.vtt"
             captionsSo="/aa_promotion_material/aa_story_som.vtt"
           />

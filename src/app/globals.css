@@ -224,6 +224,22 @@ h1, h2, h3, .font-display {
   animation: pulse-ring 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Small, slow bounce for the phone icon in the mobile/tablet download-app
+   banner - gentle enough to sit in a persistent header strip without being
+   annoying, but enough motion to draw the eye per the "exciting" ask. */
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 1.6s ease-in-out infinite;
+}
+
 /*
  * Admin CMS mount/transition animations — hand-rolled native CSS rather than
  * tailwindcss-animate's utility classes. That plugin uses Tailwind v3's plugin() API

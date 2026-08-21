@@ -31,6 +31,7 @@
     "next": "16.0.10",
     "next-auth": "5.0.0-beta.32",
     "next-intl": "^4.4.0",
+    "qrcode.react": "^4.2.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-facebook": "^10.0.1",
