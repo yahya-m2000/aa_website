@@ -57,7 +57,7 @@ const ServiceRow = ({
       <div className="absolute top-0 left-4 right-4 md:left-6 md:right-6 h-px bg-[rgb(var(--border))]">
         <div
           ref={lineRef}
-          className="h-full w-full bg-[rgb(var(--accent))] origin-left"
+          className="h-full w-full bg-[rgb(var(--accent))] origin-left will-change-transform"
           style={{ transform: 'scaleX(0)' }}
         />
       </div>

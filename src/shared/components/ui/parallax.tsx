@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/core/utils";
+import { scheduleScrollTriggerRefresh } from "@/core/utils/schedule-scroll-trigger-refresh";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -73,17 +74,19 @@ export function Parallax({
       });
     }, triggerRef);
 
-    const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    // Coalesced across every mounted Parallax/SplitHeading instance rather
+    // than each scheduling its own rAF - see scheduleScrollTriggerRefresh's
+    // own doc comment (StatsSection alone mounts 4 of these at once).
+    scheduleScrollTriggerRefresh();
 
     return () => {
-      cancelAnimationFrame(raf);
       ctx.revert();
     };
   }, [speed, reduced]);
 
   return (
     <div ref={triggerRef} className={cn(className)}>
-      <div ref={innerRef} className={cn(innerClassName)}>
+      <div ref={innerRef} className={cn(innerClassName, "will-change-transform")}>
         {children}
       </div>
     </div>

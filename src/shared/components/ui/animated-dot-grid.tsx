@@ -25,6 +25,8 @@ const LINE_OPACITY = 0.4;
  */
 const VIGNETTE_INNER = 0.35;
 const VIGNETTE_OUTER = 0.95;
+/** Dots this faint (post-vignette, pre-hover) are visually indistinguishable from invisible - skip drawing them entirely rather than paying for a fill() call that paints ~nothing. */
+const VISIBILITY_CUTOFF = 0.01;
 
 /**
  * Rigid-plate tilt: the whole grid shifts as one body based on where the
@@ -41,6 +43,8 @@ interface Dot {
   y: number;
   hover: number;
   accent: boolean;
+  /** Precomputed once in buildGrid() - depends only on x/y/viewport size, all static between resizes, so recomputing it per-frame (as the original version did, twice per dot) was pure waste. */
+  vignette: number;
 }
 
 function easeInOutQuad(t: number) {
@@ -70,6 +74,21 @@ function easeInOutCubic(t: number) {
  * every section that renders a transparent background; Contact/Footer
  * paint their own solid background on top, so nothing extra is needed to
  * "hide" it there.
+ *
+ * Perf notes (this runs continuously, site-wide, via the root layout, so
+ * its per-frame cost is a permanent tax on every scroll/animation budget):
+ * - vignette is precomputed once per dot at grid-build time, not
+ *   recomputed (twice, involving a sqrt each time) for every dot on every
+ *   frame - it only depends on static x/y/viewport size.
+ * - Dots below the visibility cutoff (vignette ~0 and not currently
+ *   hovered) skip both the hover-distance math and the draw call entirely
+ *   - on a 1920x1080 viewport roughly half the ~2,100 dots sit inside the
+ *   vignette's faded center and would otherwise still pay for a
+ *   beginPath/arc/fill every frame to paint effectively nothing.
+ * - Hover-distance math is skipped globally when there's no active
+ *   pointer (nothing to lerp toward) so idle pages - most of the time on
+ *   touch devices, and any moment the cursor isn't over the canvas -
+ *   don't pay for it either.
  */
 export function AnimatedDotGrid() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -98,6 +117,21 @@ export function AnimatedDotGrid() {
     const pointer = { x: -9999, y: -9999 };
     const tilt = { x: 0, y: 0, skewX: 0, skewY: 0 };
 
+    /**
+     * 0 at viewport center, 1 at/beyond the outer radius - keeps the grid
+     * faint behind headline/paragraph space in the middle of the screen
+     * and lets it read at near-full strength toward the edges/corners.
+     * Only ever called at grid-build time now (see Dot.vignette).
+     */
+    function computeVignette(x: number, y: number) {
+      const cx = width / 2;
+      const cy = height / 2;
+      const maxDist = Math.sqrt(cx * cx + cy * cy);
+      const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2) / maxDist;
+      const t = Math.max(0, Math.min(1, (dist - VIGNETTE_INNER) / (VIGNETTE_OUTER - VIGNETTE_INNER)));
+      return easeInOutQuad(t);
+    }
+
     function buildGrid() {
       dots = [];
       // Overscan beyond the viewport so the rigid-plate tilt/skew never
@@ -107,11 +141,14 @@ export function AnimatedDotGrid() {
       const rows = Math.ceil(height / SPACING) + overscan * 2;
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
+          const x = (col - overscan) * SPACING;
+          const y = (row - overscan) * SPACING;
           dots.push({
-            x: (col - overscan) * SPACING,
-            y: (row - overscan) * SPACING,
+            x,
+            y,
             hover: 0,
             accent: Math.random() < 0.06,
+            vignette: computeVignette(x, y),
           });
         }
       }
@@ -148,9 +185,10 @@ export function AnimatedDotGrid() {
     if (reduced) {
       ctx.clearRect(0, 0, width, height);
       for (const dot of dots) {
+        if (dot.vignette < VISIBILITY_CUTOFF) continue;
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, BASE_RADIUS, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${dot.accent ? ACCENT_COLOR : DOT_COLOR}, ${BASE_OPACITY * vignette(dot.x, dot.y)})`;
+        ctx.fillStyle = `rgba(${dot.accent ? ACCENT_COLOR : DOT_COLOR}, ${BASE_OPACITY * dot.vignette})`;
         ctx.fill();
       }
       return () => {
@@ -183,20 +221,6 @@ export function AnimatedDotGrid() {
       links.push({ from, to, start: now });
     }
 
-    /**
-     * 0 at viewport center, 1 at/beyond the outer radius - keeps the grid
-     * faint behind headline/paragraph space in the middle of the screen
-     * and lets it read at near-full strength toward the edges/corners.
-     */
-    function vignette(x: number, y: number) {
-      const cx = width / 2;
-      const cy = height / 2;
-      const maxDist = Math.sqrt(cx * cx + cy * cy);
-      const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2) / maxDist;
-      const t = Math.max(0, Math.min(1, (dist - VIGNETTE_INNER) / (VIGNETTE_OUTER - VIGNETTE_INNER)));
-      return easeInOutQuad(t);
-    }
-
     function draw(now: number) {
       // Rigid-plate tilt: cursor position relative to viewport center drives
       // a uniform shift + skew applied to the whole grid at once, eased
@@ -220,13 +244,23 @@ export function AnimatedDotGrid() {
 
       maybeSpawnLink(now);
 
-      for (const dot of dots) {
-        const dx = dot.x - pointer.x;
-        const dy = dot.y - pointer.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const hoverProximity = Math.max(0, 1 - dist / HOVER_DISTANCE);
-        const targetHover = hoverProximity * hoverProximity;
-        dot.hover += (targetHover - dot.hover) * 0.15;
+      // Hover-distance math is the one genuinely per-frame-variable value a
+      // dot needs - skip it entirely when there's no pointer active (hover
+      // just decays toward 0, which a static short-circuit below handles).
+      if (hasPointer) {
+        for (const dot of dots) {
+          const dx = dot.x - pointer.x;
+          const dy = dot.y - pointer.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const hoverProximity = Math.max(0, 1 - dist / HOVER_DISTANCE);
+          const targetHover = hoverProximity * hoverProximity;
+          dot.hover += (targetHover - dot.hover) * 0.15;
+        }
+      } else {
+        for (const dot of dots) {
+          if (dot.hover > 0.001) dot.hover *= 0.85;
+          else if (dot.hover !== 0) dot.hover = 0;
+        }
       }
 
       // Connector lines: each draws progressively from its start dot to its
@@ -242,22 +276,29 @@ export function AnimatedDotGrid() {
         const drawT = easeInOutCubic(t);
         const endX = link.from.x + (link.to.x - link.from.x) * drawT;
         const endY = link.from.y + (link.to.y - link.from.y) * drawT;
-        const midX = (link.from.x + endX) / 2;
-        const midY = (link.from.y + endY) / 2;
+        const midT = drawT / 2;
+        const midVignette = link.from.vignette + (link.to.vignette - link.from.vignette) * midT;
         const lineColor = link.from.accent || link.to.accent ? ACCENT_COLOR : DOT_COLOR;
 
         ctx.beginPath();
         ctx.moveTo(link.from.x, link.from.y);
         ctx.lineTo(endX, endY);
-        ctx.strokeStyle = `rgba(${lineColor}, ${LINE_OPACITY * vignette(midX, midY)})`;
+        ctx.strokeStyle = `rgba(${lineColor}, ${LINE_OPACITY * midVignette})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
 
       for (const dot of dots) {
+        // Skip dots that would paint effectively nothing - on a full HD
+        // viewport roughly half the grid sits inside the vignette's faded
+        // center at any given moment, and this is the single cheapest,
+        // highest-leverage cut available since it skips the draw call
+        // entirely rather than just the math feeding it.
+        if (dot.hover < VISIBILITY_CUTOFF && dot.vignette < VISIBILITY_CUTOFF) continue;
+
         const radius = BASE_RADIUS + (HOVER_RADIUS - BASE_RADIUS) * dot.hover;
         const baseOpacity = BASE_OPACITY + HOVER_OPACITY_BOOST * dot.hover;
-        const opacity = baseOpacity * Math.max(dot.hover, vignette(dot.x, dot.y));
+        const opacity = baseOpacity * Math.max(dot.hover, dot.vignette);
         const color = dot.accent ? ACCENT_COLOR : DOT_COLOR;
 
         ctx.beginPath();

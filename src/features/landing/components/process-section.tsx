@@ -51,7 +51,7 @@ function ScrubNumeral({ index }: { index: number }) {
       <span className="text-transparent">{label}</span>
       <span
         ref={fillRef}
-        className="absolute inset-0 text-[rgb(var(--foreground))] opacity-0"
+        className="absolute inset-0 text-[rgb(var(--foreground))] opacity-0 will-change-[opacity]"
       >
         {label}
       </span>

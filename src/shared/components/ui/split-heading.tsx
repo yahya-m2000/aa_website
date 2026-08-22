@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import { cn } from "@/core/utils";
 import { prefersReducedMotion } from "@/core/providers/smooth-scroll-provider";
+import { scheduleScrollTriggerRefresh } from "@/core/utils/schedule-scroll-trigger-refresh";
 
 export interface SplitHeadingProps {
   as?: "h1" | "h2" | "h3" | "p";
@@ -84,7 +85,15 @@ export function SplitHeading({
     // get reverted before the second mount ever sees it enter. Refreshing
     // after setup forces ScrollTrigger to re-evaluate current positions
     // against the final DOM, so already-visible elements still animate.
-    ScrollTrigger.refresh();
+    //
+    // Coalesced (not called directly): the homepage mounts up to 8
+    // SplitHeading instances during initial hydration, and
+    // ScrollTrigger.refresh() recalculates start/end positions for EVERY
+    // active trigger on the page, not just this one - calling it once per
+    // instance meant up to 8 redundant full-page refresh passes stacking
+    // up during load. scheduleScrollTriggerRefresh batches same-frame
+    // calls into a single real refresh.
+    scheduleScrollTriggerRefresh();
 
     return () => {
       trigger?.kill();
