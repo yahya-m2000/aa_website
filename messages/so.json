@@ -8,7 +8,7 @@
     "contact": "Nala Soo Xiriir",
     "facebook": "Facebook",
     "downloadApp": "Soo Deji App-ka",
-    "downloadBannerText": "Soo deji app-ka A&A — dalabo si degdeg ah"
+    "downloadBannerText": "Hel A&A Shop — dalabo si degdeg ah"
   },
   "hero": {
     "title": "Iibsiga iyo <stone>gaadiidka</stone> oo horumarinaya ganacsigaaga <stone>Shiinaha ilaa Afrika.</stone>",
@@ -179,8 +179,8 @@
   "download": {
     "badge": "Aplikeeshanka Android",
     "betaBadge": "Beta",
-    "title": "Soo Deji Aplikeeshanka A&A",
-    "subtitle": "Hel aplikeeshanka mobilka ee A&A ee Android si aad u maareyso raridyada, dalabyada, iyo qiimayaasha meel kastoo aad joogto.",
+    "title": "Soo Deji A&A Shop",
+    "subtitle": "Hel aplikeeshanka mobilka ee A&A Shop ee Android si aad u maareyso raridyada, dalabyada, iyo qiimayaasha meel kastoo aad joogto.",
     "fileLabel": "Faylka APK ee Android",
     "fileNote": "Kani waa fayl APK ah. Rakibiddu waxay u baahan tahay inaad ka ogolaato aplikeeshanada isha aan la garanayn dejinta Android-kaaga.",
     "button": "Soo Deji APK",

@@ -17,10 +17,10 @@ import { FadeIn } from "@/shared/components/ui";
 const SITE_URL = "https://www.aatradesolutions.com/download";
 
 const APK_PATH =
-  "https://github.com/yahya-m2000/aa_website/releases/download/android-app-v1.0.0/aa-catalog-v1.0.0.apk";
+  "https://github.com/yahya-m2000/aa_website/releases/download/aa-shop-v1.0.0/aa-shop-v1.0.0.apk";
 const APK_SIZE = "127 MB";
 const APK_VERSION = "1.0.0";
-const APK_UPDATED = "August 21, 2026";
+const APK_UPDATED = "August 22, 2026";
 
 export default function DownloadPage() {
   const t = useTranslations("download");
@@ -120,7 +120,7 @@ export default function DownloadPage() {
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgb(var(--accent)/0.3),transparent_65%)]" />
                   <Image
                     src="/aa_promotion_material/download_phone_image.png"
-                    alt="A&A app shown on a phone"
+                    alt="A&A Shop app shown on a phone"
                     fill
                     sizes="(min-width: 1024px) 40vw, 90vw"
                     className="object-contain object-center relative scale-110"
