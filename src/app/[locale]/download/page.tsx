@@ -17,10 +17,10 @@ import { FadeIn } from "@/shared/components/ui";
 const SITE_URL = "https://www.aatradesolutions.com/download";
 
 const APK_PATH =
-  "https://github.com/yahya-m2000/aa_website/releases/download/aa-shop-v1.0.0/aa-shop-v1.0.0.apk";
-const APK_SIZE = "127 MB";
-const APK_VERSION = "1.0.0";
-const APK_UPDATED = "August 22, 2026";
+  "https://github.com/yahya-m2000/aa_website/releases/download/aa-shop-v2.0.0/aa-shop-v2.0.0.apk";
+const APK_SIZE = "123 MB";
+const APK_VERSION = "2.0.0";
+const APK_UPDATED = "August 26, 2026";
 
 export default function DownloadPage() {
   const t = useTranslations("download");

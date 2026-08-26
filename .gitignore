@@ -40,8 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# apk
-aa-shop-v1.0.0.apk
+# apk - local build artifacts, uploaded to GitHub Releases instead of committed
+aa-shop-v*.apk
 
 # large promo videos - hosted as GitHub Release assets instead of committed
 # to the repo (see reel-section.tsx / testimonials-section.tsx), so a
