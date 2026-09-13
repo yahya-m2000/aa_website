@@ -78,8 +78,9 @@ export function SmoothScrollProvider({
     <ReactLenis
       root
       options={{
-        lerp: 0.4,
-        touchMultiplier: 0,
+        lerp: 0.12,
+        touchMultiplier: 1,
+        anchors: { offset: -96 },
         smoothWheel: true,
         wheelMultiplier: 1,
         infinite: false,

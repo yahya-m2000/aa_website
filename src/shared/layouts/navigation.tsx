@@ -1,368 +1,150 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef, memo } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import { Menu, X, Globe, Smartphone } from "lucide-react";
-import { cn } from "@/core/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import { ArrowUpRight, Globe2, Menu, X } from "lucide-react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { TradeBrand } from "./trade-brand";
 
-const navItems = [
-  { key: "home", href: "#home" },
-  { key: "services", href: "#services" },
-  { key: "logistics", href: "#logistics" },
-  { key: "about", href: "#about" },
-  { key: "stats", href: "#stats" },
-  { key: "contact", href: "#contact" },
-] as const;
+const items = ["discover", "app", "about", "contact"] as const;
 
-// Memoized desktop navigation item. On the homepage, hash links scroll
-// directly. On any other route, they route to "/" + hash so section
-// anchors still resolve instead of silently doing nothing.
-const DesktopNavItem = memo(
-  ({
-    href,
-    label,
-    isHome,
-  }: {
-    href: string;
-    label: string;
-    isHome: boolean;
-  }) => (
-    <Link
-      href={isHome ? href : `/${href}`}
-      className="px-4 py-2 text-sm font-medium text-[rgb(var(--foreground))]/70 hover:text-[rgb(var(--primary))] hover:bg-[rgb(var(--muted))] transition-all duration-200"
-    >
-      {label}
-    </Link>
-  ),
-);
-DesktopNavItem.displayName = "DesktopNavItem";
-
-// Memoized mobile navigation item with full-screen design
-const MobileNavItem = memo(
-  ({
-    href,
-    label,
-    isHome,
-    onClick,
-  }: {
-    href: string;
-    label: string;
-    isHome: boolean;
-    onClick: () => void;
-  }) => (
-    <Link
-      href={isHome ? href : `/${href}`}
-      onClick={onClick}
-      className="block text-2xl font-semibold text-[rgb(var(--foreground))] hover:text-[rgb(var(--primary))] transition-colors duration-300"
-    >
-      {label}
-    </Link>
-  ),
-);
-MobileNavItem.displayName = "MobileNavItem";
-
-// Memoized language menu
-const LanguageMenu = memo(
-  ({
-    locale,
-    pathname,
-    isOpen,
-    onClose,
-  }: {
-    locale: string;
-    pathname: string;
-    isOpen: boolean;
-    onClose: () => void;
-  }) => (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="absolute right-0 mt-2 w-32 rounded-(--radius) bg-white shadow-lg border border-[rgb(var(--border))] overflow-hidden"
-        >
-          <Link
-            href={pathname}
-            locale="en"
-            className={cn(
-              "block px-4 py-2 text-sm hover:bg-[rgb(var(--muted))] transition-colors",
-              locale === "en" && "bg-[rgb(var(--muted))] font-semibold",
-            )}
-            onClick={onClose}
-          >
-            English
-          </Link>
-          <Link
-            href={pathname}
-            locale="so"
-            className={cn(
-              "block px-4 py-2 text-sm hover:bg-[rgb(var(--muted))] transition-colors",
-              locale === "so" && "bg-[rgb(var(--muted))] font-semibold",
-            )}
-            onClick={onClose}
-          >
-            Somali
-          </Link>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  ),
-);
-LanguageMenu.displayName = "LanguageMenu";
-
-function Navigation({ locale }: { locale: string }) {
+export function Navigation({ locale }: { locale: string }) {
   const t = useTranslations("navigation");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [langMenuOpen, setLangMenuOpen] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const lastScrollY = useRef(0);
+  const ui = useTranslations("experience");
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("");
+  const href = (section: string) =>
+    pathname === "/" ? `#${section}` : `/#${section}`;
 
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (Math.abs(y - lastScrollY.current) <= 5) return;
-      setHidden(y > lastScrollY.current && y > 80);
-      lastScrollY.current = y;
+    const update = () => setScrolled(window.scrollY > 30);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries)
+          if (entry.isIntersecting) setActive(entry.target.id);
+      },
+      { rootMargin: "-15% 0px -60% 0px" },
+    );
+    document
+      .querySelectorAll("main section[id]")
+      .forEach((section) => observer.observe(section));
+    return () => {
+      window.removeEventListener("scroll", update);
+      observer.disconnect();
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
-  const toggleMobileMenu = useCallback(
-    () => setMobileMenuOpen((prev) => !prev),
-    [],
-  );
-  const toggleLangMenu = useCallback(
-    () => setLangMenuOpen((prev) => !prev),
-    [],
-  );
-  const closeLangMenu = useCallback(() => setLangMenuOpen(false), []);
+  }, [pathname]);
 
   return (
-    <>
-      {/* Navigation Bar */}
-      <nav
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl transition-transform duration-500 ease-in-out",
-          hidden && !mobileMenuOpen && "-translate-y-full",
-        )}
-      >
-        <div className="container-custom">
-          {/* Compact layout (mobile + tablet) - hamburger left, logo truly
-              centered. Covers up to `lg` (1024px), not just `md` (768px):
-              the full desktop row below (6 nav links + logo + download
-              button + language toggle) doesn't actually fit without
-              wrapping until ~1024px - confirmed via real viewport
-              screenshots, "Our Impact" wraps to two lines and collides
-              with the download button anywhere from 768px to ~1020px.
-
-              The download button used to live in this row too (right
-              column of a 3-col grid), but since it's wider than the
-              hamburger button on the left, the logo in the middle column
-              was never actually centered on the row - it was centered
-              only within a middle track that was itself off-center. Moved
-              the download CTA into its own DownloadAppBanner below instead
-              of trying to balance three unequal-width columns. */}
-          <div className="relative flex lg:hidden items-center justify-center h-16">
-            {/* Mobile Menu Button - Left */}
-            <button
-              onClick={toggleMobileMenu}
-              className="absolute left-0 p-2.5 text-[rgb(var(--foreground))] hover:bg-[rgb(var(--muted))] transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
-
-            {/* Logo - truly centered now that nothing sits on the right */}
-            <Link
-              href="/"
-              className="flex items-center group transition-all duration-200"
-            >
-              <Image
-                src="/logo.png"
-                alt="A&A Logo"
-                width={240}
-                height={80}
-                className="h-12 w-auto transition-all duration-200 brightness-0 group-hover:opacity-70"
-                priority
-              />
-            </Link>
-          </div>
-
-          {/* Full Desktop Layout - only from `lg` (1024px) up, where the
-              full nav-link row actually has room to fit on one line. */}
-          <div className="hidden lg:flex items-center justify-between h-20">
-            {/* Logo + Navigation, justified left */}
-            <div className="flex items-center gap-10">
-              <Link
-                href="/"
-                className="flex items-center group transition-all duration-200"
-              >
-                <Image
-                  src="/logo.png"
-                  alt="A&A Logo"
-                  width={240}
-                  height={80}
-                  className="h-10 w-auto transition-all duration-200 brightness-0 group-hover:opacity-70"
-                  priority
-                />
-              </Link>
-
-              <div className="flex items-center space-x-1">
-                {navItems.map((item) => (
-                  <DesktopNavItem
-                    key={item.key}
-                    href={item.href}
-                    label={t(item.key)}
-                    isHome={isHome}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Desktop Language Toggle */}
-            <div className="flex items-center space-x-3">
-              <Link
-                href="/download"
-                className="btn-sweep flex items-center space-x-2 rounded-full px-4 py-2 text-sm font-medium text-white transition-all duration-200"
-              >
-                <Smartphone className="w-4 h-4" />
-                <span>{t("downloadApp")}</span>
-              </Link>
-              <div className="relative">
-                <button
-                  onClick={toggleLangMenu}
-                  className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-[rgb(var(--foreground))]/70 hover:text-[rgb(var(--primary))] hover:bg-[rgb(var(--muted))] transition-all duration-200"
-                >
-                  <Globe className="w-4 h-4" />
-                  <span className="uppercase">{locale}</span>
-                </button>
-                <LanguageMenu
-                  locale={locale}
-                  pathname={pathname}
-                  isOpen={langMenuOpen}
-                  onClose={closeLangMenu}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Download-app banner - mobile/tablet only, replaces the download
-            button that used to live in the compact row above. Full-bleed
-            (outside container-custom) so it reads as a distinct strip, not
-            more nav content. Uses the brand accent (not btn-sweep's near-
-            black) so it visually pops against the neutral nav above it. */}
-        <Link
-          href="/download"
-          className="lg:hidden flex items-center justify-center gap-2 bg-[rgb(var(--accent))] px-4 py-2.5 text-sm font-semibold text-[rgb(var(--accent-foreground))] transition-colors hover:bg-[rgb(var(--accent-hover))]"
-        >
-          <Smartphone className="w-4 h-4 shrink-0 animate-bounce-subtle" />
-          <span>{t("downloadBannerText")}</span>
-          <span aria-hidden="true">→</span>
+    <header className={`trade-header${scrolled ? " is-scrolled" : ""}`}>
+      <div className="trade-container trade-nav-wrap">
+        <Link href="/" className="trade-logo-link" aria-label={t("home")}>
+          <TradeBrand />
         </Link>
-      </nav>
-
-      {/* Mobile Menu - Full Screen Overlay (outside nav) */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed top-16 left-0 right-0 bottom-0 z-40 lg:hidden bg-white/95 backdrop-blur-xl overflow-y-auto"
+        <nav className="trade-desktop-nav" aria-label={ui("mainNavigation")}>
+          {items.map((item) => (
+            <Link
+              key={item}
+              href={href(item)}
+              className={active === item && pathname === "/" ? "is-active" : ""}
+              aria-current={
+                active === item && pathname === "/" ? "location" : undefined
+              }
+            >
+              {t(item)}
+            </Link>
+          ))}
+        </nav>
+        <div className="trade-nav-actions">
+          <Link href="/download" className="trade-nav-download">
+            {t("downloadApp")}
+            <ArrowUpRight size={16} />
+          </Link>
+          <Link
+            href={pathname}
+            locale={locale === "en" ? "so" : "en"}
+            className="trade-language"
+            aria-label={
+              locale === "en" ? "Ku beddel Soomaali" : "Switch to English"
+            }
           >
-            <div className="min-h-full flex flex-col justify-center px-8 py-12">
-              {/* Navigation Links */}
-              <nav className="space-y-8 mb-12">
-                {navItems.map((item, index) => (
-                  <motion.div
-                    key={item.key}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05, duration: 0.3 }}
+            <Globe2 size={15} />
+            <span>{locale.toUpperCase()}</span>
+          </Link>
+          <Dialog.Root open={open} onOpenChange={setOpen}>
+            <Dialog.Trigger
+              className="trade-menu-button"
+              aria-label={ui("openMenu")}
+            >
+              <Menu size={23} />
+            </Dialog.Trigger>
+            <Dialog.Portal>
+              <Dialog.Overlay className="trade-menu-overlay" />
+              <Dialog.Content
+                className="trade-mobile-menu"
+                aria-describedby={undefined}
+              >
+                <div className="trade-mobile-top">
+                  <Dialog.Title className="sr-only">
+                    {ui("mainNavigation")}
+                  </Dialog.Title>
+                  <TradeBrand />
+                  <Dialog.Close
+                    className="trade-menu-close"
+                    aria-label={ui("close")}
                   >
-                    <MobileNavItem
-                      href={item.href}
-                      label={t(item.key)}
-                      isHome={isHome}
-                      onClick={closeMobileMenu}
-                    />
-                  </motion.div>
-                ))}
-              </nav>
-
-              {/* Download App - Mobile */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: navItems.length * 0.05, duration: 0.3 }}
-                className="mb-12"
-              >
-                <Link
-                  href="/download"
-                  onClick={closeMobileMenu}
-                  className="btn-sweep inline-flex items-center gap-2 rounded-full px-5 py-3 text-base font-semibold text-white"
-                >
-                  <Smartphone className="w-5 h-5" />
-                  {t("downloadApp")}
-                </Link>
-              </motion.div>
-
-              {/* Language Selector - Minimal */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="flex items-center gap-4 pt-8 border-t border-[rgb(var(--border))]"
-              >
-                <Link
-                  href={pathname}
-                  locale="en"
-                  className={cn(
-                    "text-lg font-medium transition-colors duration-300",
-                    locale === "en"
-                      ? "text-[rgb(var(--primary))]"
-                      : "text-[rgb(var(--foreground))]/50 hover:text-[rgb(var(--foreground))]",
-                  )}
-                  onClick={closeMobileMenu}
-                >
-                  EN
-                </Link>
-                <span className="text-[rgb(var(--foreground))]/30">/</span>
-                <Link
-                  href={pathname}
-                  locale="so"
-                  className={cn(
-                    "text-lg font-medium transition-colors duration-300",
-                    locale === "so"
-                      ? "text-[rgb(var(--primary))]"
-                      : "text-[rgb(var(--foreground))]/50 hover:text-[rgb(var(--foreground))]",
-                  )}
-                  onClick={closeMobileMenu}
-                >
-                  SO
-                </Link>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+                    <X />
+                  </Dialog.Close>
+                </div>
+                <nav aria-label={ui("mainNavigation")}>
+                  {(["home", ...items] as const).map((item, i) => (
+                    <Link
+                      key={item}
+                      href={href(item)}
+                      onClick={() => setOpen(false)}
+                    >
+                      <span>0{i + 1}</span>
+                      {t(item)}
+                      <ArrowUpRight />
+                    </Link>
+                  ))}
+                </nav>
+                <div className="trade-mobile-bottom">
+                  <Link
+                    href="/download"
+                    className="trade-button trade-button-light"
+                    onClick={() => setOpen(false)}
+                  >
+                    {t("downloadApp")}
+                    <ArrowUpRight size={18} />
+                  </Link>
+                  <div>
+                    <Link
+                      href={pathname}
+                      locale="en"
+                      onClick={() => setOpen(false)}
+                    >
+                      English
+                    </Link>
+                    <Link
+                      href={pathname}
+                      locale="so"
+                      onClick={() => setOpen(false)}
+                    >
+                      Soomaali
+                    </Link>
+                  </div>
+                </div>
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog.Root>
+        </div>
+      </div>
+    </header>
   );
 }
-
-export default memo(Navigation);
-export { Navigation };
+export default Navigation;
