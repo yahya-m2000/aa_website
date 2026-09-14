@@ -32,7 +32,7 @@ export async function generateMetadata({
       : "A&A Shop — Shop it. Make it yours.";
   const description =
     locale === "so"
-      ? "App-ka A&A Shop ku baadh alaabooyin Shiinaha laga keeno. Hel dalabyada maanta, dooro alaabtaada oo la xidhiidh kooxda A&A."
+      ? "App-ka A&A Shop ku baadh alaabooyin Shiinaha laga keeno. Eeg qiimo-dhimista maanta, dooro alaabtaada oo la xidhiidh kooxda A&A."
       : "Meet the all-new A&A Shop app for Android. Discover products from China, browse today's deals, and find something for your home, your business, or yourself.";
   return {
     title,

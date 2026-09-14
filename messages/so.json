@@ -1,64 +1,64 @@
 {
   "navigation": {
-    "home": "Hoyga",
+    "home": "Bogga hore",
     "services": "Adeegyada",
-    "about": "Naga Saabsan",
+    "about": "Naga saabsan",
     "logistics": "Gaadiidka",
     "stats": "Saamaynteena",
-    "contact": "Nala Soo Xiriir",
+    "contact": "Nala soo xidhiidh",
     "facebook": "Facebook",
-    "downloadApp": "Hel app-ka",
-    "downloadBannerText": "Hel A&A Shop — dalabo si degdeg ah",
-    "discover": "Baadh",
+    "downloadApp": "Soo deji app-ka",
+    "downloadBannerText": "Hel A&A Store — dalabo si degdeg ah",
+    "discover": "Alaabta",
     "app": "App-ka"
   },
   "hero": {
     "title": "Iibsiga iyo <stone>gaadiidka</stone> oo horumarinaya ganacsigaaga <stone>Shiinaha ilaa Afrika.</stone>",
     "subtitle": "Lammaanaha aad ku kalsoon tahay ee iibsiga, gaadiidka, iyo xalalka soo saarista. Waxaan ka soo iibineynaa alaabooyinka tayo leh Shiinaha oo aan si fudud ugu keenno suuqyada Afrika.",
     "cta": "Bilow",
-    "ctaSecondary": "Wax Badan Ogow",
+    "ctaSecondary": "Wax badan ogow",
     "facebook": "Arag Facebook-kayaga",
     "whatsapp": "WhatsApp",
-    "latestFromFacebook": "Ugu Dambeeyay Facebook",
-    "badge": "Xalalka Ganacsiga Shiinaha-Afrika",
+    "latestFromFacebook": "Ugu dambeeyay Facebook",
+    "badge": "Xalalka ganacsiga Shiinaha-Afrika",
     "shipmentsLabel": "Rarid",
     "countriesLabel": "Wadamo",
-    "satisfactionLabel": "Ku Qanacsanaan",
-    "introVideoLabel": "Daawo Sheekadayada",
-    "trustLabel": "Lammaane Iibsi oo La Isku Halleyn Karo"
+    "satisfactionLabel": "Ku qanacsanaan",
+    "introVideoLabel": "Daawo sheekadayada",
+    "trustLabel": "Lammaane iibsi oo la isku halleyn karo"
   },
   "services": {
     "title": "Adeegyadayada",
     "subtitle": "Xalalka iibsiga oo dhamaystiran oo loogu talagalay baahiyaha ganacsigaaga",
     "sourcing": {
-      "title": "Raadinta Alaabta",
+      "title": "Raadinta alaabta",
       "description": "Waxaan ku aqoonsaneynaa oo ku xireynaa soo saarayaasha iyo soo qaadayaasha kalsooni leh ee Shiinaha ee u dhigma baahiyahaaga gaarka ah ee alaabta."
     },
     "quality": {
-      "title": "Hubinta Tayada",
+      "title": "Hubinta tayada",
       "description": "Baaritaanada adag ee tayada iyo habka xaqiijinta si loo hubiyo in alaabtu ay buuxiso heerarka caalamiga ah ka hor raridda."
     },
     "purchasing": {
-      "title": "Maaraynta Iibsiga",
+      "title": "Maaraynta iibsiga",
       "description": "Maaraynta dhammaystiran ee dalabyada iibsiga, habaynta lacag bixinta, iyo isku-dubaridka soo qaadayaasha magacaaga."
     },
     "negotiation": {
-      "title": "Wada Hadallada Qiimaha",
+      "title": "Wada hadallada qiimaha",
       "description": "Adeegyada khibradda leh ee wada hadallada si aad u hesho qiimaha ugu wanaagsan iyo shuruudaha u fiican baahiyaha iibsigaaga."
     }
   },
   "about": {
-    "title": "Naga Saabsan A&A",
-    "subtitle": "Buundooyinka Xiriirinta, Dhisida Iskaashiyada",
+    "title": "Naga saabsan A&A",
+    "subtitle": "Buundooyinka xiriirinta, dhisida iskaashiyada",
     "description": "A&A waa shirkad hogaaminaysa iibsiga iyo gaadiidka oo ku takhasustay jidadka ganacsiga Shiinaha-Afrika. Iyada oo leh aqoon dheer oo ku saabsan iibsashada, raridda, iyo maaraynta soo saarista, waxaan ka caawineynaa ganacsiyada inay helaan alaabooyin tayo leh oo ka yimid Shiinaha oo si hufan loogu geeyo suuqyada Afrika.",
     "mission": "Ujeedadayada",
     "missionText": "In la fududeeyo ganacsiga caalamiga ah oo kalsooni leh, hufan, iyo qaali ahaan wax ku ool ah oo adeegyada iibsiga iyo gaadiidka oo awood siinaya ganacsiyada inay korodaan oo ay barwaaqoobaan.",
     "vision": "Aragtidayada",
     "visionText": "Inaan noqono buundada ugu kalsooni badan ee xidhaysa soo saarayaasha Shiinaha iyo suuqyada Afrika, iyagoo dejinaya heerar cusub ee fududeynta ganacsiga iyo adeega macaamiisha.",
-    "imagePlaceholderLabel": "Sawirrada Kooxda & Bakhaarka"
+    "imagePlaceholderLabel": "Sawirrada shirkada & bakhaarka"
   },
   "logistics": {
-    "title": "Shabakada Gaadiidkayaga",
+    "title": "Shabakada gaadiidkayaga",
     "subtitle": "Geynta aan seexan lahayn Shiinaha ilaa Afrika",
     "steps": {
       "sourcing": {
@@ -80,43 +80,43 @@
     }
   },
   "stats": {
-    "title": "Diiwaanka Guusha",
+    "title": "Diiwaanka guusha",
     "subtitle": "Tirooyinka isla hadlaya",
     "years": {
-      "label": "Sanado Ganacsi",
+      "label": "Sannado shaqo",
       "value": "2"
     },
     "shipments": {
-      "label": "Rarid Guulaysan",
+      "label": "Shixnado la diray",
       "value": "500"
     },
     "countries": {
-      "label": "Wadamada La Adeego",
+      "label": "Dalalka aan u adeegno",
       "value": "5"
     },
     "satisfaction": {
-      "label": "Ku Qanacsanaanta Macaamiisha",
+      "label": "Qanacsanaanta macaamiisha",
       "value": "98"
     }
   },
   "contact": {
-    "title": "Nala Soo Xiriir",
-    "subtitle": "Nala soo xiriir raadinta alaabada, adeegyada iibsiga, iyo xalalka raridda ee Shiinaha ilaa Afrika",
+    "title": "Nala soo xidhiidh",
+    "subtitle": "Nala soo xidhiidh haddii aad u baahan tahay raadinta, iibsiga ama rarista alaabta Shiinaha.",
     "form": {
-      "name": "Magaca Buuxa",
-      "email": "Cinwaanka Emailka",
-      "phone": "Lambarka Taleefanka",
-      "company": "Magaca Shirkadda",
-      "message": "Noo sheeg baahiyahaaga",
-      "submit": "Dir Fariinta",
-      "sending": "Waa la diraya...",
-      "success": "Fariinta waa la diray! Waan kula soo xiriiri doonaa dhawaan.",
-      "error": "Wax baa qaldamay. Fadlan isku day mar kale ama nagala soo xiriir WhatsApp.",
-      "emailSubject": "Farriin A&A Shop oo ka socota {name}",
-      "emailNote": "Tani waxay furaysaa app-ka iimaylkaaga iyadoo xogta aad gelisay lagu daray. Halkaas ka hubi fariinta, dabadeed dir."
+      "name": "Magacaaga oo buuxa",
+      "email": "Cinwaanka iimaylka",
+      "phone": "Lambarka telefoonka",
+      "company": "Magaca shirkadda",
+      "message": "Fariintaada",
+      "submit": "Dir fariinta",
+      "sending": "Waa la dirayaa...",
+      "success": "Fariinta waa la diray. Waan kula soo xidhiidhi doonnaa.",
+      "error": "Fariinta lama dirin. Fadlan isku day mar kale ama nagala soo xidhiidh WhatsApp.",
+      "emailSubject": "Fariin A&A Store oo ka socota {name}",
+      "emailNote": "Badhankani wuxuu furayaa app-ka iimaylkaaga, isagoo ku daraya xogta aad gelisay. Fariinta halkaas ka hubi, dabadeed noo soo dir."
     },
     "info": {
-      "title": "Macluumaadka Xiriirka",
+      "title": "Halka aad nagala soo xidhiidhayso",
       "email": "Email",
       "phone": "Telefoon",
       "whatsapp": "WhatsApp",
@@ -126,21 +126,21 @@
       "addressValue": "Shacab Mall, Hargeysa, Somaliland"
     },
     "cta": {
-      "title": "Diyaar ma u tahay inaad Hesho Qiime?",
+      "title": "Diyaar ma u tahay inaad hesho qiime?",
       "description": "Haddii aad u baahan tahay raadinta alaabada, adeegyada iibsiga, ama xalalka raridda ee Shiinaha ilaa Afrika, waxaan halkan u jirna in aan ku caawino. Nala soo xiriir si aad u hesho talo bilaash ah iyo qiime.",
       "button": "WhatsApp"
     }
   },
   "footer": {
-    "tagline": "Shiinaha, adiga kuu dhow.",
-    "quickLinks": "Xiriiriyeyaal Degdeg ah",
+    "tagline": "Alaabta Shiinaha oo kuu dhow.",
+    "quickLinks": "Bogagga muhiimka ah",
     "services": "Adeegyada",
-    "contact": "Nala Soo Xiriir",
-    "followUs": "Na Raac",
+    "contact": "Nala soo xidhiidh",
+    "followUs": "Na raac",
     "rights": "Dhammaan xuquuqaha way dhawran yihiin"
   },
   "social": {
-    "contactUs": "Nala Soo Xiriir",
+    "contactUs": "Nala soo xiriir",
     "facebook": "Facebook",
     "whatsapp": "WhatsApp"
   },
@@ -148,23 +148,23 @@
     "title": "Facebook-kayaga",
     "subtitle": "Cusboonaysiinta iyo raridyada ugu dambeeyay ee bogganaga",
     "viewOnFacebook": "Arag Facebook",
-    "viewAllPosts": "Arag Dhammaan Qoraallada Facebook",
+    "viewAllPosts": "Arag dhammaan qoraallada Facebook",
     "loading": "Waa la soo rarayaa qoraallada ugu dambeeyay...",
-    "tryAgain": "Isku Day Mar Kale",
+    "tryAgain": "Isku day mar kale",
     "noPosts": "Qoraal lama helin",
     "noPostsDescription": "Dib u soo booqo si aad u aragto cusboonaysiinta bogganaga Facebook.",
     "errorDescription": "Ma soo raran karo qoraallada ugu dambeeyay hadda.",
-    "visitPage": "Booqo Bogga Facebook",
+    "visitPage": "Booqo bogga Facebook",
     "readMore": "Sii akhri",
     "showLess": "Soo koobid"
   },
   "testimonials": {
-    "title": "Waxa Ay Naga Sheegaan Macaamiisheena",
+    "title": "Waxa ay naga sheegaan macaamiisheena",
     "subtitle": "Ay ku kalsoon yihiin ganacsiyada Afrika oo dhan",
-    "videoLabel": "Muuqaalka Marag-furka Macmiilka",
+    "videoLabel": "Muuqaalka marag-furka macmiilka",
     "items": {
       "sample1": {
-        "quote": "Iyada oo A&A la kaashanayo, waxaan awooday inaan dhiso dukaanka timaha ee ay ku riyoonayey.",
+        "quote": "Anaga oo A&A la kaashanay, waxaan hir-gelinay inaan furno rayislaha aanu ku riyoonayney.",
         "name": "Maxamed Xuseen",
         "role": "Hargeisa, Somaliland"
       },
@@ -181,34 +181,34 @@
     }
   },
   "download": {
-    "badge": "Aplikeeshanka Android",
+    "badge": "App-ka Android",
     "betaBadge": "Beta",
-    "title": "Soo Deji A&A Shop",
-    "subtitle": "Hel aplikeeshanka mobilka ee A&A Shop ee Android si aad u maareyso raridyada, dalabyada, iyo qiimayaasha meel kastoo aad joogto.",
+    "title": "Soo deji A&A Store",
+    "subtitle": "Hel aplikeeshanka mobilka ee A&A Store ee Android si aad u maareyso raridyada, dalabyada, iyo qiimayaasha meel kastoo aad joogto.",
     "fileLabel": "Faylka APK ee Android",
-    "fileNote": "Kani waa fayl APK ah. Rakibiddu waxay u baahan tahay inaad ka ogolaato aplikeeshanada isha aan la garanayn dejinta Android-kaaga.",
-    "button": "Soo Deji APK",
+    "fileNote": "Kani waa faylka APK ee app-ka. Android-ku wuxuu ku weydiin karaa inaad browser-ka u oggolaato rakibidda app-kan.",
+    "button": "Soo deji APK",
     "size": "Cabbirka",
     "version": "Nooca",
-    "updated": "La Cusboonaysiiyay",
-    "instructionsTitle": "Sida Loo Rakibo",
+    "updated": "La cusboonaysiiyay",
+    "instructionsTitle": "Sida loo rakibo",
     "steps": {
-      "one": "Ku soo deji faylka APK badhanka kore.",
-      "two": "Fur faylka la soo dejiyay ee ka socda ogeysiisyadaada ama galka Downloads.",
-      "three": "Haddii lagu weydiiyo, dalool \"Install from unknown sources\" browser-kaaga.",
+      "one": "Badhanka kore ku soo deji faylka APK.",
+      "two": "Fur faylka aad soo dejisay. Waxaad ka heli kartaa galka Downloads ama ogeysiiska soo dejinta.",
+      "three": "Haddii Android-ku ku weydiiyo, browser-ka aad isticmaashay u oggolow rakibidda app-ka (Allow from this source).",
       "four": "Raac tilmaamaha shaashadda si aad u dhammaystirto rakibidda."
     },
-    "backHome": "Ku Noqo Bogga Hore",
+    "backHome": "Ku noqo bogga hore",
     "playStoreComingSoon": "Google Play — dhawaan ayuu iman doonaa",
     "betaNote": "Waanu ku jirnaa marxaladda beta-ga, marka hadda aplikeeshanku wuxuu u diyaar yahay sida fayl APK ah oo si toos ah loo soo dejiyo hoos. Diiwaangelinta Google Play Store ayaa socota.",
     "scanTitle": "Iskaan si aad taleefankaaga uga furto",
-    "scanSubtitle": "Kaamaradaada ku toosi koodhkan si aad si toos ah ugu gudubto boggan taleefankaaga gacanta."
+    "scanSubtitle": "Kaamaradaada ku toosi shaxdan si aad si toos ah ugu gudubto boggan taleefankaaga gacanta."
   },
   "experience": {
     "mainNavigation": "Hagaha bogga",
     "openMenu": "Fur liiska",
     "close": "Xir",
-    "backTop": "Dib ugu noqo kore",
+    "backTop": "Ku noqo bilowga bogga",
     "footerNote": "Isku xidhidda himilooyinka. Xuduudaha ka gudub.",
     "heroEyebrow": "Lammaanahaaga ganacsiga Shiinaha iyo Afrika",
     "heroLine1": "Shiinaha kuu dhow.",
@@ -241,13 +241,13 @@
     "seaTitle": "Meel u bannaan himilooyinka waaweyn.",
     "seaDescription": "Hab ku habboon shixnadaha waaweyn. Waxaan isku dubbaridnaa raridda badda iyo faahfaahinta dhaqaajisa alaabtaada.",
     "airTitle": "Marka wakhtigu muhiim yahay.",
-    "airDescription": "Raridda hawada ee shixnadaha degdegga ah. Kala hadal kooxdayada jidka ku habboon alaabtaada iyo jadwalkaaga.",
+    "airDescription": "Raridda hawada ee shixnadaha degdegga ah. Kala hadal shirkadayada jidka ku habboon alaabtaada iyo jadwalkaaga.",
     "planShipment": "Qorshee shixnaddaada",
     "corridor": "Marinka ganacsiga Shiinaha iyo Afrika",
     "routeAlt": "Sawir adduunka ah oo muujinaya marinka ganacsiga Shiinaha iyo Afrika",
     "aboutLine1": "Gaarsiin caalami ah.",
     "aboutLine2": "Daryeel kuu gaar ah.",
-    "teamAlt": "Xubin kooxda A&A ka tirsan oo sidda kartoon summadda shirkadda leh",
+    "teamAlt": "Xubin shirkada A&A ka tirsan oo sidda kartoon summadda shirkadda leh",
     "photoCaption": "Dad daryeel leh ayaa gacanta ku haya",
     "value1": "Lammaane goobta jooga",
     "value2": "Tayo tallaabo kasta",
@@ -259,10 +259,10 @@
     "storiesLine2": "Bilow cusub.",
     "appLine1": "Tallaabadaada xigta.",
     "appLine2": "Jeebkaaga ayay ku jirtaa.",
-    "appIntro": "Ku soo dhowow A&A Shop. Laga bilaabo waxyaabaha maalinlaha ah ilaa wax cusub, hal app ku hel alaabooyin Shiinaha laga keeno.",
-    "getApp": "Baro A&A Shop",
+    "appIntro": "Ku soo dhowow A&A Store. Laga bilaabo waxyaabaha maalinlaha ah ilaa wax cusub, hal app ku hel alaabooyin Shiinaha laga keeno.",
+    "getApp": "Baro A&A Store",
     "appNote": "Waxaa laga heli karaa Google Play ee Android",
-    "phoneAlt": "App-ka A&A Shop oo ka muuqda telefoon Android",
+    "phoneAlt": "App-ka A&A Store oo ka muuqda telefoon Android",
     "appSticker": "Ganacsi meel kasta.",
     "onTheGround": "Goobta shaqada",
     "journalTitle": "Shaqada ka dambaysa safarka.",
@@ -275,23 +275,23 @@
     "goodToKnow": "Waxyaabo muhiim ah",
     "faqTitle": "Caddayn yar ayaa wax badan fududaysa.",
     "faqIntro": "Ma ku cusub tahay iibsiga Shiinaha? Waxaan halkan u joognaa in tallaabadaada koowaad noqoto mid kalsooni leh.",
-    "askTeam": "Weydii kooxdayada",
+    "askTeam": "Weydii shirkadayada",
     "faq1Question": "Ma iga caawin kartaan helidda alaab Shiinaha?",
-    "faq1Answer": "Haa. Nala wadaag waxa aad raadinayso, tirada iyo shuruudahaaga. Kooxdayadu waxay kaa caawin kartaa helidda alaab-qeybiyeyaal, qiimaha iyo isku dubbaridka iibsiga.",
+    "faq1Answer": "Haa. Nala wadaag waxa aad raadinayso, tirada iyo shuruudahaaga. Shirkadayadu waxay kaa caawin kartaa helidda alaab-qeybiyeyaal, qiimaha iyo isku dubbaridka iibsiga.",
     "faq2Question": "Ma bixisaan raridda hawada iyo badda?",
     "faq2Answer": "Waxaan isku dubbaridnaa raridda hawada iyo badda labadaba. Doorashada saxda ahi waxay ku xidhan tahay alaabtaada, baaxadda shixnadda, meesha la geynayo iyo wakhtiga. Nala soo xidhiidh si aan uga wada hadalno jidka iyo qiimaha ku habboon.",
     "faq3Question": "Sideen ku heli karaa qiimeyn?",
-    "faq3Answer": "Buuxi foomka hoose ama noogu soo dir farriin WhatsApp. Ku dar faahfaahinta alaabta, tirada iyo meesha laguu geynayo si kooxdayadu ugaala hadasho tallaabooyinka xiga.",
-    "faq4Question": "Sideen u rakibi karaa app-ka A&A Shop?",
-    "faq4Answer": "A&A Shop ka soo deji Google Play adigoo isticmaalaya Android. Bogga soo-dejinta waxaad sidoo kale ka heli kartaa APK iyo tilmaamaha rakibidda.",
+    "faq3Answer": "Buuxi foomka hoose ama noogu soo dir farriin WhatsApp. Ku dar faahfaahinta alaabta, tirada iyo meesha laguu geynayo si shirkadayadu ugaala hadasho tallaabooyinka xiga.",
+    "faq4Question": "Sideen u rakibi karaa app-ka A&A Store?",
+    "faq4Answer": "A&A Store ka soo deji Google Play adigoo isticmaalaya Android. Bogga soo-dejinta waxaad sidoo kale ka heli kartaa APK iyo tilmaamaha rakibidda.",
     "contactEyebrow": "Waxyaabaha waaweyn waxay ka bilaabmaan wada hadal",
     "contactLine1": "Diyaar ma u tahay",
     "contactLine2": "tallaabadaada xigta?",
     "contactIntro": "Alaab ma rabtaa? Shixnad ma qorshaynaysaa? Noo sheeg meesha aad rabto inaad gaadho. Wadajir ayaynu jidka u qorshaynaynaa.",
     "chatWhatsApp": "Nagala hadal WhatsApp",
-    "formTitle": "Noo sheeg waxa aad ka shaqaynayso.",
-    "formIntro": "Nala wadaag faahfaahin kooban, kooxdayaduna way kula soo xidhiidhi doontaa.",
-    "videoError": "Muuqaalkani ma soo degin. Isku day mar kale ama si toos ah u fur.",
+    "formTitle": "Noo soo qor.",
+    "formIntro": "Noo sheeg waxa aad u baahan tahay. Foomkani wuxuu kuu diyaarinayaa iimayl aad noo soo dirto.",
+    "videoError": "Muuqaalka lama daari karo. Isku day mar kale ama si toos ah u fur.",
     "openVideo": "Fur muuqaalka",
     "required": "Waa loo baahan yahay",
     "optional": "Ikhtiyaari",
@@ -299,27 +299,27 @@
     "emailPlaceholder": "adiga@shirkad.com",
     "phonePlaceholder": "+252 ...",
     "companyPlaceholder": "Shirkaddaada",
-    "messagePlaceholder": "Alaabta, tirada iyo meesha la geynayo — noo sheeg qorshahaaga.",
+    "messagePlaceholder": "Noo sheeg alaabta aad rabto, tirada iyo meesha laguugu keenayo, ama su'aasha aad qabto.",
     "invalidName": "Fadlan geli magacaaga.",
     "invalidEmail": "Fadlan geli cinwaan iimayl sax ah.",
     "invalidMessage": "Fadlan noo sheeg waxa aad u baahan tahay.",
-    "downloadEyebrow": "A&A SHOP / TALLAABADAADA XIGTA",
+    "downloadEyebrow": "A&A Store / TALLAABADAADA XIGTA",
     "downloadTitle1": "Fursad.",
     "downloadTitle2": "Hadda jeebkaaga ku jirta.",
-    "downloadIntro": "Xidhiidhkaaga iibsiga Shiinaha, meel kasta oo ganacsigu ku geeyo. Soo deji A&A Shop ee Android oo bilow dalabkaaga xiga.",
+    "downloadIntro": "Xidhiidhkaaga iibsiga Shiinaha, meel kasta oo ganacsigu ku geeyo. Soo deji A&A Store ee Android oo bilow dalabkaaga xiga.",
     "installEyebrow": "BILOW ISTICMAALKA",
     "installTitle": "Dhawr taabasho. Waad gashay.",
     "downloadSupport": "Caawimo ma u baahan tahay?",
-    "downloadSupportLink": "La hadal kooxdayada",
+    "downloadSupportLink": "La hadal shirkadayada",
     "downloadScan": "Horay u sii qaado.",
     "downloadDetails": "Nooca ugu dambeeya",
     "retryVideo": "Isku day mar kale"
   },
   "shop": {
-    "heroEyebrow": "Baro A&A Shop · Waxaa loo heli karaa Android",
+    "heroEyebrow": "Baro A&A Store · Waxaa loo heli karaa Android",
     "heroLine1": "Ka dukaamayso Shiinaha.",
     "heroLine2": "Dunida kuu dhow.",
-    "heroDescription": "Ku hel alaabtaada xigta A&A Shop. Baadh alaabooyin, eeg dalabyada maanta, oo gurigaaga u keen fursado badan—adigoo la socda lammaanahaaga ganacsiga Shiinaha iyo Afrika.",
+    "heroDescription": "Ku hel alaabtaada xigta A&A Store. Baadh alaabooyin, eeg dalabyada maanta, oo gurigaaga u keen fursado badan—adigoo la socda lammaanahaaga ganacsiga Shiinaha iyo Afrika.",
     "exploreApp": "Baro app-ka",
     "android": "Loogu talagalay Android",
     "chinaAfrica": "Shiinaha ilaa Afrika",
@@ -329,16 +329,16 @@
     "deliverCard": "Shiinaha ilaa adiga.",
     "deliverCardNote": "La socda A&A Trade Solutions.",
     "madeForYou": "HEL ALAABTAADA XIGTA",
-    "phoneAlt": "Bogga hore ee A&A Shop oo ku jira telefoon u eg Pixel, oo muujinaya raadinta, lix qaybood, dalabyo iyo dambiisha",
+    "phoneAlt": "Bogga hore ee A&A Store oo ka muuqda telefoon, leh raadinta alaabta, qaybaha, qiimo-dhimista iyo dambiisha.",
     "downloadLine1": "Alaabtaada xigta.",
     "downloadLine2": "Jeebkaaga ku jirta.",
-    "downloadIntro": "Ku soo dhowow A&A Shop. Laga bilaabo waxyaabaha maalinlaha ah ilaa wax cusub, hal app ku hel alaabooyin Shiinaha laga keeno.",
-    "available": "Waxaa laga heli karaa Google Play ee Android",
+    "downloadIntro": "Ku soo dhowow A&A Store. Laga bilaabo waxyaabaha maalinlaha ah ilaa wax cusub, hal app ku hel alaabooyin Shiinaha laga keeno.",
+    "available": "Hadda ka soo deji Google Play",
     "miniDiscover": "Baadh",
     "miniShop": "Dukaamayso",
     "miniDeliver": "La xidhiidh",
     "seeInside": "Si dhow u eeg",
-    "dealsCard": "Dalabyada maanta",
+    "dealsCard": "Qiimo-dhimista maanta",
     "dealsCardNote": "Wax cusub maalin kasta.",
     "searchCard": "Maxaad raadinaysaa?",
     "yourWorld": "DUNIDAADA FURSADAHA",
@@ -347,12 +347,12 @@
     "categoriesLine2": "Hal meel ku wada jira.",
     "categoriesIntro": "Baadh lix qaybood oo ka hel wax ku habboon gurigaaga, ganacsigaaga ama naftaada.",
     "categories": {
-      "electronics": "Elektaroonigga",
+      "electronics": "Qalabka elektarooniga",
       "clothing": "Dharka",
-      "home": "Qalabka guriga",
+      "home": "Agabka guryaha",
       "beauty": "Quruxda iyo daryeelka",
       "toys": "Alaabta carruurta",
-      "sports": "Ciyaaraha iyo bannaanka"
+      "sports": "Qalabka ciyaaraha"
     },
     "features": {
       "search": {
@@ -371,144 +371,144 @@
     "startEyebrow": "Tallaabadaada xigta halkan ayay ka bilaabataa",
     "startLine1": "Duni doorashooyin leh.",
     "startLine2": "Diyaar kuu ah.",
-    "startIntro": "Google Play ka hel A&A Shop oo hel alaabtaada xigta.",
-    "needHelp": "Caawimo ma rabtaa? La hadal kooxdayada",
+    "startIntro": "Google Play ka hel A&A Store oo hel alaabtaada xigta.",
+    "needHelp": "Caawimo ma rabtaa? La hadal shirkadayada",
     "scanEyebrow": "KOMBIYUUTARKA ILAA TELEFOONKA",
     "scanTitle": "Horay u sii qaado.",
-    "scanIntro": "Kaamirada telefoonkaaga ku sawir koodhkan si aad moobilka ugu sii wadato.",
-    "alternative": "Ma doorbidaysaa soo-dejin toos ah?",
+    "scanIntro": "Kaamirada telefoonkaaga ku sawir shaxdan si aad moobilka ugu sii wadato.",
+    "alternative": "Ma rabtaa faylka APK?",
     "downloadApk": "Soo deji APK-ga Android · v2.0.0"
   },
   "launch": {
-    "hello": "Ku soo dhowow A&A Shop",
+    "hello": "Ku soo dhowow A&A Store",
     "hero1": "Hadda",
     "hero2": "Ka Iibso",
-    "hero3": "Alaabta Shiinaha, adiga kuu dhow.",
-    "heroBody": "Wax gurigaaga ah. Wax ganacsigaaga ah. Wax adiga kuu gaar ah. App-ka cusub ee A&A Shop ku baadh alaabooyin Shiinaha laga keeno.",
-    "meetApp": "Baro app-kaaga cusub",
-    "androidNote": "Loogu talagalay Android. Hel alaabtaada xigta.",
-    "goodFind": "Alaab fiican baad heshay.",
-    "goodFindNote": "Waxa aad jeceshahay ayaa ku sugaya.",
-    "appTag": "App-kaaga helidda maalinlaha ah",
-    "builtFor": "Fursado waaweyn. Hal app.",
-    "keepExploring": "Sii baadh",
-    "ribbon1": "Hel waxa aad jeceshahay",
-    "ribbon2": "Wax cusub maalin kasta",
-    "ribbon3": "Alaabtaada oo wada jirta",
+    "hero3": "Alaabta Shiinaha oo kuu dhow.",
+    "heroBody": "A&A Store wuxuu kuu fududaynayaa inaad alaab ka iibsato Shiinaha adigoo jooga Geeska-Africa. Ka raadi waxa aad u baahan tahay, gurigaaga iyo ganacsigaagaba.",
+    "meetApp": "Baro A&A Store",
+    "androidNote": "App-ka Android ka soo deji Google Play.",
+    "goodFind": "Hel alaabta aad rabto.",
+    "goodFindNote": "Dooro waxa kugu habboon.",
+    "appTag": "App-kaaga wax iibsiga",
+    "builtFor": "Alaab kala duwan. Hal app.",
+    "keepExploring": "Sii eeg alaabta",
+    "ribbon1": "Raadi alaabta aad rabto",
+    "ribbon2": "Eeg qiimo-dhimista",
+    "ribbon3": "Alaabtaada meel ku ururi",
     "ribbon4": "Shiinaha ilaa Afrika",
-    "discoveryLabel": "BILOW BAADHITAANKA.",
-    "discovery1": "Wax kasta oo aad jeceshahay,",
-    "discovery2": "wax badan ayaa kuu yaalla.",
-    "discoveryBody": "Lix qaybood. Fursado badan. Ku bilow waxa aad jeceshahay oo arag waxa aad hesho.",
+    "discoveryLabel": "EEG ALAABTA",
+    "discovery1": "Hel waxa aad u baahan tahay,",
+    "discovery2": "gurigaaga iyo ganacsigaagaba.",
+    "discoveryBody": "Dooro mid ka mid ah lixda qaybood oo eeg alaabta kugu habboon.",
     "chooseCategory": "Dooro qaybta alaabta",
-    "exploreCategory": "App-ka ka baadh",
+    "exploreCategory": "Alaabta ka eeg app-ka",
     "categoryStories": {
       "electronics": {
-        "title": "La kulan qalab cusub.",
-        "body": "Baadh elektaroonigga oo hel qalab ku soo kordhiya noloshaada maalinlaha ah."
+        "title": "Qalabka aad u baahan tahay.",
+        "body": "Eeg qalabka elektarooniga ah ee aad ku isticmaali karto guriga iyo shaqadaba."
       },
       "clothing": {
-        "title": "Hel dharkaaga xiga.",
-        "body": "Cusboonaysii dharkaaga ama hel fikrad cusub. Baadh dharka indhahaaga soo jiita."
+        "title": "Dooro dharka kugu habboon.",
+        "body": "Eeg dharka kala duwan oo ka dooro waxa aad jeceshahay."
       },
       "home": {
-        "title": "Gurigaaga wax u hel.",
-        "body": "Baadh qalabka guriga oo hel wax waxtar leh oo ku habboon gurigaaga."
+        "title": "Alaabta aqallada.",
+        "body": "Ka raadi qalabka guriga ee aad u baahan tahay."
       },
       "beauty": {
-        "title": "Daryeel yar ayaa wax badan tara.",
-        "body": "Hel alaabta quruxda iyo daryeelka ee wax cusub ku soo kordhisa jadwalkaaga."
+        "title": "Qurux iyo daryeel.",
+        "body": "Eeg alaabta quruxda iyo daryeelka jidhka."
       },
       "toys": {
-        "title": "Duni ciyaaro yaryar leh.",
-        "body": "Meel u samee ciyaarta. Baadh alaabta carruurta iyo waxyaabaha ay jecel yihiin."
+        "title": "Alaabta carruurtu ku ciyaarto.",
+        "body": "Eeg alaabta carruurta oo dooro waxa ku habboon."
       },
       "sports": {
-        "title": "U diyaargarow hawshaada xigta.",
-        "body": "Hiwaayad cusub ilaa maalin bannaanka ah, hel wax ku habboon dhaqdhaqaaqaaga."
+        "title": "Jimicsiga iyo ciyaaraha guud.",
+        "body": "Eeg qalabka ciyaaraha iyo agabka bannaanka lagu isticmaalo."
       }
     },
-    "featuresLabel": "FUDAYD IYO HELID BADAN.",
-    "features1": "Dukaamaysigaaga.",
-    "features2": "Oo la fududeeyay.",
-    "searchTitle": "Arag. Raadi. Hel.",
-    "searchBody": "Alaab ma maskaxda ku haysaa? Ku bilow raadinta. Ma wax cusub rabtaa? Baadh qaybaha.",
-    "searchPlaceholder": "Maxaad maanta heli doontaa?",
-    "chip1": "Baahiyaha maalinlaha ah",
+    "featuresLabel": "WAX IIBSI FUDUD",
+    "features1": "Iibsigaaga",
+    "features2": "waan kuu fududaynay.",
+    "searchTitle": "Raadi oo hel.",
+    "searchBody": "Alaab gaar ah ma rabtaa? Ku raadi magaceeda. Haddii kale, eeg qaybaha alaabta.",
+    "searchPlaceholder": "Maxaad raadinaysaa?",
+    "chip1": "Alaabta maalinlaha ah",
     "chip2": "Wax cusub",
-    "chip3": "Waxa aad jeclaan doonto",
-    "basketTitle": "Alaabta fiican oo wada jirta.",
-    "basketBody": "Alaabta aad dooratay ku hay dambiisha inta aad sii baadhayso.",
-    "supportTitle": "Dad dhab ah. Halkan jooga.",
-    "supportBody": "Su'aal ma ka qabtaa dalab ama alaab? Kooxdaada A&A WhatsApp ayay kuu joogtaa.",
-    "journeyLabel": "ALAAB FIICAN ILAA TALLAABADAADA XIGTA",
-    "journey1": "Dhawr taabasho.",
-    "journey2": "Duni ayaa kuu furmaysa.",
-    "journeyBody": "Hel fikrado, dooro alaabtaada oo la xidhiidh dadka kuu soo dhowaynaya ganacsiga Shiinaha iyo Afrika.",
-    "getApp": "Hel A&A Shop",
+    "chip3": "Waxa aad jeceshahay",
+    "basketTitle": "Alaabta aad doonayso ku ururi.",
+    "basketBody": "Alaabta aad rabto ku-rid sellada/dambiisha, adigoo weli sii eegaya alaabta kale.",
+    "supportTitle": "Waan kaa caawinaynaa.",
+    "supportBody": "Su'aal ma ka qabtaa alaab ama dalab? Shaqalaaha A&A kala xidhiidh WhatsApp-ka.",
+    "journeyLabel": "SIDA WAX LOO IIBSADO",
+    "journey1": "Raadi, dooro.",
+    "journey2": "Nala soo xidhiidh.",
+    "journeyBody": "App-ka ka raadi alaabta aad rabto. Shaqalaaha A&A kala xidhiidh dalabkaaga iyo sida lagugu keenayo.",
+    "getApp": "Soo deji A&A Store",
     "steps": {
       "one": {
-        "title": "Baadh waxa ku xiise geliya.",
-        "body": "Raadi alaab gaar ah ama baadh qaybaha."
+        "title": "Raadi alaabta aad rabto.",
+        "body": "Ku raadi magaceeda ama ka eeg qaybaha alaabta."
       },
       "two": {
-        "title": "Dooro waxa aad jeceshahay.",
-        "body": "Eeg faahfaahinta alaabta oo doorashadaada ku wada ururi dambiisha."
+        "title": "Ku ururi sellada/dambiisha.",
+        "body": "Akhri faahfaahinta alaabta, dabadeed sellada/dambiisha ku ururi waxa aad dooratay."
       },
       "three": {
-        "title": "Inta xigta waan kaa caawinaynaa.",
-        "body": "Kooxda A&A waxay kaa caawinaysaa dalabkaaga iyo baahiyaha raridda."
+        "title": "Nala soo xidhiidh.",
+        "body": "Shirkada A&A kala hadal dalabkaaga iyo rarista alaabta."
       }
     },
-    "aboutLabel": "APP AY DAD KA DAMBEEYAAN",
+    "aboutLabel": "SHIRKADA A&A",
     "about1": "App cusub.",
-    "about2": "Isla dadkii ku daryeeli jiray.",
-    "aboutBody": "A&A Shop wuxuu khibraddayada ganacsiga Shiinaha iyo Afrika kuugu keenayaa telefoonkaaga. App-ka waxaa ka dambeeya kooxdii ka caawinaysay dadka iibsiga, raridda iyo horumarinta ganacsigooda.",
-    "photoLabel": "A&A ayaa si taxaddar leh u diyaarisay.",
-    "businessTitle": "Qorshe weyn ma u haysaa ganacsigaaga?",
-    "businessBody": "Waxaan sidoo kale kaa caawinnaa raadinta alaabta, iibsiga, hubinta tayada iyo raridda.",
-    "talkTeam": "Aan wada hadalno",
-    "quoteLabel": "DAD DHAB AH. FURSADO DHAB AH.",
-    "faqLabel": "WAXYAABO AAD ISWEYDIIN KARTO",
-    "faqTitle": "Caddayn yar, ka hor intaadan taaban.",
-    "faqBody": "Bilowgu waa inuu fududaadaa. Waa kuwan waxyaabaha laga ogaado A&A Shop.",
+    "about2": "Khibraddii A&A.",
+    "aboutBody": "A&A Store waxa dhisay shirkada EastGate Venture Holdings LLP. A&A Store waxay macaamiisha ka caawinnaa raadinta, iibsiga iyo rarista alaabta Shiinaha.",
+    "photoLabel": "Shirkada A&A oo shaqada ku jirta.",
+    "businessTitle": "Ganacsigaaga alaab ma u rabtaa?",
+    "businessBody": "Waxaan kaa caawinnaa raadinta alaabta, iibsiga, hubinta tayada iyo rarista.",
+    "talkTeam": "Nala soo xidhiidh",
+    "quoteLabel": "WAXA AY MACAAMIISHU NAGA YIDHAAHDEEN",
+    "faqLabel": "SU'AALAHA INTA BADAN LA ISWEYDIIYO",
+    "faqTitle": "Su'aal ma haysaa?",
+    "faqBody": "Jawaabaha su'aalaha ku saabsan app-ka iyo adeegyada A&A halkan ka eeg.",
     "faq1": {
-      "question": "Maxaan ka heli karaa A&A Shop?",
-      "answer": "Baadh elektaroonigga, dharka, qalabka guriga, quruxda iyo daryeelka, alaabta carruurta, ciyaaraha iyo bannaanka. Bogga hore wuxuu sidoo kale leeyahay dalabyada maanta."
+      "question": "Maxaan ka heli karaa A&A Store?",
+      "answer": "Waxaad ka heli kartaa qalabka elektarooniga ah, dharka, qalabka guriga, alaabta quruxda iyo daryeelka, alaabta carruurta iyo qalabka ciyaaraha. Bogga hore waxa kale oo aad ka eegi kartaa qiimo-dhimista maanta."
     },
     "faq2": {
-      "question": "A&A Shop ma u heli karaa telefoonkayga?",
-      "answer": "A&A Shop waxaa loo heli karaa Android. Bogga soo-dejinta ka hel app-ka Google Play ama APK-ga Android."
+      "question": "A&A Store ma ku shaqaynayaa telefoonkayga?",
+      "answer": "Haddii aad isticmaasho Android, A&A Store ka soo deji Google Play-ga. Bogga soo dejinta waxa kale oo yaalla faylka APK."
     },
     "faq3": {
-      "question": "Ma heli karaa caawimo ku saabsan dalab?",
-      "answer": "Haa. Kooxda A&A WhatsApp ugu soo dir faahfaahinta dalabkaaga ama alaabtaada. Su'aalaha iibsiga iyo rariddana waan kaa caawinaynaa."
+      "question": "Dalabkayga ma iga caawin kartaan?",
+      "answer": "Haa. WhatsApp-kayaga noogu soo dir faahfaahinta dalabkaaga ama alaabta aad rabto. Waxaan kaa caawinaynaa su'aalahaga iibsiga iyo rarista."
     },
     "faq4": {
-      "question": "A&A ma iga caawin kartaa alaabta ganacsigayga?",
-      "answer": "Haa. Waxaan kaa caawinnaa raadinta alaabta, iibsiga, hubinta tayada iyo gaadiidka Shiinaha ilaa Afrika. Foomka hoose noogu sheeg waxa aad rabto."
+      "question": "A&A ma iga caawin kartaa raadinta alaabta ganacsigayga?",
+      "answer": "Haa. Waxaan kaa caawinnaa raadinta alaabta, iibsiga, hubinta tayada iyo soo rarista Shiinaha ilaa Afrika. Foomka hoose noogu sheeg waxa aad u baahan tahay."
     },
     "ctaLabel": "HADDA KA HEL GOOGLE PLAY",
     "cta1": "Hadda",
     "cta2": "Ka Iibso",
-    "ctaBody": "Baadh alaabooyinka, eeg dalabyada maanta, oo buuxi dambiishaada. Ka bilow A&A Shop.",
+    "ctaBody": "Raadi alaabta aad rabto, eeg qiimo-dhimista, oo sellada/dambiisha ku rid waxa aad dooratay. Soo deji A&A Store.",
     "contactLabel": "NALA HADAL",
     "contact1": "Su'aal ma qabtaa?",
-    "contact2": "Waan ku dhagaysanaynaa.",
-    "contactBody": "Caawimada app-ka, fikrad alaab ama tallaabadaada ganacsi ee xigta. Noo sheeg waxa aad rabto.",
+    "contact2": "Nala soo xidhiidh.",
+    "contactBody": "App-ka ma kaa caawinnaa, mise alaab ayaad rabtaa? Noo soo qor waxa aad u baahan tahay.",
     "downloadLabel": "HADDA KA HEL GOOGLE PLAY",
     "download1": "Hadda",
     "download2": "Ka Iibso",
-    "downloadBody": "App-ka A&A Shop wuxuu helidda alaabta kuugu keenayaa jeebkaaga. Baadh alaabta Shiinaha, eeg dalabyada maanta oo isku keen waxa aad jeceshahay.",
-    "downloadFoot": "A&A Shop ee Android",
-    "downloadScan": "Sawir koodhka. Soo deji. Iibso.",
-    "downloadScanBody": "Kaamiradaada ku sawir koodhkan si aad A&A Shop uga soo dejiso Google Play.",
+    "downloadBody": "A&A Store ka raadi alaabta Shiinaha, eeg qiimo-dhimista maanta, oo sellada/dambiisha ku ururi alaabta aad dooratay.",
+    "downloadFoot": "A&A Store ee Android",
+    "downloadScan": "Shaxdan ku fur Google Play-ga.",
+    "downloadScanBody": "Kamarada telefoonkaaga ku jeedi shaxdan, dabadeed fur xidhiidhka si aad app-ka uga soo dejiso Google Play-ga.",
     "downloadHowLabel": "KU SOO DHOWOW",
-    "downloadHowTitle": "Alaabtaada koowaad halkan ka hel.",
-    "downloadHowBody": "Hab fudud oo aad ku baadho, ku dukaamaysato, kuna xidhiidhiso A&A.",
-    "desktopPhone": "KOMBIYUUTARKA ILAA TELEFOONKA",
-    "supportDownload": "Caawimo bilowga ah ma rabtaa?",
-    "supportDownloadBody": "Kooxdayadu waxay diyaar u tahay su'aalahaaga app-ka.",
+    "downloadHowTitle": "Sidan ku bilow.",
+    "downloadHowBody": "Raadi alaabta, dooro waxa aad rabto oo nala soo xidhiidh.",
+    "desktopPhone": "TELEFOONKAAGA KU SOO DEJI",
+    "supportDownload": "Ma kaa caawinnaa soo dejinta?",
+    "supportDownloadBody": "Haddii aad su'aal ka qabto soo dejinta ama isticmaalka app-ka, nala soo xidhiidh.",
     "ctaArtNote": "Baadh. Dooro. Iibso."
   }
 }
