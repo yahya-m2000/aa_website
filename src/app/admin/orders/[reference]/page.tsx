@@ -18,7 +18,7 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
   }
 
   return (
-    <div className="admin-page-transition mx-auto max-w-[1600px] px-6 py-10">
+    <div className="admin-page-transition mx-auto max-w-[1600px] px-4 py-10 sm:px-6">
       <div className="mb-6">
         <Link
           href="/admin/orders"

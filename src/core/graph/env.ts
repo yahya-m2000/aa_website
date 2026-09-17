@@ -4,6 +4,7 @@ export const graphEnv = {
   clientSecret: process.env.ADMIN_GRAPH_CLIENT_SECRET,
   siteId: process.env.ADMIN_GRAPH_SITE_ID,
   ordersListId: process.env.ADMIN_GRAPH_ORDERS_LIST_ID,
+  pushSubscriptionsListId: process.env.ADMIN_GRAPH_PUSH_SUBSCRIPTIONS_LIST_ID,
 };
 
 export function assertGraphConfigured(): void {

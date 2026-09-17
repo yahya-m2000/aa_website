@@ -14,7 +14,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
   const result = await listOrders({ pageSize: 25, status, search, cursor });
 
   return (
-    <div className="admin-page-transition mx-auto max-w-[1600px] px-6 py-10">
+    <div className="admin-page-transition mx-auto max-w-[1600px] px-4 py-10 sm:px-6">
       <div className="mb-6">
         <h1 className="font-display text-2xl font-semibold text-[rgb(var(--foreground))]">Orders</h1>
         <p className="mt-1 text-sm text-[rgb(var(--muted-foreground))]">

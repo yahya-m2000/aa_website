@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
+import { usePushSubscription } from '@/core/push/use-push-subscription';
 import { AdminSidebar } from './admin-sidebar';
 
 // Routes that render their own full-screen experience and must not be wrapped in the
@@ -18,13 +19,14 @@ interface AdminChromeProps {
 export function AdminChrome({ userLabel, onSignOut, children }: AdminChromeProps) {
   const pathname = usePathname();
   const isFullscreen = FULLSCREEN_ROUTES.some((route) => pathname === route || pathname.startsWith(`${route}/`));
+  usePushSubscription();
 
   if (isFullscreen) {
     return <>{children}</>;
   }
 
   return (
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row">
       <AdminSidebar userLabel={userLabel} onSignOut={onSignOut} />
       <main className="min-w-0 flex-1">{children}</main>
     </div>

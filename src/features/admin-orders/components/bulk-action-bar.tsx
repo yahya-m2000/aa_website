@@ -56,13 +56,13 @@ export function BulkActionBar({ selectedReferences, onClear }: BulkActionBarProp
   }
 
   return (
-    <div className="sticky top-0 z-10 flex items-center justify-between gap-3 rounded-(--radius) border border-[rgb(var(--accent))]/30 bg-[rgb(var(--card))] px-4 py-3">
+    <div className="sticky top-0 z-10 flex flex-col gap-3 rounded-(--radius) border border-[rgb(var(--accent))]/30 bg-[rgb(var(--card))] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
       <span className="text-sm font-medium text-[rgb(var(--foreground))]">
         {selectedReferences.length} selected
       </span>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Select value={status} onValueChange={(v) => setStatus(v as InternalStatus)}>
-          <SelectTrigger className="h-9 w-[180px] text-xs">
+          <SelectTrigger className="h-9 w-full text-xs sm:w-[180px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

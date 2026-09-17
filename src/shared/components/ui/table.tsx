@@ -3,7 +3,25 @@ import { cn } from '@/core/utils';
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="w-full overflow-x-auto">
+    // The scroll-shadow background-attachment:local trick: two radial-gradient
+    // "shadow" images pinned to the scrolling content (so they move with it and
+    // vanish at each true start/end) plus two solid-color images pinned to the
+    // viewport (covering the shadows unless there's actually more content off-
+    // screen in that direction). Net effect: a fade cue appears on whichever
+    // edge(s) currently have hidden content, with zero JS scroll tracking - the
+    // dense 8-column orders table otherwise scrolled on mobile with no visual
+    // hint that Total/Created were off-screen.
+    <div
+      className="w-full overflow-x-auto"
+      style={{
+        backgroundImage:
+          'linear-gradient(to right, rgb(var(--background)) 30%, transparent), linear-gradient(to right, transparent, rgb(var(--background)) 70%), linear-gradient(to right, rgb(0 0 0 / 0.08), transparent 20px), linear-gradient(to left, rgb(0 0 0 / 0.08), transparent 20px)',
+        backgroundPosition: 'left center, right center, left center, right center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '40px 100%, 40px 100%, 20px 100%, 20px 100%',
+        backgroundAttachment: 'local, local, scroll, scroll',
+      }}
+    >
       <table ref={ref} className={cn('w-full caption-bottom text-sm', className)} {...props} />
     </div>
   )
