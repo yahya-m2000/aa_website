@@ -68,26 +68,6 @@ export function OrdersFilters() {
           ))}
         </select>
       </div>
-      <div className="flex flex-wrap gap-2" aria-label="Quick status filters">
-        {[
-          "",
-          "Needs Review",
-          "Awaiting Payment",
-          "Order Created",
-          "Shipped",
-        ].map((value) => (
-          <button
-            key={value}
-            type="button"
-            disabled={isPending}
-            aria-pressed={status === value}
-            onClick={() => updateParam("status", value)}
-            className={`min-h-10 rounded-full border px-3.5 text-xs font-medium transition-colors ${status === value ? "border-transparent bg-[rgb(var(--accent))] text-white" : "border-[rgb(var(--border))] hover:bg-[rgb(var(--muted))]"}`}
-          >
-            {value || "All orders"}
-          </button>
-        ))}
-      </div>
       {(status || appliedSearch) && (
         <div className="flex flex-wrap items-center gap-3 border-t border-[rgb(var(--border))] pt-3 text-xs text-[rgb(var(--muted-foreground))]">
           <span>

@@ -38,9 +38,54 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
           )}
         </div>
       </div>
-      <div className="mb-6">
-          <div className="grid min-w-0 gap-6 md:grid-cols-2">
-          <Card id="order-customer">
+      <div className="flex flex-col gap-6 lg:grid lg:min-w-0 lg:items-start lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
+        <div className="contents lg:block lg:min-w-0 lg:space-y-6 lg:col-start-1 lg:row-start-1">
+          <Card id="order-items" className="order-1 lg:order-none">
+            <CardHeader>
+              <CardTitle className="text-lg">
+                Order items{" "}
+                <span className="ml-1 text-sm font-normal text-[rgb(var(--muted-foreground))]">
+                  ({order.lineItems.length})
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {order.lineItems.length === 0 && (
+                <p className="text-sm text-[rgb(var(--muted-foreground))]">
+                  No item details available. Check the source order.
+                </p>
+              )}
+              {order.lineItems.map((item, index) => (
+                <article
+                  key={`${item.productId}-${index}`}
+                  className="grid min-w-0 gap-3 border-b border-[rgb(var(--border))] pb-4 last:border-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto]"
+                >
+                  <div className="min-w-0">
+                    <h3 className="break-words text-sm font-medium leading-relaxed">
+                      {item.productTitle}
+                    </h3>
+                    {!!item.variantOptions?.length && (
+                      <p className="mt-1 text-xs leading-relaxed text-[rgb(var(--muted-foreground))]">
+                        {item.variantOptions
+                          .map((v) => `${v.name}: ${v.value}`)
+                          .join(" · ")}
+                      </p>
+                    )}
+                    <p className="mt-2 text-xs text-[rgb(var(--muted-foreground))]">
+                      {item.quantity} ×{" "}
+                      <span className="whitespace-nowrap tabular-nums">
+                        {formatUsd(item.finalAmount)}
+                      </span>
+                    </p>
+                  </div>
+                  <p className="whitespace-nowrap text-right text-base font-semibold tabular-nums">
+                    {formatUsd(item.finalAmount * item.quantity)}
+                  </p>
+                </article>
+              ))}
+            </CardContent>
+          </Card>
+          <Card id="order-customer" className="order-2 lg:order-none">
             <CardHeader>
               <CardTitle className="text-lg">Customer</CardTitle>
             </CardHeader>
@@ -80,7 +125,7 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
               </address>
             </CardContent>
           </Card>
-          <Card id="order-pricing">
+          <Card id="order-pricing" className="order-3 lg:order-none">
             <CardHeader>
               <CardTitle className="text-lg">
                 Pricing breakdown{" "}
@@ -130,56 +175,7 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
               )}
             </CardContent>
           </Card>
-          </div>
-      </div>
-      <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
-        <div className="min-w-0 space-y-6 lg:col-start-1 lg:row-start-1">
-          <Card id="order-items">
-            <CardHeader>
-              <CardTitle className="text-lg">
-                Order items{" "}
-                <span className="ml-1 text-sm font-normal text-[rgb(var(--muted-foreground))]">
-                  ({order.lineItems.length})
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {order.lineItems.length === 0 && (
-                <p className="text-sm text-[rgb(var(--muted-foreground))]">
-                  No item details available. Check the source order.
-                </p>
-              )}
-              {order.lineItems.map((item, index) => (
-                <article
-                  key={`${item.productId}-${index}`}
-                  className="grid min-w-0 gap-3 border-b border-[rgb(var(--border))] pb-4 last:border-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto]"
-                >
-                  <div className="min-w-0">
-                    <h3 className="break-words text-sm font-medium leading-relaxed">
-                      {item.productTitle}
-                    </h3>
-                    {!!item.variantOptions?.length && (
-                      <p className="mt-1 text-xs leading-relaxed text-[rgb(var(--muted-foreground))]">
-                        {item.variantOptions
-                          .map((v) => `${v.name}: ${v.value}`)
-                          .join(" · ")}
-                      </p>
-                    )}
-                    <p className="mt-2 text-xs text-[rgb(var(--muted-foreground))]">
-                      {item.quantity} ×{" "}
-                      <span className="whitespace-nowrap tabular-nums">
-                        {formatUsd(item.finalAmount)}
-                      </span>
-                    </p>
-                  </div>
-                  <p className="whitespace-nowrap text-right text-base font-semibold tabular-nums">
-                    {formatUsd(item.finalAmount * item.quantity)}
-                  </p>
-                </article>
-              ))}
-            </CardContent>
-          </Card>
-          <section aria-labelledby="fulfilment-heading" className="space-y-4">
+          <section aria-labelledby="fulfilment-heading" className="order-5 space-y-4 lg:order-none">
             <h2 id="fulfilment-heading" className="font-display text-lg font-semibold">Delivery and warehouse</h2>
           {f.DeliveryGroupId && (
             <Card>
@@ -225,7 +221,7 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
             />
           </div>
           </section>
-          <Card>
+          <Card className="order-6 lg:order-none">
             <CardHeader>
               <CardTitle className="text-lg">Order details</CardTitle>
             </CardHeader>
@@ -248,8 +244,9 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
                 )}
               </dl>
             </CardContent>
-          </Card>        </div>
-        <aside aria-label="Order actions" className="order-first min-w-0 space-y-4 lg:order-none lg:col-start-2 lg:row-start-1">
+          </Card>
+        </div>
+        <aside aria-label="Order actions" className="order-4 min-w-0 space-y-4 lg:order-none lg:col-start-2 lg:row-start-1">
           <h2 className="font-display text-lg font-semibold">Manage order</h2>
           <div id="order-manage" className="space-y-4">
             <OrderStatusPanel order={order} />

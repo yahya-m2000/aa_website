@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -21,6 +21,24 @@ const currency = (value: number) =>
     currency: "USD",
     maximumFractionDigits: 0,
   });
+const currencyCompact = (value: number) =>
+  value.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: 1,
+  });
+function useIsNarrow() {
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 480px)");
+    setNarrow(mql.matches);
+    const onChange = () => setNarrow(mql.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  return narrow;
+}
 export function ReportCharts({
   report,
   compact = false,
@@ -28,6 +46,7 @@ export function ReportCharts({
   report: DashboardReport;
   compact?: boolean;
 }) {
+  const narrow = useIsNarrow();
   const [type, setType] = useState<"bar" | "area">(compact ? "area" : "bar");
   const [basis, setBasis] = useState<"completed" | "quoted">("completed");
   const feeKey = basis === "completed" ? "completedService" : "quotedService";
@@ -36,29 +55,31 @@ export function ReportCharts({
     data: report.series,
     margin: { top: 12, right: 8, left: 0, bottom: 0 },
   };
+  const moneyTick = narrow ? currencyCompact : currency;
   const axes = (
     <>
       <CartesianGrid strokeDasharray="3 3" stroke="#e3dfe7" vertical={false} />
       <XAxis
         dataKey="label"
-        tick={{ fontSize: 11 }}
+        tick={{ fontSize: narrow ? 10 : 11 }}
         tickLine={false}
         axisLine={false}
-        minTickGap={28}
+        minTickGap={narrow ? 16 : 28}
+        interval={narrow ? "preserveStartEnd" : undefined}
       />
       <YAxis
-        width={62}
-        tick={{ fontSize: 11 }}
+        width={narrow ? 40 : 62}
+        tick={{ fontSize: narrow ? 10 : 11 }}
         tickLine={false}
         axisLine={false}
-        tickFormatter={currency}
+        tickFormatter={moneyTick}
       />
       <Tooltip
         formatter={(value) =>
           typeof value === "number" ? currency(value) : "Unavailable"
         }
       />
-      <Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
+      <Legend wrapperStyle={{ fontSize: narrow ? 11 : 12, paddingTop: 12 }} />
     </>
   );
   return (
@@ -68,12 +89,12 @@ export function ReportCharts({
           <h2 className="font-display text-lg font-medium">
             Service fees &amp; markup
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
             <select
               aria-label="Income basis"
               value={basis}
               onChange={(e) => setBasis(e.target.value as typeof basis)}
-              className="min-h-11 rounded-xl border border-[rgb(var(--input))] px-3 text-sm"
+              className="min-h-11 min-w-0 rounded-xl border border-[rgb(var(--input))] px-2 text-xs sm:px-3 sm:text-sm"
             >
               <option value="completed">Completed orders</option>
               <option value="quoted">All quoted orders</option>
@@ -82,7 +103,7 @@ export function ReportCharts({
               aria-label="Income chart type"
               value={type}
               onChange={(e) => setType(e.target.value as typeof type)}
-              className="min-h-11 rounded-xl border border-[rgb(var(--input))] px-3 text-sm"
+              className="min-h-11 min-w-0 rounded-xl border border-[rgb(var(--input))] px-2 text-xs sm:px-3 sm:text-sm"
             >
               <option value="bar">Bar chart</option>
               <option value="area">Area chart</option>
@@ -90,7 +111,7 @@ export function ReportCharts({
           </div>
         </div>
         <div
-          className="h-72 min-w-0 w-full"
+          className="h-64 min-w-0 w-full sm:h-72"
           role="img"
           aria-label={`${basis === "completed" ? "Completed-order" : "Quoted"} service fee and markup income over ${report.period.label}. Exact amounts are available in the period table and Excel export.`}
         >
@@ -152,7 +173,7 @@ export function ReportCharts({
             Order outcomes
           </h2>
           <div
-            className="h-64 min-w-0 w-full"
+            className="h-56 min-w-0 w-full sm:h-64"
             role="img"
             aria-label="Completed, open, cancelled and expired orders by creation period. Exact counts are in the table below."
           >
@@ -165,20 +186,21 @@ export function ReportCharts({
                 />
                 <XAxis
                   dataKey="label"
-                  tick={{ fontSize: 11 }}
-                  minTickGap={28}
+                  tick={{ fontSize: narrow ? 10 : 11 }}
+                  minTickGap={narrow ? 16 : 28}
+                  interval={narrow ? "preserveStartEnd" : undefined}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
                   allowDecimals={false}
-                  width={40}
-                  tick={{ fontSize: 11 }}
+                  width={narrow ? 28 : 40}
+                  tick={{ fontSize: narrow ? 10 : 11 }}
                   tickLine={false}
                   axisLine={false}
                 />
                 <Tooltip />
-                <Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
+                <Legend wrapperStyle={{ fontSize: narrow ? 11 : 12, paddingTop: 12 }} />
                 <Bar
                   dataKey="completed"
                   name="Completed"
