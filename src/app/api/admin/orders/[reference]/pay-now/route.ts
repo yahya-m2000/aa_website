@@ -1,7 +1,8 @@
+import { requestOperation } from '@/features/admin-automation/commands';
 import { NextResponse } from 'next/server';
 import { requireAdminSession } from '@/core/admin-auth/session';
 import { toErrorResponse } from '@/core/utils/http-error';
-import { getOrderItemByReference, updateOrderItemFields } from '@/features/admin-orders/orders.repository';
+import { getOrderItemByReference } from '@/features/admin-orders/orders.repository';
 import { payNowSchema } from '@/features/admin-orders/schemas';
 
 // Distinct, later, explicit action from "Payment Confirmed" (2026-07-25 procurement split —
@@ -43,30 +44,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
       return NextResponse.json({ error: { code: 'NOT_FOUND', message: 'Order not found' } }, { status: 404 });
     }
 
-    // Re-read server-side before writing: only orders currently sitting at 'Order Created'
-    // (HIOBuy order exists, not yet paid) are eligible. Refuses a re-click after payment has
-    // already moved the order back to 'Payment Confirmed', and refuses clicking Pay Now before
-    // the HIOBuy order has even been created yet.
-    if (item.fields.InternalStatus !== 'Order Created') {
-      return NextResponse.json(
-        {
-          error: {
-            code: 'WRONG_STATUS',
-            message: `Order is currently "${item.fields.InternalStatus}" — Pay Now is only available once the HIOBuy order has been created (status "Order Created").`,
-          },
-        },
-        { status: 409 },
-      );
-    }
-
-    const newEtag = await updateOrderItemFields(item.id, etag, {
-      PayNowConfirmed: true,
-    });
-
-    const actor = session.user?.email ?? 'unknown';
-    console.log(`[admin-orders] PAY NOW REQUESTED: order ${reference} requested by ${actor} at ${new Date().toISOString()}`);
-
-    return NextResponse.json({ success: true, data: { etag: newEtag } });
+    const operation = await requestOperation('pay', item, session.user?.email ?? 'unknown', etag);
+    return NextResponse.json({ success: true, data: { etag: item['@odata.etag'], operation } }, { status: 202 });
   } catch (error) {
     return toErrorResponse(error);
   }

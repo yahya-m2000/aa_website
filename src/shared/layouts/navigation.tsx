@@ -20,6 +20,15 @@ export function Navigation({ locale }: { locale: string }) {
     pathname === "/" ? `#${section}` : `/#${section}`;
 
   useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 851px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setOpen(false);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+
+  useEffect(() => {
     const update = () => setScrolled(window.scrollY > 30);
     update();
     window.addEventListener("scroll", update, { passive: true });

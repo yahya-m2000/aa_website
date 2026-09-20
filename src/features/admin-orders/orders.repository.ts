@@ -1,8 +1,10 @@
+import { listRecords, findRecord, type OperationData, type DeliveryData } from '../admin-automation/records';
 import { graphEnv } from '@/core/graph/env';
 import { GraphConflictError, GraphRequestError, getGraphClient } from '@/core/graph/graph.client';
 import { sendOrderStatusWhatsApp } from '@/core/whatsapp/whatsapp.service';
 import type { WhatsAppNotifiableStatus } from '@/core/whatsapp/whatsapp.types';
 import { mapInternalToCustomerStatus } from './statusMapping';
+import { getPricingDisplay, storageFeeForDisplay } from './pricing-display';
 import type {
   CustomerStatus,
   GraphListItem,
@@ -22,6 +24,7 @@ function listBase(): string {
 
 function toListRow(item: GraphListItem): OrderListRow {
   const f = item.fields;
+  const pricing = getPricingDisplay(f.DeliveryGroupId ? { ...f, DeliveryUsd: 0, IsDeliveryEstimated: false } : f, storageFeeForDisplay(f.ArrivedAtWarehouseAt));
   return {
     id: item.id,
     etag: item['@odata.etag'],
@@ -31,7 +34,9 @@ function toListRow(item: GraphListItem): OrderListRow {
     paymentMethod: f.PaymentMethod,
     customerStatus: f.CustomerStatus,
     internalStatus: f.InternalStatus,
-    totalUsd: f.TotalUsd,
+    totalUsd: pricing.knownChargesUsd,
+    deliveryPending: pricing.deliveryPending,
+    deliveryGroupId: f.DeliveryGroupId,
     createdAt: f.CreatedAt,
   };
 }
@@ -115,7 +120,11 @@ export async function listOrders(params: ListOrdersParams): Promise<ListOrdersRe
 
     const result = await request.get();
 
-    const items = ((result.value ?? []) as GraphListItem[]).map(toListRow);
+    const items = await Promise.all(((result.value ?? []) as GraphListItem[]).map(async item => {
+      const row = toListRow(item);
+      const operation = process.env.ADMIN_GRAPH_OPERATIONS_LIST_ID ? await findRecord<OperationData>('operations', `create:${row.reference}`) : null;
+      return { ...row, paymentRequested: Boolean(operation) };
+    }));
     const nextCursor = (result['@odata.nextLink'] as string | undefined) ?? null;
     return { items, nextCursor };
   } catch (error) {
@@ -148,6 +157,8 @@ export async function getOrderDetailByReference(reference: string): Promise<Orde
     etag: item['@odata.etag'],
     fields: item.fields,
     lineItems: parseLineItems(item.fields.LineItemsJson),
+    operations: process.env.ADMIN_GRAPH_OPERATIONS_LIST_ID ? await listRecords<OperationData>('operations', `fields/OrderReference eq '${item.fields.OrderReference.replace(/'/g, "''")}'`) : [],
+    delivery: item.fields.DeliveryGroupId ? await findRecord<DeliveryData>('deliveries', item.fields.DeliveryGroupId) : null,
   };
 }
 
@@ -238,6 +249,10 @@ export async function bulkUpdateInternalStatus(
       // a single click does, so CustomerStatus must stay in sync here too, not just on the
       // single-order path. null (Order Created/Needs Review) correctly means "don't touch it."
       const derivedCustomerStatus = mapInternalToCustomerStatus(internalStatus);
+      if (['Awaiting Payment', 'Order Created', 'Payment Confirmed'].includes(internalStatus)) throw new Error('System-managed status.');
+      if (item.fields.DeliveryGroupId) throw new Error('Update the combined delivery instead.');
+      const operations = await listRecords<OperationData>('operations', `fields/OrderReference eq '${reference.replace(/'/g, "''")}'`);
+      if (operations.some(o => ['Queued', 'Dispatching'].includes(o.state))) throw new Error('Supplier action in progress.');
       await updateOrderItemFields(item.id, item['@odata.etag'], {
         InternalStatus: internalStatus,
         ...(derivedCustomerStatus ? { CustomerStatus: derivedCustomerStatus } : {}),

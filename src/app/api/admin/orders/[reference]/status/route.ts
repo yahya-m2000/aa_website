@@ -1,3 +1,5 @@
+import { requestOperation } from '@/features/admin-automation/commands';
+import { listRecords, type OperationData } from '@/features/admin-automation/records';
 import { NextResponse } from 'next/server';
 import { requireAdminSession } from '@/core/admin-auth/session';
 import { toErrorResponse } from '@/core/utils/http-error';
@@ -54,20 +56,19 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
       return NextResponse.json({ error: { code: 'NOT_FOUND', message: 'Order not found' } }, { status: 404 });
     }
 
-    // Re-read the current InternalStatus server-side (never trust the client's view) before
-    // writing; if it's already Payment Confirmed, this is a no-op transition, not a real one —
-    // reject it rather than silently re-triggering the procurement automation a second time
-    // (e.g. a rapid double-click, or a stale page re-submitting).
-    if (isPaymentConfirmedTransition && item.fields.InternalStatus === 'Payment Confirmed') {
-      return NextResponse.json(
-        {
-          error: {
-            code: 'ALREADY_CONFIRMED',
-            message: 'This order is already marked Payment Confirmed.',
-          },
-        },
-        { status: 409 },
-      );
+    if (isPaymentConfirmedTransition) {
+      const operation = await requestOperation('create', item, session.user?.email ?? 'unknown', input.etag);
+      return NextResponse.json({ success: true, data: { etag: item['@odata.etag'], operation } }, { status: 202 });
+    }
+    if (input.internalStatus && input.internalStatus !== item.fields.InternalStatus) {
+      if (['Awaiting Payment', 'Order Created'].includes(input.internalStatus)) {
+        return NextResponse.json({ error: { message: 'Payment and supplier stages cannot be reset manually.' } }, { status: 409 });
+      }
+      const operations = await listRecords<OperationData>('operations', `fields/OrderReference eq '${item.fields.OrderReference.replace(/'/g, "''")}'`);
+      if (operations.some(o => ['Queued', 'Dispatching'].includes(o.state)))
+        return NextResponse.json({ error: { message: 'A supplier action is in progress. Wait for its result before changing status.' } }, { status: 409 });
+      if (item.fields.DeliveryGroupId)
+        return NextResponse.json({ error: { message: 'Update shipment status from the combined delivery.' } }, { status: 409 });
     }
 
     // CustomerStatus is always derived from internalStatus, never client-supplied (2026-07-26,

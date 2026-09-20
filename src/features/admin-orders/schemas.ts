@@ -25,7 +25,7 @@ export const updateOrderStatusSchema = z
 export type UpdateOrderStatusInput = z.infer<typeof updateOrderStatusSchema>;
 
 const NON_CRITICAL_INTERNAL_STATUS_VALUES = INTERNAL_STATUS_VALUES.filter(
-  (s) => s !== 'Payment Confirmed',
+  (s) => !['Payment Confirmed', 'Order Created', 'Awaiting Payment'].includes(s),
 ) as [string, ...string[]];
 
 export const bulkUpdateStatusSchema = z.object({

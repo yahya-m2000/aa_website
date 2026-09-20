@@ -1,0 +1,215 @@
+.admin-workspace {
+  --font-display: var(--font-admin-display);
+  --font-sans: var(--font-admin-body);
+  font-family: var(--font-admin-body), sans-serif;
+  min-height: 100vh;
+  background: #f7f6f2;
+}
+
+/* Also theme Radix portals, which mount outside the workspace element. */
+.admin-workspace,
+body:has(.admin-workspace) {
+  --background: 247 246 242;
+  --foreground: 23 23 29;
+  --card: 255 255 255;
+  --card-foreground: 23 23 29;
+  --primary: 23 23 29;
+  --primary-hover: 48 43 60;
+  --accent: 73 48 138;
+  --accent-hover: 57 36 111;
+  --muted: 239 236 245;
+  --muted-foreground: 105 101 112;
+  --border: 227 223 231;
+  --input: 210 204 217;
+  --ring: 73 48 138;
+  --radius: 1rem;
+}
+
+.admin-workspace h1 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+}
+.admin-workspace h2,
+.admin-workspace h3 {
+  letter-spacing: -0.025em;
+}
+.admin-workspace button:not(:disabled),
+.admin-workspace select {
+  cursor: pointer;
+}
+.admin-workspace :is(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid #7350b5;
+  outline-offset: 4px;
+}
+.admin-workspace input:not([type="checkbox"]),
+.admin-workspace textarea,
+.admin-workspace select {
+  background-color: white;
+}
+.admin-workspace td {
+  padding-block: 1.1rem;
+}
+.admin-workspace th {
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.admin-workspace td,
+.admin-workspace p {
+  overflow-wrap: anywhere;
+}
+.admin-workspace .admin-page-transition {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+.admin-eyebrow {
+  color: #735891;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.admin-panel {
+  border: 1px solid #e3dfe7;
+  border-radius: 1.25rem;
+  background: white;
+  padding: 1.5rem;
+}
+.admin-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid #e3dfe7;
+  border-radius: 1rem;
+  background: white;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.admin-shortcut:hover {
+  background: #f1ebfa;
+  border-color: #cab3ee;
+}
+.admin-skip {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: #17171d;
+  color: white;
+  transform: translateY(-160%);
+}
+.admin-skip:focus {
+  transform: translateY(0);
+}
+.admin-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: 0.8rem;
+  background: #cab3ee;
+  color: #31204e;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+.admin-sidebar {
+  background: #eeece7;
+}
+.admin-topbar {
+  background: rgb(247 246 242 / 0.96);
+  backdrop-filter: blur(12px);
+}
+.admin-login {
+  background:
+    radial-gradient(ellipse at 15% 15%, #e5dbf6 0, transparent 55%), #f7f6f2;
+}
+
+/* Radix keeps the drawer mounted through its closing animation. */
+.admin-mobile-drawer {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  overscroll-behavior: contain;
+}
+.admin-mobile-drawer nav { min-height: 0; overscroll-behavior: contain; }
+.admin-mobile-drawer > :last-child { flex-shrink: 0; }
+.admin-mobile-drawer :is(a, button) { min-height: 44px; }
+.admin-mobile-drawer :is(a, button):focus-visible { outline: 2px solid #7350b5; outline-offset: 2px; }
+.admin-mobile-drawer[data-state="open"] { animation: admin-drawer-in 260ms cubic-bezier(.22, 1, .36, 1); }
+.admin-mobile-drawer[data-state="closed"] { animation: admin-drawer-out 180ms ease-in; }
+.admin-menu-overlay[data-state="open"] { animation: admin-overlay-in 220ms ease-out; }
+.admin-menu-overlay[data-state="closed"] { animation: admin-overlay-out 180ms ease-in; }
+@keyframes admin-drawer-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes admin-drawer-out { from { transform: translateX(0); } to { transform: translateX(100%); } }
+@keyframes admin-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes admin-overlay-out { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .admin-mobile-drawer, .admin-menu-overlay { animation: none !important; }
+}
+@media (min-width: 1280px) {
+  .admin-workspace .admin-page-transition {
+    padding-inline: 2.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .admin-workspace *,
+  .admin-workspace *::before,
+  .admin-workspace *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Phone controls stay legible without iOS input zoom; dialogs stay inside the viewport. */
+@media (max-width: 639px) {
+  .admin-workspace input,
+  .admin-workspace textarea,
+  .admin-workspace select {
+    font-size: 16px;
+  }
+  body:has(.admin-workspace) .admin-dialog-content {
+    width: calc(100% - 2rem);
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    padding: 1.25rem;
+  }
+  .admin-workspace .admin-panel {
+    padding: 1.1rem;
+  }
+}
+body:has(.admin-workspace) [data-radix-popper-content-wrapper] {
+  max-width: calc(100vw - 1rem);
+}
+.admin-workspace [role="checkbox"] {
+  position: relative;
+}
+.admin-workspace [role="checkbox"]::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+}
+
+.admin-workspace [id^="order-"] {
+  scroll-margin-top: 5rem;
+  min-width: 0;
+}
+@media (max-width: 639px) {
+  body:has(.admin-workspace) .admin-dialog-content > .mt-6 {
+    flex-direction: column-reverse;
+  }
+  body:has(.admin-workspace) .admin-dialog-content > .mt-6 > button {
+    width: 100%;
+    white-space: normal;
+    min-height: 44px;
+    height: auto;
+    padding-block: 0.75rem;
+  }
+}

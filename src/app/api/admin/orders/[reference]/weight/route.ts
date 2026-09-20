@@ -34,6 +34,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
       return NextResponse.json({ error: { code: 'NOT_FOUND', message: 'Order not found' } }, { status: 404 });
     }
 
+    if (item.fields.DeliveryGroupId) return NextResponse.json({ error: { message: 'Weigh the combined delivery instead.' } }, { status: 409 });
     const newDeliveryUsd = Math.round(weightKg * DELIVERY_RATE_USD_PER_KG * 100) / 100;
     const deliveryDelta = newDeliveryUsd - item.fields.DeliveryUsd;
     const newTotalUsd = Math.round((item.fields.TotalUsd + deliveryDelta) * 100) / 100;

@@ -1,22 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { requireAdminSession } from '@/core/admin-auth/session';
-import { toErrorResponse } from '@/core/utils/http-error';
-import { getOrderStats } from '@/features/admin-orders/orders.repository';
-
-const DEFAULT_RANGE_DAYS = 30;
+import { NextRequest, NextResponse } from "next/server";
+import { requireAdminSession } from "@/core/admin-auth/session";
+import { toErrorResponse } from "@/core/utils/http-error";
+import { parseSelection } from "@/features/admin-dashboard/reporting";
+import { getDashboardReport } from "@/features/admin-dashboard/reporting.repository";
 
 export async function GET(request: NextRequest) {
   try {
     await requireAdminSession();
-
-    const { searchParams } = new URL(request.url);
-    const now = new Date();
-    const to = searchParams.get('to') ?? now.toISOString();
-    const from =
-      searchParams.get('from') ?? new Date(now.getTime() - DEFAULT_RANGE_DAYS * 24 * 60 * 60 * 1000).toISOString();
-
-    const stats = await getOrderStats(from, to);
-    return NextResponse.json({ success: true, data: stats });
+    let selection;
+    try {
+      selection = parseSelection(request.nextUrl.searchParams);
+    } catch {
+      return NextResponse.json(
+        { error: { message: "Choose a valid reporting period." } },
+        { status: 400 },
+      );
+    }
+    const { report } = await getDashboardReport(selection);
+    return NextResponse.json(
+      { success: true, data: report },
+      { headers: { "Cache-Control": "private, no-store" } },
+    );
   } catch (error) {
     return toErrorResponse(error);
   }

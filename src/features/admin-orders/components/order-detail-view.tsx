@@ -1,222 +1,293 @@
-import { Badge } from '@/shared/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { statusVariant } from '../status';
-import type { OrderDetail } from '../types';
-import { ArrivedAtWarehouseCard } from './arrived-at-warehouse-card';
-import { OrderStatusPanel } from './order-status-panel';
-import { WeightEntryCard } from './weight-entry-card';
-
-// Mirrors ArrivedAtWarehouseCard's own duplicate of aa_catalog/server's
-// pricing.config.ts/pricing.service.ts (owner-supplied rule, 2026-07-28) — kept here too
-// since the pricing-breakdown card needs the same live total, not just the warehouse card.
-const STORAGE_FREE_DAYS = 7;
-const STORAGE_RATE_USD_PER_DAY = 0.5;
-
-function calculateStorageFeeUsd(arrivedAtWarehouseAt: string | undefined, asOf: Date = new Date()): number {
-  if (!arrivedAtWarehouseAt) return 0;
-  const arrivedAt = new Date(arrivedAtWarehouseAt);
-  if (Number.isNaN(arrivedAt.getTime())) return 0;
-  const daysSinceArrival = Math.floor((asOf.getTime() - arrivedAt.getTime()) / (24 * 60 * 60 * 1000));
-  const billableDays = Math.max(0, daysSinceArrival - STORAGE_FREE_DAYS);
-  return billableDays * STORAGE_RATE_USD_PER_DAY;
-}
-
-function formatDateTime(iso: string): string {
-  try {
-    return new Date(iso).toLocaleString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  } catch {
-    return iso;
-  }
-}
-
-// SharePoint number columns aren't guaranteed non-null at runtime (a manually-edited or
-// malformed list item — same class of issue as LineItemsJson — can leave a pricing field
-// undefined despite the OrderDetail type claiming `number`), so this must not assume a
-// valid number reached it. Matches parseLineItems' own "degrade, don't crash the page" rule.
-function formatUsd(amount: number | undefined | null): string {
-  if (typeof amount !== 'number' || Number.isNaN(amount)) return '—';
-  return `$${amount.toFixed(2)}`;
-}
-
-// SharePoint pricing fields aren't guaranteed numeric at runtime (see formatUsd above) — a
-// bad value here should drop out of the group subtotal rather than turning the whole
-// subtotal into NaN, matching the same "degrade, don't crash" rule used everywhere else in
-// this admin CMS for the exact same class of issue.
-function sumUsd(...amounts: Array<number | undefined | null>): number {
-  return amounts.reduce<number>((sum, a) => (typeof a === 'number' && !Number.isNaN(a) ? sum + a : sum), 0);
-}
+import Link from "next/link";
+import { getPricingDisplay, storageFeeForDisplay } from "../pricing-display";
+import { formatUsd, formatOrderDate } from "../format";
+import { CopyButton } from "./copy-button";
+import { Badge } from "@/shared/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { statusVariant } from "../status";
+import type { OrderDetail } from "../types";
+import { ArrivedAtWarehouseCard } from "./arrived-at-warehouse-card";
+import { OrderStatusPanel } from "./order-status-panel";
+import { WeightEntryCard } from "./weight-entry-card";
 
 export function OrderDetailView({ order }: { order: OrderDetail }) {
   const f = order.fields;
-  const storageFeeUsd = calculateStorageFeeUsd(f.ArrivedAtWarehouseAt);
-  // Grouped so staff can read "what we charge for the service" and "what to collect for
-  // shipping/handling" as two glanceable numbers, rather than five flat rows they have to
-  // mentally add up themselves — the delivery+storage group in particular is exactly the
-  // figure staff need when contacting a customer to collect the delivery payment.
-  const goodsAndServiceUsd = sumUsd(f.SubtotalUsd, f.ServiceFeeUsd, f.MarkupUsd);
-  const deliveryAndStorageUsd = sumUsd(f.DeliveryUsd, storageFeeUsd);
-
+  const storageFeeUsd = storageFeeForDisplay(f.ArrivedAtWarehouseAt);
+  const pricing = getPricingDisplay(
+    f.DeliveryGroupId
+      ? { ...f, DeliveryUsd: 0, IsDeliveryEstimated: false }
+      : f,
+    storageFeeUsd,
+  );
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)_minmax(0,340px)]">
-      {/* Left: customer + order info — glanceable at a fixed width, no scroll needed */}
-      <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Customer</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-1.5 text-sm">
-            <p className="font-medium text-[rgb(var(--foreground))]">{f.CustomerFullName}</p>
-            <p className="text-[rgb(var(--muted-foreground))]">{f.CustomerEmail}</p>
-            <p className="text-[rgb(var(--muted-foreground))]">{f.CustomerPhone}</p>
-            <div className="mt-2 border-t border-[rgb(var(--border))] pt-2 text-[rgb(var(--muted-foreground))]">
-              <p>{f.ShippingAddress}</p>
-              <p>
-                {f.City}
-                {f.Postcode ? `, ${f.Postcode}` : ''}
-              </p>
-              <p>{f.Country}</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Order info</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-1.5 text-sm">
-            <Row label="Payment method" value={f.PaymentMethod} />
-            <Row label="Created" value={formatDateTime(f.CreatedAt)} />
-            <Row label="Expires" value={formatDateTime(f.ExpiresAt)} />
-            {f.HiobuyOrderId && <Row label="Supplier order ID" value={f.HiobuyOrderId} />}
-            {f.ProcuredAt && <Row label="Procured" value={formatDateTime(f.ProcuredAt)} />}
-          </CardContent>
-        </Card>
-
-        {f.InternalNotes && (
-          <Card>
+    <div className="admin-order-detail">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant={statusVariant(f.InternalStatus)}>
+            {f.InternalStatus}
+          </Badge>
+          {f.InternalStatus !== f.CustomerStatus && (
+            <span className="text-xs text-[rgb(var(--muted-foreground))]">
+              Customer: {f.CustomerStatus}
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="mb-6">
+          <div className="grid min-w-0 gap-6 md:grid-cols-2">
+          <Card id="order-customer">
             <CardHeader>
-              <CardTitle className="text-lg">Internal notes</CardTitle>
+              <CardTitle className="text-lg">Customer</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="whitespace-pre-wrap text-sm text-[rgb(var(--foreground))]">{f.InternalNotes}</p>
+            <CardContent className="space-y-3 text-sm">
+              <p className="font-medium">
+                {f.CustomerFullName || "Not provided"}
+              </p>
+              <div className="flex min-w-0 items-center justify-between gap-3">
+                <span className="min-w-0 break-all text-[rgb(var(--muted-foreground))]">
+                  {f.CustomerEmail || "No email provided"}
+                </span>
+                {f.CustomerEmail && (
+                  <CopyButton value={f.CustomerEmail} label="Email" />
+                )}
+              </div>
+              <div className="flex min-w-0 items-center justify-between gap-3">
+                {f.CustomerPhone ? (
+                  <a
+                    href={`tel:${f.CustomerPhone}`}
+                    className="min-w-0 break-words text-[rgb(var(--accent))]"
+                  >
+                    {f.CustomerPhone}
+                  </a>
+                ) : (
+                  <span className="text-[rgb(var(--muted-foreground))]">
+                    No phone provided
+                  </span>
+                )}
+                {f.CustomerPhone && (
+                  <CopyButton value={f.CustomerPhone} label="Phone number" />
+                )}
+              </div>
+              <address className="border-t border-[rgb(var(--border))] pt-3 not-italic leading-relaxed text-[rgb(var(--muted-foreground))]">
+                <p>{f.ShippingAddress || "No address provided"}</p>
+                <p>{[f.City, f.Postcode].filter(Boolean).join(", ")}</p>
+                <p>{f.Country}</p>
+              </address>
             </CardContent>
           </Card>
-        )}
-      </div>
-
-      {/* Middle: line items + pricing */}
-      <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Order items</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {order.lineItems.length === 0 && (
-              <p className="text-sm text-[rgb(var(--muted-foreground))]">
-                No line items recorded (or the stored data could not be parsed).
-              </p>
-            )}
-            {order.lineItems.map((item, index) => (
-              <div
-                key={`${item.productId}-${index}`}
-                className="flex items-center justify-between border-b border-[rgb(var(--border))] pb-3 last:border-none last:pb-0"
-              >
-                <div>
-                  <p className="text-sm font-medium text-[rgb(var(--foreground))]">{item.productTitle}</p>
-                  {item.variantOptions && item.variantOptions.length > 0 && (
-                    <p className="text-xs text-[rgb(var(--muted-foreground))]">
-                      {item.variantOptions.map((v) => `${v.name}: ${v.value}`).join(', ')}
-                    </p>
-                  )}
-                  <p className="text-xs text-[rgb(var(--muted-foreground))]">
-                    Qty {item.quantity} × {formatUsd(item.finalAmount)}
-                  </p>
-                </div>
-                <p className="text-sm font-medium tabular-nums">{formatUsd(item.finalAmount * item.quantity)}</p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Pricing breakdown</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-sm">
-            <div className="space-y-1.5">
-              <p className="text-xs font-medium uppercase tracking-wide text-[rgb(var(--muted-foreground))]">
-                Goods &amp; service
-              </p>
-              <Row label="Product cost" value={formatUsd(f.SubtotalUsd)} />
-              <Row label="Service fee" value={formatUsd(f.ServiceFeeUsd)} />
-              <Row label="Markup" value={formatUsd(f.MarkupUsd)} />
-              <div className="flex items-center justify-between border-t border-[rgb(var(--border))] pt-1.5 font-medium">
-                <span>Subtotal</span>
-                <span className="tabular-nums">{formatUsd(goodsAndServiceUsd)}</span>
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <p className="text-xs font-medium uppercase tracking-wide text-[rgb(var(--muted-foreground))]">
-                Delivery &amp; storage
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-[rgb(var(--muted-foreground))]">
-                  Delivery
-                  {f.IsDeliveryEstimated && <Badge variant="warning">Estimated</Badge>}
+          <Card id="order-pricing">
+            <CardHeader>
+              <CardTitle className="text-lg">
+                Pricing breakdown{" "}
+                <span className="ml-1 text-xs font-normal text-[rgb(var(--muted-foreground))]">
+                  USD
                 </span>
-                <span className="text-[rgb(var(--foreground))]">{formatUsd(f.DeliveryUsd)}</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5 text-sm">
+              <dl className="space-y-3">
+                <PriceRow
+                  label="Items"
+                  value={formatUsd(pricing.goodsAndServiceUsd === null ? null : pricing.goodsAndServiceUsd - f.ServiceFeeUsd)}
+                />
+                <PriceRow label="Service fee" value={formatUsd(f.ServiceFeeUsd)} />
+                <PriceRow
+                  label="Delivery"
+                  value={f.DeliveryGroupId ? "Charged separately" : pricing.deliveryPending ? "Awaiting weight" : formatUsd(f.DeliveryUsd)}
+                />
+                {storageFeeUsd > 0 && <PriceRow label="Storage" value={formatUsd(storageFeeUsd)} />}
+              </dl>
+              <div className="rounded-xl bg-[rgb(var(--muted))] p-4">
+                <p className="text-xs font-medium text-[rgb(var(--muted-foreground))]">
+                  Order total
+                </p>
+                <p className="mt-2 text-xl font-semibold leading-tight tabular-nums sm:text-3xl">
+                  {formatUsd(pricing.knownChargesUsd)}
+                </p>
               </div>
-              {storageFeeUsd > 0 && (
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-[rgb(var(--muted-foreground))]">
-                    Storage
-                    <Badge variant="warning">Accruing</Badge>
-                  </span>
-                  <span className="text-[rgb(var(--foreground))]">{formatUsd(storageFeeUsd)}</span>
-                </div>
+              {(pricing.deliveryPending || f.DeliveryGroupId) && (
+                <p className="text-xs text-[rgb(var(--muted-foreground))]">
+                  {f.DeliveryGroupId ? "Delivery is charged once for the combined shipment." : "Delivery will be added after weighing."}
+                </p>
               )}
-              <div className="flex items-center justify-between border-t border-[rgb(var(--border))] pt-1.5 font-medium">
-                <span>Subtotal</span>
-                <span className="tabular-nums">{formatUsd(deliveryAndStorageUsd)}</span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between border-t border-[rgb(var(--border))] pt-2 font-medium">
-              <span>Total</span>
-              <span className="tabular-nums">{formatUsd(f.TotalUsd + storageFeeUsd)}</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <WeightEntryCard order={order} />
-        <ArrivedAtWarehouseCard order={order} />
+              <details className="border-t border-[rgb(var(--border))] pt-3">
+                <summary className="cursor-pointer py-2 text-xs font-medium text-[rgb(var(--muted-foreground))]">Cost and margin</summary>
+                <dl className="mt-3 space-y-3">
+                  <PriceRow label="Product cost" value={formatUsd(f.SubtotalUsd)} />
+                  <PriceRow label="Markup" value={formatUsd(f.MarkupUsd)} />
+                </dl>
+              </details>
+              {pricing.knownChargesUsd === null && (
+                <p role="status" className="text-xs text-[rgb(var(--danger))]">
+                  Pricing data is incomplete. Verify the order before collecting
+                  payment.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+          </div>
       </div>
-
-      {/* Right: status + management controls */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between rounded-(--radius) border border-[rgb(var(--border))] bg-[rgb(var(--background))] px-4 py-3 text-sm">
-          <span className="text-[rgb(var(--muted-foreground))]">Customer-facing status</span>
-          <Badge variant={statusVariant(f.CustomerStatus)}>{f.CustomerStatus}</Badge>
-        </div>
-
-        <OrderStatusPanel order={order} />
+      <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
+        <div className="min-w-0 space-y-6 lg:col-start-1 lg:row-start-1">
+          <Card id="order-items">
+            <CardHeader>
+              <CardTitle className="text-lg">
+                Order items{" "}
+                <span className="ml-1 text-sm font-normal text-[rgb(var(--muted-foreground))]">
+                  ({order.lineItems.length})
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {order.lineItems.length === 0 && (
+                <p className="text-sm text-[rgb(var(--muted-foreground))]">
+                  No item details available. Check the source order.
+                </p>
+              )}
+              {order.lineItems.map((item, index) => (
+                <article
+                  key={`${item.productId}-${index}`}
+                  className="grid min-w-0 gap-3 border-b border-[rgb(var(--border))] pb-4 last:border-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto]"
+                >
+                  <div className="min-w-0">
+                    <h3 className="break-words text-sm font-medium leading-relaxed">
+                      {item.productTitle}
+                    </h3>
+                    {!!item.variantOptions?.length && (
+                      <p className="mt-1 text-xs leading-relaxed text-[rgb(var(--muted-foreground))]">
+                        {item.variantOptions
+                          .map((v) => `${v.name}: ${v.value}`)
+                          .join(" · ")}
+                      </p>
+                    )}
+                    <p className="mt-2 text-xs text-[rgb(var(--muted-foreground))]">
+                      {item.quantity} ×{" "}
+                      <span className="whitespace-nowrap tabular-nums">
+                        {formatUsd(item.finalAmount)}
+                      </span>
+                    </p>
+                  </div>
+                  <p className="whitespace-nowrap text-right text-base font-semibold tabular-nums">
+                    {formatUsd(item.finalAmount * item.quantity)}
+                  </p>
+                </article>
+              ))}
+            </CardContent>
+          </Card>
+          <section aria-labelledby="fulfilment-heading" className="space-y-4">
+            <h2 id="fulfilment-heading" className="font-display text-lg font-semibold">Delivery and warehouse</h2>
+          {f.DeliveryGroupId && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Combined delivery</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <Link
+                  className="text-[rgb(var(--accent))] break-all"
+                  href={`/admin/deliveries/${f.DeliveryGroupId}`}
+                >
+                  {f.DeliveryGroupId}
+                </Link>
+                {order.delivery ? (
+                  <>
+                    <p>
+                      {order.delivery.data.references.length} orders -{" "}
+                      {order.delivery.state}
+                    </p>
+                    <p>
+                      Shared delivery:{" "}
+                      {formatUsd(order.delivery.data.chargeUsd ?? null)}
+                      {order.delivery.data.paidAt ? " - Paid" : ""}
+                    </p>
+                    <p className="text-xs">
+                      Collected once for the whole delivery; excluded from this
+                      order&apos;s charges.
+                    </p>
+                  </>
+                ) : (
+                  <p>Delivery details temporarily unavailable.</p>
+                )}
+              </CardContent>
+            </Card>
+          )}
+          <div className={`grid min-w-0 gap-6 ${f.DeliveryGroupId ? "" : "2xl:grid-cols-2"}`}>
+            {!f.DeliveryGroupId && (
+              <WeightEntryCard key={`weight-${order.etag}`} order={order} />
+            )}
+            <ArrivedAtWarehouseCard
+              key={`arrival-${order.etag}`}
+              order={order}
+            />
+          </div>
+          </section>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Order details</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <dl className="space-y-3 text-sm">
+                <InfoRow label="Payment method" value={f.PaymentMethod} />
+                <InfoRow
+                  label="Created (UTC)"
+                  value={formatOrderDate(f.CreatedAt, true)}
+                />
+                {f.InternalStatus === "Awaiting Payment" && <InfoRow label="Payment deadline (UTC)" value={formatOrderDate(f.ExpiresAt, true)} />}
+                {f.HiobuyOrderId && (
+                  <InfoRow label="Supplier order" value={f.HiobuyOrderId} />
+                )}
+                {f.ProcuredAt && (
+                  <InfoRow
+                    label="Procured (UTC)"
+                    value={formatOrderDate(f.ProcuredAt, true)}
+                  />
+                )}
+              </dl>
+            </CardContent>
+          </Card>        </div>
+        <aside aria-label="Order actions" className="order-first min-w-0 space-y-4 lg:order-none lg:col-start-2 lg:row-start-1">
+          <h2 className="font-display text-lg font-semibold">Manage order</h2>
+          <div id="order-manage" className="space-y-4">
+            <OrderStatusPanel order={order} />
+          </div>
+        </aside>
       </div>
     </div>
   );
 }
-
-function Row({ label, value }: { label: string; value: string }) {
+function PriceRow({
+  label,
+  value,
+  total = false,
+}: {
+  label: string;
+  value: string;
+  total?: boolean;
+}) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-[rgb(var(--muted-foreground))]">{label}</span>
-      <span className="text-[rgb(var(--foreground))]">{value}</span>
+    <div
+      className={`flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1 ${total ? "border-t border-[rgb(var(--border))] pt-3 font-medium" : ""}`}
+    >
+      <dt className={total ? "" : "text-[rgb(var(--muted-foreground))]"}>
+        {label}
+      </dt>
+      <dd className="ml-auto min-w-0 break-words text-right tabular-nums">
+        {value}
+      </dd>
+    </div>
+  );
+}
+function InfoRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-3">
+      <dt className="text-[rgb(var(--muted-foreground))]">{label}</dt>
+      <dd className="min-w-0 break-words text-right leading-relaxed">
+        {value || "—"}
+      </dd>
     </div>
   );
 }

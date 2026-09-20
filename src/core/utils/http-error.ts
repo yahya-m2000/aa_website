@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import { UnauthorizedError } from '@/core/admin-auth/session';
 import { GraphConflictError, GraphRequestError } from '@/core/graph/graph.client';
+import { OperationRequestError } from '@/features/admin-automation/commands';
 
 export function toErrorResponse(error: unknown): NextResponse {
+  if (error instanceof OperationRequestError) return NextResponse.json({ error: { code: 'OPERATION_UNAVAILABLE', message: error.message } }, { status: 409 });
   if (error instanceof UnauthorizedError) {
     return NextResponse.json({ error: { code: 'UNAUTHORIZED', message: error.message } }, { status: 401 });
   }

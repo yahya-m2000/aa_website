@@ -1,3 +1,4 @@
+import type { DurableRecord, OperationData, DeliveryData } from '../admin-automation/records';
 // Simplified 2026-07-26 to mirror aa_catalog/server/src/integrations/graph/orders.types.ts
 // (WhatsApp-notification project) — 'Payment Pending' and 'Processing' both retired, collapsed
 // into 'Payment Confirmed' (no meaningful customer-facing gap between "we got your payment" and
@@ -114,6 +115,7 @@ export interface OrderListItemFields {
    * "is equal to true" condition has no equivalent ambiguity.
    */
   PayNowConfirmed?: boolean;
+  DeliveryGroupId?: string;
   /** Timestamp the customer ticked the checkout Terms & Conditions consent checkbox
    * (owner-supplied T&Cs, 2026-07-25) — an audit record only, never editable here. */
   TermsAcceptedAt: string;
@@ -136,7 +138,11 @@ export interface OrderListRow {
   paymentMethod: PaymentMethod;
   customerStatus: CustomerStatus;
   internalStatus: InternalStatus;
-  totalUsd: number;
+  /** Display total excludes estimated delivery; stored TotalUsd remains unchanged. */
+  totalUsd: number | null;
+  deliveryPending: boolean;
+  deliveryGroupId?: string;
+  paymentRequested?: boolean;
   createdAt: string;
 }
 
@@ -145,4 +151,6 @@ export interface OrderDetail {
   etag: string;
   fields: OrderListItemFields;
   lineItems: OrderLineItem[];
+  operations?: DurableRecord<OperationData>[];
+  delivery?: DurableRecord<DeliveryData> | null;
 }
