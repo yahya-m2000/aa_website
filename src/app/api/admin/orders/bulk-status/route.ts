@@ -1,3 +1,4 @@
+import { actorFromSession } from '@/features/admin-orders/audit';
 import { NextResponse } from 'next/server';
 import { requireAdminSession } from '@/core/admin-auth/session';
 import { toErrorResponse } from '@/core/utils/http-error';
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
     }
     const { references, internalStatus } = parsed.data;
 
-    const results = await bulkUpdateInternalStatus(references, internalStatus as never);
+    const results = await bulkUpdateInternalStatus(references, internalStatus as never, actorFromSession(session));
 
     const actor = session.user?.email ?? 'unknown';
     const succeeded = results.filter((r) => r.ok).map((r) => r.reference);

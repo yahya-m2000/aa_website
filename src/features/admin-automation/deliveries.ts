@@ -1,3 +1,5 @@
+import { auditFields, recordActivity, type Actor } from '../admin-orders/audit';
+import { requireVerifiedSupplierPayment } from '@/features/admin-automation/payment-evidence';
 import { createHash } from "node:crypto";
 import type { OrderListItemFields } from "../admin-orders/types";
 import {
@@ -26,7 +28,7 @@ const eligible = (status: string) =>
   !["Cancelled", "Expired", "Shipped", "Completed", "Needs Review"].includes(
     status,
   );
-export async function combineDelivery(references: string[], actor: string) {
+export async function combineDelivery(references: string[], actor: Actor) {
   const refs = [...new Set(references)].sort();
   if (refs.length < 2 || refs.length > 25)
     throw new Error("Select between 2 and 25 orders.");
@@ -67,7 +69,7 @@ export async function combineDelivery(references: string[], actor: string) {
     {
       references: refs,
       recipientKey: identity(first),
-      actor,
+      actor: actor.email ?? actor.name,
       createdAt: now,
       updatedAt: now,
       customer: first.CustomerFullName,
@@ -80,7 +82,7 @@ export async function combineDelivery(references: string[], actor: string) {
       ]
         .filter(Boolean)
         .join(", "),
-      history: [{ at: now, actor, action: "Combined delivery requested" }],
+      history: [{ at: now, actor: actor.email ?? actor.name, action: "Combined delivery requested" }],
     },
   );
   return finishGrouping(record, actor);
@@ -88,7 +90,7 @@ export async function combineDelivery(references: string[], actor: string) {
 
 export async function finishGrouping(
   record: DurableRecord<DeliveryData>,
-  actor: string,
+  actor: Actor,
 ) {
   if (record.state !== "Linking") return record;
   // Each order is reserved conditionally. A partial write leaves a visible Linking group;
@@ -117,9 +119,12 @@ export async function finishGrouping(
       throw new Error(
         "An order was assigned or weighed elsewhere. Dissolve this unfinished group.",
       );
+    const action = `Added to combined delivery ${record.key}`;
+    const audit = auditFields(actor, action);
     await updateOrderItemFields(item.id, item["@odata.etag"], {
-      DeliveryGroupId: record.key,
+      DeliveryGroupId: record.key, ...audit,
     });
+    await recordActivity({ reference: ref, actor, action, occurredAt: audit.LastModifiedAt, eventKey: `delivery:${record.key}:linked:${ref}` });
   }
   const latest = await findRecord<DeliveryData>("deliveries", record.key);
   if (!latest || latest.state !== "Linking")
@@ -129,7 +134,7 @@ export async function finishGrouping(
     updatedAt: new Date().toISOString(),
     history: [
       ...latest.data.history,
-      { at: new Date().toISOString(), actor, action: "Orders linked" },
+      { at: new Date().toISOString(), actor: actor.email ?? actor.name, action: "Orders linked" },
     ],
   });
 }
@@ -138,7 +143,7 @@ export async function updateDelivery(
   key: string,
   etag: string,
   action: string,
-  actor: string,
+  actor: Actor,
   weightKg?: number,
   tracking?: string,
 ) {
@@ -163,10 +168,14 @@ export async function updateDelivery(
       if (
         item &&
         (!item.fields.DeliveryGroupId || item.fields.DeliveryGroupId === key)
-      )
+      ) {
+        const auditAction = `Removed from combined delivery ${key}`;
+        const audit = auditFields(actor, auditAction);
         await updateOrderItemFields(item.id, item["@odata.etag"], {
-          DeliveryGroupId: "",
+          DeliveryGroupId: "", ...audit,
         });
+        await recordActivity({ reference: ref, actor, action: auditAction, occurredAt: audit.LastModifiedAt, eventKey: `delivery:${key}:unlinked:${ref}` });
+      }
     }
     state = "Dissolved";
   } else if (action === "weigh") {
@@ -192,33 +201,39 @@ export async function updateDelivery(
       );
     for (const ref of data.references) {
       const item = await getOrderItemByReference(ref);
-      if (
-        !item ||
-        item.fields.DeliveryGroupId !== key ||
-        !eligible(item.fields.InternalStatus) ||
-        item.fields.HiobuyPurchaseStatus !== "Paid"
-      )
-        throw new Error(
-          "Every included order must have confirmed supplier payment before dispatch.",
-        );
+      if (!item || item.fields.DeliveryGroupId !== key || !eligible(item.fields.InternalStatus))
+        throw new Error('Every included order must be ready for dispatch.');
+      await requireVerifiedSupplierPayment(ref, item.fields);
     }
     state = "Shipped";
     data.tracking = tracking.trim();
   } else if (action === "complete") {
     if (state !== "Shipped")
       throw new Error("Only dispatched deliveries can be completed.");
+    for (const ref of data.references) {
+      const item = await getOrderItemByReference(ref);
+      if (!item || item.fields.DeliveryGroupId !== key) throw new Error('Delivery membership changed.');
+      await requireVerifiedSupplierPayment(ref, item.fields);
+    }
     state = "Completed";
   } else throw new Error("Unknown delivery action.");
   data.history = [
     ...data.history,
     {
       at: data.updatedAt,
-      actor,
+      actor: actor.email ?? actor.name,
       action:
         action === "weigh"
           ? `Weight ${weightKg} kg; delivery $${data.chargeUsd?.toFixed(2)}`
           : action,
     },
   ];
-  return replaceRecord("deliveries", record, state, data);
+  const saved = await replaceRecord("deliveries", record, state, data);
+  const auditAction = action === 'ship' ? `Shipped via combined delivery ${key} (tracking ${data.tracking})`
+    : action === 'complete' ? `Completed via combined delivery ${key}`
+    : action === 'weigh' ? `Recorded combined delivery ${key} weight ${weightKg} kg (delivery $${data.chargeUsd?.toFixed(2)})`
+    : action === 'paid' ? `Confirmed delivery payment for ${key}` : undefined;
+  if (auditAction) await Promise.all(data.references.map(reference => recordActivity({ reference, actor,
+    action: auditAction, occurredAt: data.updatedAt, eventKey: `delivery:${key}:${action}:${saved.etag}:${reference}` })));
+  return saved;
 }

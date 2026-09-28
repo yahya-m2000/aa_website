@@ -1,3 +1,4 @@
+import { actorFromSession } from '@/features/admin-orders/audit';
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminSession } from "@/core/admin-auth/session";
@@ -20,7 +21,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         data: await combineDelivery(
           input.data.references,
-          session.user?.email ?? "unknown",
+          actorFromSession(session),
         ),
       });
     } catch (error) {

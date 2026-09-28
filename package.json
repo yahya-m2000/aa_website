@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:procurement": "node --import tsx --experimental-test-module-mocks --test tests/procurement/*.test.mjs"
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",
@@ -54,6 +55,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }

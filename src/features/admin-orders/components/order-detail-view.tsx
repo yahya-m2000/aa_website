@@ -1,3 +1,6 @@
+import { ProductImageViewer } from './product-image-viewer';
+import { LastChanged, OrderActivity } from './order-activity';
+import { taobaoItemUrl } from '../product-media';
 import Link from "next/link";
 import { getPricingDisplay, storageFeeForDisplay } from "../pricing-display";
 import { formatUsd, formatOrderDate } from "../format";
@@ -37,6 +40,7 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
             </span>
           )}
         </div>
+        <LastChanged fields={f} />
       </div>
       <div className="flex flex-col gap-6 lg:grid lg:min-w-0 lg:items-start lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
         <div className="contents lg:block lg:min-w-0 lg:space-y-6 lg:col-start-1 lg:row-start-1">
@@ -58,8 +62,9 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
               {order.lineItems.map((item, index) => (
                 <article
                   key={`${item.productId}-${index}`}
-                  className="grid min-w-0 gap-3 border-b border-[rgb(var(--border))] pb-4 last:border-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto]"
+                  className="grid grid-cols-[64px_minmax(0,1fr)] min-w-0 gap-3 border-b border-[rgb(var(--border))] pb-4 last:border-0 last:pb-0 sm:grid-cols-[64px_minmax(0,1fr)_auto]"
                 >
+                  <ProductImageViewer items={order.lineItems} index={index} />
                   <div className="min-w-0">
                     <h3 className="break-words text-sm font-medium leading-relaxed">
                       {item.productTitle}
@@ -71,6 +76,7 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
                           .join(" · ")}
                       </p>
                     )}
+                    {taobaoItemUrl(item) && <a className="mt-2 inline-block text-xs text-[rgb(var(--accent))] underline" href={taobaoItemUrl(item)} target="_blank" rel="noopener noreferrer">View on Taobao &#8599;</a>}
                     <p className="mt-2 text-xs text-[rgb(var(--muted-foreground))]">
                       {item.quantity} ×{" "}
                       <span className="whitespace-nowrap tabular-nums">
@@ -78,7 +84,7 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
                       </span>
                     </p>
                   </div>
-                  <p className="whitespace-nowrap text-right text-base font-semibold tabular-nums">
+                  <p className="col-start-2 sm:col-start-3 whitespace-nowrap text-right text-base font-semibold tabular-nums">
                     {formatUsd(item.finalAmount * item.quantity)}
                   </p>
                 </article>
@@ -245,6 +251,7 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
               </dl>
             </CardContent>
           </Card>
+          <OrderActivity events={order.activity} />
         </div>
         <aside aria-label="Order actions" className="order-4 min-w-0 space-y-4 lg:order-none lg:col-start-2 lg:row-start-1">
           <h2 className="font-display text-lg font-semibold">Manage order</h2>

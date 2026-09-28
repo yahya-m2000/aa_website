@@ -10,7 +10,6 @@ export function ReconcileForm({
 }: {
   operation: DurableRecord<OperationData>;
 }) {
-  const [supplierId, setSupplierId] = useState(operation.data.supplierId ?? "");
   const [evidence, setEvidence] = useState("");
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -25,7 +24,6 @@ export function ReconcileForm({
           body: JSON.stringify({
             key: operation.key,
             etag: operation.etag,
-            supplierId,
             evidence,
             confirm: true,
           }),
@@ -36,7 +34,7 @@ export function ReconcileForm({
         showToast(json.error?.message ?? "Unable to save result.", "error");
         return;
       }
-      showToast("Verified result recorded");
+      showToast("Supplier recheck requested");
       router.refresh();
     } catch {
       showToast(
@@ -48,26 +46,10 @@ export function ReconcileForm({
   return (
     <details className="mt-3 rounded-lg border p-3">
       <summary className="cursor-pointer">
-        Record verified supplier result
+        Recheck supplier evidence
       </summary>
       <div className="mt-3 space-y-3">
-        <p>
-          Check HIOBuy/Taobao first. This records an existing{" "}
-          {operation.data.kind === "pay"
-            ? "successful payment"
-            : "supplier order"}
-          ; it does not create or pay anything. If nothing succeeded, resolve
-          with the supplier before recording a result.
-        </p>
-        <label className="block">
-          Supplier order ID
-          <input
-            value={supplierId}
-            disabled={operation.data.kind === "pay"}
-            onChange={(e) => setSupplierId(e.target.value)}
-            className="mt-1 min-h-11 w-full rounded-lg border px-3"
-          />
-        </label>
+        <p>This requests a read-only check of every recorded supplier purchase. It does not create orders, retry payments, or mark an order paid without complete evidence.</p>
         <label className="block">
           Verification evidence
           <textarea
@@ -81,17 +63,17 @@ export function ReconcileForm({
         </label>
         <Button
           variant="outline"
-          disabled={!supplierId.trim() || evidence.trim().length < 20}
+          disabled={!operation.data.manifest || !operation.data.supplierIds?.length || evidence.trim().length < 20}
           onClick={() => setOpen(true)}
         >
-          Record verified result
+          Recheck supplier evidence
         </Button>
         <ConfirmDialog
           open={open}
           onOpenChange={setOpen}
-          title="Record verified success?"
-          description="Only continue after verifying the supplier order and, for payment, the actual payment receipt. This changes the CMS record without making a supplier request."
-          confirmLabel="I verified the result"
+          title="Recheck all supplier purchases?"
+          description="The worker will read supplier records and verify all items, amounts and payments. Missing evidence remains in review. No money will be spent."
+          confirmLabel="Request recheck"
           onConfirm={reconcile}
         />
       </div>

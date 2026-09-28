@@ -1,3 +1,5 @@
+import type { OperationData } from "./procurement-contract";
+export type { OperationData } from "./procurement-contract";
 import { getGraphClient } from "@/core/graph/graph.client";
 import { graphEnv } from "@/core/graph/env";
 
@@ -8,25 +10,6 @@ export interface DurableRecord<T = Record<string, unknown>> {
   state: string;
   reference: string;
   data: T;
-}
-export interface OperationData {
-  approvedFingerprint?: string;
-  dispatchToken?: string;
-  kind: "create" | "pay";
-  actor: string;
-  requestedAt: string;
-  updatedAt: string;
-  supplierId?: string;
-  requestId?: string;
-  previewRequestId?: string;
-  previewTotalCnyMinor?: number;
-  purchaseLines?: Array<{ id: string; spec_id?: string; quantity: number }>;
-  paidAt?: string;
-  nextCheckAt?: string;
-  message?: string;
-  synced?: boolean;
-  notification?: "Pending" | "Sending" | "Sent" | "Unknown" | "Skipped";
-  legacy?: boolean;
 }
 export interface DeliveryData {
   references: string[];
@@ -55,7 +38,7 @@ function pending(state: string, value: unknown): boolean {
     );
   return (
     ["Queued", "Dispatching"].includes(state) ||
-    (state === "Review" && data.kind === "pay" && !!data.supplierId) ||
+    (state === "Review" && !!data.manifest && !!data.supplierIds?.length) ||
     (["Succeeded", "Review"].includes(state) &&
       !data.legacy &&
       (!data.synced ||

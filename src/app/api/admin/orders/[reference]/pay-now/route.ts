@@ -1,3 +1,4 @@
+import { actorFromSession } from '@/features/admin-orders/audit';
 import { requestOperation } from '@/features/admin-automation/commands';
 import { NextResponse } from 'next/server';
 import { requireAdminSession } from '@/core/admin-auth/session';
@@ -44,7 +45,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
       return NextResponse.json({ error: { code: 'NOT_FOUND', message: 'Order not found' } }, { status: 404 });
     }
 
-    const operation = await requestOperation('pay', item, session.user?.email ?? 'unknown', etag);
+    const operation = await requestOperation('pay', item, actorFromSession(session), etag);
     return NextResponse.json({ success: true, data: { etag: item['@odata.etag'], operation } }, { status: 202 });
   } catch (error) {
     return toErrorResponse(error);

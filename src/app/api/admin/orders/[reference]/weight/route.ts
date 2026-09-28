@@ -1,3 +1,4 @@
+import { actorFromSession, auditFields, recordActivity } from '@/features/admin-orders/audit';
 import { NextResponse } from 'next/server';
 import { requireAdminSession } from '@/core/admin-auth/session';
 import { toErrorResponse } from '@/core/utils/http-error';
@@ -39,12 +40,18 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
     const deliveryDelta = newDeliveryUsd - item.fields.DeliveryUsd;
     const newTotalUsd = Math.round((item.fields.TotalUsd + deliveryDelta) * 100) / 100;
 
+    const auditActor = actorFromSession(session);
+    const action = `Recorded weight ${weightKg} kg (delivery $${newDeliveryUsd.toFixed(2)})`;
+    const audit = auditFields(auditActor, action);
     const newEtag = await updateOrderItemFields(item.id, etag, {
+      ...audit,
       WeightKg: weightKg,
       DeliveryUsd: newDeliveryUsd,
       IsDeliveryEstimated: false,
       TotalUsd: newTotalUsd,
     });
+
+    await recordActivity({ reference: item.fields.OrderReference, actor: auditActor, action, occurredAt: audit.LastModifiedAt });
 
     const actor = session.user?.email ?? 'unknown';
     console.log(

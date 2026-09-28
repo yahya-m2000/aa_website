@@ -50,14 +50,20 @@ export interface OrderLineItem {
   usdAmount: number;
   markupAmount: number;
   finalAmount: number;
-  hiobuySourceProductId?: string;
-  hiobuySourceUrl?: string;
+  sourceProductId?: string;
+  imageUrl?: string;
 }
 
 // Fields as written to / read from the SharePoint "Orders" list — mirrors
 // aa_catalog/server/src/integrations/graph/orders.types.ts exactly, since both
 // projects read/write the same live SharePoint list.
 export interface OrderListItemFields {
+  LastModifiedByName?: string;
+  LastModifiedByEmail?: string;
+  LastModifiedAt?: string;
+  LastModifiedAction?: string;
+  LastModifiedSource?: 'Admin portal' | 'Automation' | 'Customer';
+
   OrderReference: string;
   CustomerFullName: string;
   CustomerEmail: string;
@@ -143,10 +149,16 @@ export interface OrderListRow {
   deliveryPending: boolean;
   deliveryGroupId?: string;
   paymentRequested?: boolean;
+  thumbnailUrl?: string;
+  itemCount?: number;
+  lastModifiedByName?: string;
+  lastModifiedAt?: string;
+  lastModifiedSource?: string;
   createdAt: string;
 }
 
 export interface OrderDetail {
+  activity?: import('./audit').ActivityEvent[];
   id: string;
   etag: string;
   fields: OrderListItemFields;

@@ -1,3 +1,4 @@
+import { actorFromSession, auditFields, recordActivity } from '@/features/admin-orders/audit';
 import { NextResponse } from 'next/server';
 import { requireAdminSession } from '@/core/admin-auth/session';
 import { toErrorResponse } from '@/core/utils/http-error';
@@ -38,9 +39,15 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
     }
 
     const arrivedAt = new Date().toISOString();
+    const auditActor = actorFromSession(session);
+    const action = 'Marked arrived at warehouse';
+    const audit = auditFields(auditActor, action);
     const newEtag = await updateOrderItemFields(item.id, etag, {
+      ...audit,
       ArrivedAtWarehouseAt: arrivedAt,
     });
+
+    await recordActivity({ reference: item.fields.OrderReference, actor: auditActor, action, occurredAt: audit.LastModifiedAt });
 
     const actor = session.user?.email ?? 'unknown';
     console.log(`[admin-orders] ${actor} marked order ${reference} as arrived at warehouse: ${arrivedAt}`);

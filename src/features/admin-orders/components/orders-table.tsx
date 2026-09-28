@@ -1,5 +1,7 @@
 "use client";
 
+import { ProductThumbnail } from './product-image-viewer';
+import { RelativeTime } from './order-activity';
 import Link from "next/link";
 import { useState } from "react";
 import { OrdersRefresh } from "./orders-refresh";
@@ -124,6 +126,7 @@ export function OrdersTable({ orders }: { orders: OrderListRow[] }) {
               className="rounded-2xl border border-[rgb(var(--border))] bg-white p-4"
             >
               <div className="flex items-center justify-between gap-3">
+                <ProductThumbnail url={order.thumbnailUrl} title={`Items in ${order.reference}`} />
                 <Link
                   href={`/admin/orders/${encodeURIComponent(order.reference)}`}
                   className="flex min-h-11 items-center font-display text-lg font-semibold text-[rgb(var(--accent))]"
@@ -139,6 +142,7 @@ export function OrdersTable({ orders }: { orders: OrderListRow[] }) {
                 </label>
               </div>
               <p className="mt-1 font-medium">{order.customerFullName}</p>
+              {order.lastModifiedByName && <p className="mt-1 text-xs text-[rgb(var(--muted-foreground))]">Updated by {order.lastModifiedByName} &middot; <RelativeTime at={order.lastModifiedAt} /></p>}
               <p className="mt-1 break-all text-xs text-[rgb(var(--muted-foreground))]">
                 {order.customerEmail}
               </p>
@@ -234,16 +238,20 @@ export function OrdersTable({ orders }: { orders: OrderListRow[] }) {
                     />
                   </TableCell>
                   <TableCell>
+                    <div className="flex items-center gap-3">
+                    <ProductThumbnail url={order.thumbnailUrl} title={`Items in ${order.reference}`} />
                     <Link
                       href={`/admin/orders/${encodeURIComponent(order.reference)}`}
                       className="font-medium text-[rgb(var(--foreground))] hover:text-[rgb(var(--accent))]"
                     >
                       {order.reference}
                     </Link>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
                       <span>{order.customerFullName}</span>
+                      {order.lastModifiedByName && <span className="text-xs text-[rgb(var(--muted-foreground))]">Updated by {order.lastModifiedByName} &middot; <RelativeTime at={order.lastModifiedAt} /></span>}
                       <span className="text-xs text-[rgb(var(--muted-foreground))]">
                         {order.customerEmail}
                       </span>

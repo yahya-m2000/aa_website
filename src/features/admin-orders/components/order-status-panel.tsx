@@ -1,5 +1,8 @@
 "use client";
 
+import { formatOrderDate } from '../format';
+import { ProcurementSummary, procurementStatusLabel } from "@/features/admin-automation/procurement-summary";
+import { orderContentsIdentity } from "@/features/admin-automation/procurement-contract";
 import { ReconcileForm } from "@/features/admin-automation/reconcile-form";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -27,7 +30,7 @@ import type { InternalStatus, OrderDetail } from "../types";
 
 // The secondary dropdown covers every other InternalStatus value manually settable by staff.
 // 'Payment Confirmed' gets its own dedicated checkbox below (triggers supplier order
-// creation), and 'Order Created' is excluded entirely — it's a system-set result of that
+// creation), and 'Order Created' is excluded entirely â€” it's a system-set result of that
 // automation succeeding, never something staff pick from a dropdown (same principle as
 // 'Payment Confirmed', just without the money-movement risk that needs its own confirm dialog).
 const SELECTABLE_STATUSES = INTERNAL_STATUS_VALUES.filter(
@@ -68,7 +71,7 @@ async function patchOrder(
   } catch {
     return {
       ok: false,
-      errorMessage: "Failed to save changes — check your connection",
+      errorMessage: "Failed to save changes â€” check your connection",
     };
   }
 }
@@ -92,7 +95,7 @@ export function OrderStatusPanel({ order }: { order: OrderDetail }) {
   const [payNowDialogOpen, setPayNowDialogOpen] = useState(false);
 
   // router.refresh() re-runs the server component and passes a fresh `order` prop, but
-  // useState only reads its initializer on first mount — without this, the panel would keep
+  // useState only reads its initializer on first mount â€” without this, the panel would keep
   // showing stale local state after any status change (e.g. changing to "Cancelled" appearing
   // to do nothing) even though the write succeeded and the server data is correct.
   useEffect(() => {
@@ -173,7 +176,7 @@ export function OrderStatusPanel({ order }: { order: OrderDetail }) {
       if (!result.ok) {
         if (result.status === 409) {
           showToast(
-            "This order was changed elsewhere — refresh to see the latest before saving.",
+            "This order was changed elsewhere â€” refresh to see the latest before saving.",
             "error",
           );
         } else {
@@ -213,7 +216,7 @@ export function OrderStatusPanel({ order }: { order: OrderDetail }) {
     setEtag(result.etag!);
     setInternalStatus("Payment Confirmed");
     showToast(
-      "Payment confirmed — the supplier order will be created automatically.",
+      "Payment confirmed â€” the supplier order will be created automatically.",
     );
     router.refresh();
   }
@@ -238,7 +241,7 @@ export function OrderStatusPanel({ order }: { order: OrderDetail }) {
 
     setEtag(result.etag!);
     setPayNowRequested(true);
-    showToast("Payment requested — the supplier will be charged shortly.");
+    showToast("Payment requested â€” the supplier will be charged shortly.");
     router.refresh();
   }
 
@@ -259,14 +262,10 @@ export function OrderStatusPanel({ order }: { order: OrderDetail }) {
                         ? "Order creation"
                         : "Pay supplier"}
                       :{" "}
-                      {op.state === "Dispatching"
-                        ? "Processing"
-                        : op.state === "Review"
-                          ? "Needs review"
-                          : op.state === "Succeeded"
-                            ? "Complete"
-                            : op.state}
+                      {procurementStatusLabel(op.state, op.data, orderContentsIdentity(order.fields))}
                     </p>
+                    <p className="mt-1 text-xs text-[rgb(var(--muted-foreground))]">Requested by {op.data.actorName ?? op.data.actor} &middot; {formatOrderDate(op.data.requestedAt, true)}</p>
+                    <ProcurementSummary data={op.data} contentsIdentity={orderContentsIdentity(order.fields)} />
                     {(op.data.requestId || op.data.previewRequestId) && (
                       <details className="mt-2 text-xs text-[rgb(var(--muted-foreground))]">
                         <summary className="cursor-pointer py-1">Support reference</summary>
@@ -403,7 +402,7 @@ export function OrderStatusPanel({ order }: { order: OrderDetail }) {
               aria-label="Internal notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Add a note for the team…"
+              placeholder="Add a note for the teamâ€¦"
             />
           </div>
 
@@ -420,7 +419,7 @@ export function OrderStatusPanel({ order }: { order: OrderDetail }) {
             disabled={isSaving || (!statusDirty && !notesDirty)}
             className="w-full"
           >
-            {isSaving ? "Saving…" : "Save changes"}
+            {isSaving ? "Savingâ€¦" : "Save changes"}
           </Button>
           {hasUnsavedChanges && (
             <Button

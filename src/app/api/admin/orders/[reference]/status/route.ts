@@ -1,3 +1,5 @@
+import { actorFromSession, auditFields, recordActivity } from '@/features/admin-orders/audit';
+import { requireVerifiedSupplierPayment } from '@/features/admin-automation/payment-evidence';
 import { requestOperation } from '@/features/admin-automation/commands';
 import { listRecords, type OperationData } from '@/features/admin-automation/records';
 import { NextResponse } from 'next/server';
@@ -57,7 +59,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
     }
 
     if (isPaymentConfirmedTransition) {
-      const operation = await requestOperation('create', item, session.user?.email ?? 'unknown', input.etag);
+      const operation = await requestOperation('create', item, actorFromSession(session), input.etag);
       return NextResponse.json({ success: true, data: { etag: item['@odata.etag'], operation } }, { status: 202 });
     }
     if (input.internalStatus && input.internalStatus !== item.fields.InternalStatus) {
@@ -71,6 +73,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
         return NextResponse.json({ error: { message: 'Update shipment status from the combined delivery.' } }, { status: 409 });
     }
 
+    if (input.internalStatus && ['Shipped', 'Completed'].includes(input.internalStatus))
+      await requireVerifiedSupplierPayment(item.fields.OrderReference, item.fields);
+
     // CustomerStatus is always derived from internalStatus, never client-supplied (2026-07-26,
     // WhatsApp-notification project) — see statusMapping.ts. null means "Order Created" or
     // "Needs Review": leave CustomerStatus untouched, and don't notify the customer of anything.
@@ -83,17 +88,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
     if (derivedCustomerStatus) fields.CustomerStatus = derivedCustomerStatus;
     if (input.internalNotes !== undefined) fields.InternalNotes = input.internalNotes;
 
-    const newEtag = await updateOrderItemFields(item.id, input.etag, fields);
-
-    const actor = session.user?.email ?? 'unknown';
-    if (isPaymentConfirmedTransition) {
-      // Minimum audit trail for a write that triggers real money-spending automation.
-      console.log(
-        `[admin-orders] PAYMENT CONFIRMED: order ${reference} confirmed by ${actor} at ${new Date().toISOString()}`,
-      );
-    } else {
-      console.log(`[admin-orders] ${actor} updated order ${reference}: ${JSON.stringify(Object.keys(fields))}`);
-    }
+    const actor = actorFromSession(session);
+    const action = [input.internalStatus ? `Changed status to ${input.internalStatus}` : '', input.internalNotes !== undefined ? 'Updated internal notes' : ''].filter(Boolean).join(' \u00b7 ');
+    const audit = auditFields(actor, action);
+    const newEtag = await updateOrderItemFields(item.id, input.etag, { ...fields, ...audit });
+    await recordActivity({ reference: item.fields.OrderReference, actor, action, occurredAt: audit.LastModifiedAt });
 
     // Fire-and-forget, matching order.service.ts's email-delivery pattern exactly — the
     // SharePoint write above has already succeeded, nothing here may affect that outcome.

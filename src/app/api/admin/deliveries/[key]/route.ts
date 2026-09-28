@@ -1,3 +1,4 @@
+import { actorFromSession } from '@/features/admin-orders/audit';
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminSession } from "@/core/admin-auth/session";
@@ -34,7 +35,7 @@ export async function PATCH(
           key,
           d.etag,
           d.action,
-          session.user?.email ?? "unknown",
+          actorFromSession(session),
           d.weightKg,
           d.tracking,
         ),

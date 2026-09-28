@@ -1,3 +1,6 @@
+import { auditFields, recordActivity, listActivity, type Actor } from './audit';
+import { productImageUrl } from './product-media';
+import { requireVerifiedSupplierPayment } from '@/features/admin-automation/payment-evidence';
 import { listRecords, findRecord, type OperationData, type DeliveryData } from '../admin-automation/records';
 import { graphEnv } from '@/core/graph/env';
 import { GraphConflictError, GraphRequestError, getGraphClient } from '@/core/graph/graph.client';
@@ -24,6 +27,7 @@ function listBase(): string {
 
 function toListRow(item: GraphListItem): OrderListRow {
   const f = item.fields;
+  const lineItems = parseLineItems(f.LineItemsJson);
   const pricing = getPricingDisplay(f.DeliveryGroupId ? { ...f, DeliveryUsd: 0, IsDeliveryEstimated: false } : f, storageFeeForDisplay(f.ArrivedAtWarehouseAt));
   return {
     id: item.id,
@@ -38,6 +42,11 @@ function toListRow(item: GraphListItem): OrderListRow {
     deliveryPending: pricing.deliveryPending,
     deliveryGroupId: f.DeliveryGroupId,
     createdAt: f.CreatedAt,
+    thumbnailUrl: productImageUrl(lineItems[0] ?? {}),
+    itemCount: lineItems.reduce((count, item) => count + (Number(item?.quantity) || 0), 0),
+    lastModifiedByName: f.LastModifiedByName,
+    lastModifiedAt: f.LastModifiedAt,
+    lastModifiedSource: f.LastModifiedSource,
   };
 }
 
@@ -120,11 +129,15 @@ export async function listOrders(params: ListOrdersParams): Promise<ListOrdersRe
 
     const result = await request.get();
 
-    const items = await Promise.all(((result.value ?? []) as GraphListItem[]).map(async item => {
-      const row = toListRow(item);
-      const operation = process.env.ADMIN_GRAPH_OPERATIONS_LIST_ID ? await findRecord<OperationData>('operations', `create:${row.reference}`) : null;
-      return { ...row, paymentRequested: Boolean(operation) };
-    }));
+    const rows = ((result.value ?? []) as GraphListItem[]).map(toListRow);
+    const requested = new Set<string>();
+    if (process.env.ADMIN_GRAPH_OPERATIONS_LIST_ID) {
+      for (let offset = 0; offset < rows.length; offset += 25) {
+        const filter = rows.slice(offset, offset + 25).map(row => `fields/RecordKey eq 'create:${row.reference.replace(/'/g, "''")}'`).join(' or ');
+        for (const op of await listRecords<OperationData>('operations', filter)) requested.add(op.key);
+      }
+    }
+    const items = rows.map(row => ({ ...row, paymentRequested: requested.has(`create:${row.reference}`) }));
     const nextCursor = (result['@odata.nextLink'] as string | undefined) ?? null;
     return { items, nextCursor };
   } catch (error) {
@@ -157,6 +170,7 @@ export async function getOrderDetailByReference(reference: string): Promise<Orde
     etag: item['@odata.etag'],
     fields: item.fields,
     lineItems: parseLineItems(item.fields.LineItemsJson),
+    activity: await listActivity(item.fields.OrderReference),
     operations: process.env.ADMIN_GRAPH_OPERATIONS_LIST_ID ? await listRecords<OperationData>('operations', `fields/OrderReference eq '${item.fields.OrderReference.replace(/'/g, "''")}'`) : [],
     delivery: item.fields.DeliveryGroupId ? await findRecord<DeliveryData>('deliveries', item.fields.DeliveryGroupId) : null,
   };
@@ -231,6 +245,7 @@ export interface BulkUpdateResult {
 export async function bulkUpdateInternalStatus(
   references: string[],
   internalStatus: Exclude<OrderListItemFields['InternalStatus'], 'Payment Confirmed'>,
+  actor: Actor,
 ): Promise<BulkUpdateResult[]> {
   if ((internalStatus as string) === 'Payment Confirmed') {
     throw new Error('bulkUpdateInternalStatus does not support Payment Confirmed — use the single-order write path.');
@@ -250,13 +265,18 @@ export async function bulkUpdateInternalStatus(
       // single-order path. null (Order Created/Needs Review) correctly means "don't touch it."
       const derivedCustomerStatus = mapInternalToCustomerStatus(internalStatus);
       if (['Awaiting Payment', 'Order Created', 'Payment Confirmed'].includes(internalStatus)) throw new Error('System-managed status.');
+      if (['Shipped', 'Completed'].includes(internalStatus)) await requireVerifiedSupplierPayment(reference, item.fields);
       if (item.fields.DeliveryGroupId) throw new Error('Update the combined delivery instead.');
       const operations = await listRecords<OperationData>('operations', `fields/OrderReference eq '${reference.replace(/'/g, "''")}'`);
       if (operations.some(o => ['Queued', 'Dispatching'].includes(o.state))) throw new Error('Supplier action in progress.');
+      const action = `Changed status to ${internalStatus} (bulk update)`;
+      const audit = auditFields(actor, action);
       await updateOrderItemFields(item.id, item['@odata.etag'], {
+        ...audit,
         InternalStatus: internalStatus,
         ...(derivedCustomerStatus ? { CustomerStatus: derivedCustomerStatus } : {}),
       });
+      await recordActivity({ reference, actor, action, occurredAt: audit.LastModifiedAt });
       // Fire-and-forget, per order — matches the single-order route's identical pattern. A
       // WhatsApp failure for one order in the batch never affects the others' results.
       if (derivedCustomerStatus && isWhatsAppNotifiable(derivedCustomerStatus)) {

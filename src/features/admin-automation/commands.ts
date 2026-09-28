@@ -1,3 +1,5 @@
+import { recordActivity, type Actor } from '../admin-orders/audit';
+import { assertCompleteManifest, manifestIdentity, orderContentsIdentity } from "./procurement-contract";
 import { createHash } from "node:crypto";
 import {
   createRecord,
@@ -12,7 +14,7 @@ export class OperationRequestError extends Error {}
 export async function requestOperation(
   kind: "create" | "pay",
   item: GraphListItem,
-  actor: string,
+  actor: Actor,
   expectedEtag: string,
 ) {
   const f = item.fields;
@@ -59,6 +61,18 @@ export async function requestOperation(
     throw new OperationRequestError(
       "Supplier payment has already been requested or requires review.",
     );
+  let procurement: Partial<OperationData> = {};
+  if (kind === 'pay') {
+    const creation = await findRecord<OperationData>('operations', `create:${f.OrderReference}`);
+    if (creation?.reference !== f.OrderReference || creation.state !== 'Succeeded' || !creation.data.synced)
+      throw new OperationRequestError('Supplier creation has not been fully verified.');
+    if (creation.data.orderContentsIdentity !== orderContentsIdentity(f))
+      throw new OperationRequestError('Order contents differ from the verified supplier creation.');
+    assertCompleteManifest(creation.data.manifest);
+    procurement = { manifest: creation.data.manifest,
+      supplierIds: creation.data.manifest.orders.map(o => o.orderId),
+      approvedManifestIdentity: manifestIdentity(creation.data.manifest) };
+  }
   const now = new Date().toISOString();
   const created = await createRecord<OperationData>(
     "operations",
@@ -66,8 +80,11 @@ export async function requestOperation(
     "Queued",
     f.OrderReference,
     {
+      ...procurement,
+      orderContentsIdentity: orderContentsIdentity(f),
       kind,
-      actor,
+      actor: actor.email ?? actor.name,
+      actorName: actor.name,
       requestedAt: now,
       updatedAt: now,
       supplierId: f.HiobuyOrderId,
@@ -88,5 +105,9 @@ export async function requestOperation(
     throw new OperationRequestError(
       "Supplier order is already assigned to another order.",
     );
+  await recordActivity({ reference: created.reference,
+    actor: { name: created.data.actorName ?? created.data.actor, email: created.data.actor, source: 'Admin portal' },
+    action: kind === 'create' ? 'Confirmed customer payment' : 'Requested supplier payment (Pay Now)',
+    eventKey: `request:${created.key}`, occurredAt: created.data.requestedAt });
   return created;
 }
