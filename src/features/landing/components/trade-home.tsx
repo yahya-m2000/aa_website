@@ -278,11 +278,11 @@ export function TradeHome() {
               <ArrowUpRight size={17} />
             </TradeVideo>
             <div className="launch-proof">
-              {["shipments", "countries", "satisfaction"].map((key) => (
+              {["years", "countries"].map((key) => (
                 <div key={key}>
                   <strong>
                     {stats(`${key}.value`)}
-                    <span>{key === "satisfaction" ? "%" : "+"}</span>
+                    <span>+</span>
                   </strong>
                   <small>{stats(`${key}.label`)}</small>
                 </div>

@@ -28,7 +28,6 @@ function HeroSection() {
   }, []);
 
   const years = stats.find((s) => s.key === "years");
-  const satisfaction = stats.find((s) => s.key === "satisfaction");
 
   return (
     <section
@@ -67,17 +66,6 @@ function HeroSection() {
                 </span>
                 <span className="text-xs uppercase tracking-widest text-[rgb(var(--muted-foreground))]">
                   {tStats("years.label")}
-                </span>
-              </div>
-            )}
-            {satisfaction && (
-              <div className="flex items-baseline gap-1.5">
-                <span className="font-display text-2xl font-bold">
-                  {satisfaction.value}
-                  {satisfaction.suffix}
-                </span>
-                <span className="text-xs uppercase tracking-widest text-[rgb(var(--muted-foreground))]">
-                  {tStats("satisfaction.label")}
                 </span>
               </div>
             )}

@@ -18,9 +18,7 @@ import { stats } from "@/shared/data";
 // next.config.ts's remotePatterns).
 const STAT_IMAGES: Record<(typeof stats)[number]["key"], string> = {
   years: "/aa_promotion_material/1-team-warehouse.jpeg",
-  shipments: "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=800&q=80", // shipping containers
   countries: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80", // world map / globe
-  satisfaction: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80", // handshake
 };
 
 export function StatsSection() {
@@ -44,7 +42,7 @@ export function StatsSection() {
           </p>
         </div>
 
-        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <StaggerContainer className="grid grid-cols-2 gap-4 md:gap-6 max-w-2xl">
           {stats.map((stat) => (
             <StaggerItem key={stat.key}>
               <div className="relative aspect-3/4 rounded-(--radius) overflow-hidden group">

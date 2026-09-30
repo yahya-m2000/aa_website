@@ -86,17 +86,9 @@
       "label": "Years in Business",
       "value": "2"
     },
-    "shipments": {
-      "label": "Successful Shipments",
-      "value": "500"
-    },
     "countries": {
       "label": "Countries Served",
       "value": "5"
-    },
-    "satisfaction": {
-      "label": "Customer Satisfaction",
-      "value": "98"
     }
   },
   "contact": {
@@ -396,7 +388,7 @@
     "ribbon2": "A little everyday discovery",
     "ribbon3": "All your finds, together",
     "ribbon4": "From China to Africa",
-    "discoveryLabel": "GO ON. GET CURIOUS.",
+    "discoveryLabel": "SHOP BY CATEGORY",
     "discovery1": "Whatever you're into,",
     "discovery2": "there's more to explore.",
     "discoveryBody": "Six categories. So many possibilities. Start with something you love and see where it takes you.",
@@ -428,7 +420,7 @@
         "body": "From a new hobby to a day outdoors, discover something for your active side."
       }
     },
-    "featuresLabel": "LESS EFFORT. MORE DISCOVERY.",
+    "featuresLabel": "APP FEATURES",
     "features1": "Your kind of shopping.",
     "features2": "Simplified.",
     "searchTitle": "See it. Search it. Find it.",
@@ -441,7 +433,7 @@
     "basketBody": "Keep your chosen finds in your basket while you explore. A little less back and forth.",
     "supportTitle": "Real people. Right here.",
     "supportBody": "Have a question about an order or a product? Your A&A team is a WhatsApp message away.",
-    "journeyLabel": "FROM A GOOD FIND TO YOUR NEXT MOVE",
+    "journeyLabel": "HOW IT WORKS",
     "journey1": "A few taps.",
     "journey2": "A world opens up.",
     "journeyBody": "Get inspired, choose your finds, and connect with the people who make China–Africa trade feel closer.",
@@ -468,7 +460,7 @@
     "businessTitle": "Big plans for your business?",
     "businessBody": "We also help with product sourcing, purchasing, quality checks, and shipping.",
     "talkTeam": "Let's talk",
-    "quoteLabel": "REAL PEOPLE. REAL POSSIBILITIES.",
+    "quoteLabel": "CUSTOMER TESTIMONIALS",
     "faqLabel": "A FEW THINGS YOU MIGHT WONDER",
     "faqTitle": "A little clarity, before you tap.",
     "faqBody": "Getting started should feel easy. Here's what to know about A&A Store.",

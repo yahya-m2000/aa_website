@@ -5,19 +5,9 @@ export const stats = [
     suffix: '+',
   },
   {
-    key: 'shipments',
-    value: 500,
-    suffix: '+',
-  },
-  {
     key: 'countries',
     value: 5,
     suffix: '',
-  },
-  {
-    key: 'satisfaction',
-    value: 98,
-    suffix: '%',
   },
 ] as const;
 

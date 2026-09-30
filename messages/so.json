@@ -86,17 +86,9 @@
       "label": "Sannado shaqo",
       "value": "2"
     },
-    "shipments": {
-      "label": "Shixnado la diray",
-      "value": "500"
-    },
     "countries": {
       "label": "Dalalka aan u adeegno",
       "value": "5"
-    },
-    "satisfaction": {
-      "label": "Qanacsanaanta macaamiisha",
-      "value": "98"
     }
   },
   "contact": {
@@ -396,7 +388,7 @@
     "ribbon2": "Eeg qiimo-dhimista",
     "ribbon3": "Alaabtaada meel ku ururi",
     "ribbon4": "Shiinaha ilaa Afrika",
-    "discoveryLabel": "EEG ALAABTA",
+    "discoveryLabel": "QAYBAHA ALAABTA",
     "discovery1": "Hel waxa aad u baahan tahay,",
     "discovery2": "gurigaaga iyo ganacsigaagaba.",
     "discoveryBody": "Dooro mid ka mid ah lixda qaybood oo eeg alaabta kugu habboon.",
@@ -428,7 +420,7 @@
         "body": "Eeg qalabka ciyaaraha iyo agabka bannaanka lagu isticmaalo."
       }
     },
-    "featuresLabel": "WAX IIBSI FUDUD",
+    "featuresLabel": "ASTAAMAHA APP-KA",
     "features1": "Iibsigaaga",
     "features2": "waan kuu fududaynay.",
     "searchTitle": "Raadi oo hel.",
@@ -441,7 +433,7 @@
     "basketBody": "Alaabta aad rabto ku-rid sellada/dambiisha, adigoo weli sii eegaya alaabta kale.",
     "supportTitle": "Waan kaa caawinaynaa.",
     "supportBody": "Su'aal ma ka qabtaa alaab ama dalab? Shaqalaaha A&A kala xidhiidh WhatsApp-ka.",
-    "journeyLabel": "SIDA WAX LOO IIBSADO",
+    "journeyLabel": "SIDAY U SHAQEYSO",
     "journey1": "Raadi, dooro.",
     "journey2": "Nala soo xidhiidh.",
     "journeyBody": "App-ka ka raadi alaabta aad rabto. Shaqalaaha A&A kala xidhiidh dalabkaaga iyo sida lagugu keenayo.",
@@ -468,7 +460,7 @@
     "businessTitle": "Ganacsigaaga alaab ma u rabtaa?",
     "businessBody": "Waxaan kaa caawinnaa raadinta alaabta, iibsiga, hubinta tayada iyo rarista.",
     "talkTeam": "Nala soo xidhiidh",
-    "quoteLabel": "WAXA AY MACAAMIISHU NAGA YIDHAAHDEEN",
+    "quoteLabel": "MACAAMIISHA FIKRADAHOODA",
     "faqLabel": "SU'AALAHA INTA BADAN LA ISWEYDIIYO",
     "faqTitle": "Su'aal ma haysaa?",
     "faqBody": "Jawaabaha su'aalaha ku saabsan app-ka iyo adeegyada A&A halkan ka eeg.",
