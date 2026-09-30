@@ -203,6 +203,15 @@ test("cohorts reconcile counts and quoted income without counting cancelled inco
   assert.equal(report.metrics.openIncome, 30);
   assert.equal(report.metrics.lostIncome, 30);
   assert.equal(report.metrics.potentialIncome, 75);
+  assert.equal(report.metrics.openService, 20);
+  assert.equal(report.metrics.openMarkup, 10);
+  // Completed + open only: the cancelled and expired orders' fees and markup are excluded.
+  assert.equal(report.metrics.quotedService, 30);
+  assert.equal(report.metrics.quotedMarkup, 15);
+  assert.equal(
+    report.metrics.quotedService + report.metrics.quotedMarkup,
+    report.metrics.completedIncome + report.metrics.openIncome,
+  );
   assert.equal(report.metrics.completionRate, 0.2);
   assert.equal(
     report.metrics.completed +
@@ -327,11 +336,33 @@ test("Excel export preserves typed data, formulas, cached results, and unavailab
   assert.equal(s.getCell("C5").result, 1);
   assert.equal(s.getCell("B24").result, 15);
   assert.equal(s.getCell("B21").result, 75);
-  assert.equal(s.getCell("B30").result, "n.a.");
-  assert.equal(s.getCell("B34").result, "n.a.");
-  assert.equal(s.getCell("B35").result, 0);
-  assert.equal(s.getCell("B36").result, 0);
-  assert.match(s.getCell("B34").formula, /B24-B31-B32\+B33/);
+  const rowOf = (label) => {
+    for (let r = 5; r <= 40; r++) if (s.getCell(`A${r}`).value === label) return r;
+    throw new Error(`No Summary row labelled ${label}`);
+  };
+  assert.equal(s.getCell(`B${rowOf("Open-order service fees (USD)")}`).result, 20);
+  assert.equal(s.getCell(`B${rowOf("Open-order markup (USD)")}`).result, 10);
+  assert.equal(s.getCell(`B${rowOf("Open-order potential income (USD)")}`).result, 30);
+  const quotedFees = rowOf("Service fees, completed + open (USD)");
+  assert.equal(s.getCell(`B${quotedFees}`).result, 30);
+  assert.equal(
+    s.getCell(`B${quotedFees}`).formula,
+    `IF(COUNT(B${rowOf("Completed-order service fees (USD)")},B${rowOf("Open-order service fees (USD)")})=2,B${rowOf("Completed-order service fees (USD)")}+B${rowOf("Open-order service fees (USD)")},"n.a.")`,
+  );
+  assert.equal(s.getCell(`B${rowOf("Markup, completed + open (USD)")}`).result, 15);
+  assert.equal(s.getCell(`B${rowOf("Refund rate")}`).result, "n.a.");
+  const contribution = rowOf("Adjusted contribution (USD)");
+  assert.equal(s.getCell(`B${contribution}`).result, "n.a.");
+  assert.match(
+    s.getCell(`B${contribution}`).formula,
+    new RegExp(`B24-B${rowOf("Income refunded (USD)")}-B${rowOf("Allocated operating costs (USD)")}\\+B${rowOf("Other income adjustments (USD)")}`),
+  );
+  assert.equal(s.getCell(`B${rowOf("Order count reconciliation")}`).result, 0);
+  assert.equal(s.getCell(`B${rowOf("Income reconciliation (USD)")}`).result, 0);
+  assert.match(s.getCell(`B${rowOf("Income reconciliation (USD)")}`).formula, /B24\+B27\+B28-B21/);
+  const orders = book.getWorksheet("Orders");
+  assert.equal(orders.getCell("S4").value, "Open fees USD");
+  assert.equal(orders.getCell("T4").value, "Open markup USD");
   assert.equal(book.getWorksheet("Orders").rowCount, 10); // six source orders, excluding future order
   assert.ok(book.getWorksheet("Orders").getCell("B5").value instanceof Date);
   assert.equal(book.getWorksheet("Adjustments").getCell("B5").value, null);

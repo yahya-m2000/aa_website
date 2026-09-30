@@ -48,6 +48,8 @@ const comparisons: Array<{
   },
   { key: "completedMarkup", label: "Completed-order markup", format: money },
   { key: "completedIncome", label: "Completed-order income", format: money },
+  { key: "openService", label: "Open-order service fees", format: money },
+  { key: "openMarkup", label: "Open-order markup", format: money },
   { key: "openIncome", label: "Open-order potential income", format: money },
   {
     key: "lostIncome",

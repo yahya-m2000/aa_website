@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import {
   Area,
   AreaChart,
@@ -28,16 +28,18 @@ const currencyCompact = (value: number) =>
     notation: "compact",
     maximumFractionDigits: 1,
   });
+const NARROW_QUERY = "(max-width: 480px)";
+function subscribeNarrow(callback: () => void) {
+  const mql = window.matchMedia(NARROW_QUERY);
+  mql.addEventListener("change", callback);
+  return () => mql.removeEventListener("change", callback);
+}
 function useIsNarrow() {
-  const [narrow, setNarrow] = useState(false);
-  useEffect(() => {
-    const mql = window.matchMedia("(max-width: 480px)");
-    setNarrow(mql.matches);
-    const onChange = () => setNarrow(mql.matches);
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-  return narrow;
+  return useSyncExternalStore(
+    subscribeNarrow,
+    () => window.matchMedia(NARROW_QUERY).matches,
+    () => false,
+  );
 }
 export function ReportCharts({
   report,
@@ -97,7 +99,7 @@ export function ReportCharts({
               className="min-h-11 min-w-0 rounded-xl border border-[rgb(var(--input))] px-2 text-xs sm:px-3 sm:text-sm"
             >
               <option value="completed">Completed orders</option>
-              <option value="quoted">All quoted orders</option>
+              <option value="quoted">Completed + open orders</option>
             </select>
             <select
               aria-label="Income chart type"
@@ -113,7 +115,7 @@ export function ReportCharts({
         <div
           className="h-64 min-w-0 w-full sm:h-72"
           role="img"
-          aria-label={`${basis === "completed" ? "Completed-order" : "Quoted"} service fee and markup income over ${report.period.label}. Exact amounts are available in the period table and Excel export.`}
+          aria-label={`${basis === "completed" ? "Completed-order" : "Completed and open order"} service fee and markup income over ${report.period.label}. Exact amounts are available in the period table and Excel export.`}
         >
           <ResponsiveContainer width="100%" height="100%">
             {type === "bar" ? (

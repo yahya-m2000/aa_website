@@ -63,6 +63,8 @@ export async function createReportWorkbook(
     "Lost potential USD",
     "Incomplete pricing",
     "Unrecognised status",
+    "Open fees USD",
+    "Open markup USD",
   ];
   const known = [
     "Awaiting Payment",
@@ -110,6 +112,8 @@ export async function createReportWorkbook(
       ["N", "I", "Completed", quoted],
       ["O", "I", "Open", quoted],
       ["P", "I", "Lost", quoted],
+      ["S", "G", "Open", order.serviceFee],
+      ["T", "H", "Open", order.markup],
     ] as const) {
       raw.getCell(`${col}${row}`).value = {
         formula: `IF(K${row}="${group}",${from}${row},0)`,
@@ -164,10 +168,14 @@ export async function createReportWorkbook(
     ],
     [
       "quotedService",
-      "Quoted service fees (USD)",
-      "Service fees across all orders.",
+      "Service fees, completed + open (USD)",
+      "Service fees on completed and open orders. Excludes cancelled and expired orders.",
     ],
-    ["quotedMarkup", "Quoted markup (USD)", "Markup across all orders."],
+    [
+      "quotedMarkup",
+      "Markup, completed + open (USD)",
+      "Markup on completed and open orders. Excludes cancelled and expired orders.",
+    ],
     [
       "potentialIncome",
       "Total quoted income opportunity (USD)",
@@ -189,9 +197,19 @@ export async function createReportWorkbook(
       "Completed fees + markup, before refunds and costs. Not verified cash receipts.",
     ],
     [
+      "openService",
+      "Open-order service fees (USD)",
+      "Fees on orders not yet completed, cancelled or expired.",
+    ],
+    [
+      "openMarkup",
+      "Open-order markup (USD)",
+      "Markup on orders not yet completed, cancelled or expired.",
+    ],
+    [
       "openIncome",
       "Open-order potential income (USD)",
-      "Quoted fees + markup on open orders.",
+      "Open fees + markup. Not a forecast.",
     ],
     [
       "lostIncome",
@@ -207,16 +225,20 @@ export async function createReportWorkbook(
   const sumColumns: Partial<Record<keyof ReportMetrics, string>> = {
     goodsValue: "F",
     orderValue: "J",
-    quotedService: "G",
-    quotedMarkup: "H",
     potentialIncome: "I",
     completedService: "L",
     completedMarkup: "M",
     completedIncome: "N",
+    openService: "S",
+    openMarkup: "T",
     openIncome: "O",
     lostIncome: "P",
     missingPricing: "Q",
     unknownStatus: "R",
+  };
+  const derivedSums: Partial<Record<keyof ReportMetrics, [keyof ReportMetrics, keyof ReportMetrics]>> = {
+    quotedService: ["completedService", "openService"],
+    quotedMarkup: ["completedMarkup", "openMarkup"],
   };
   const statusNames: Partial<Record<keyof ReportMetrics, string>> = {
     completed: "Completed",
@@ -252,7 +274,10 @@ export async function createReportWorkbook(
         formula = `COUNTIFS(${cohort},"${name}",${status},"${statusNames[key]}")`;
       else if (key === "open")
         formula = `COUNTIFS(${cohort},"${name}",${range("K")},"Open")`;
-      else if (sumColumns[key])
+      else if (derivedSums[key]) {
+        const [a, b] = derivedSums[key]!.map((part) => `${col}${metricRows.get(part)}`);
+        formula = `IF(COUNT(${a},${b})=2,${a}+${b},"n.a.")`;
+      } else if (sumColumns[key])
         formula = aggregateFormula(sumColumns[key]!, name);
       else {
         const numerator =
@@ -289,72 +314,96 @@ export async function createReportWorkbook(
       summary.getCell(`D${row}`).numFmt =
         fmt;
   }
-  const extraRows = [
+  // Rows below the metrics. Every reference is resolved from where rows actually land, so
+  // adding or reordering metrics can never point a formula at the wrong row.
+  const m = (key: keyof ReportMetrics) => `B${metricRows.get(key)}`;
+  const firstExtraRow = labels.length + 5;
+  const extraKeys = [
+    "unearned",
+    "refundedOrders",
+    "refundRate",
+    "incomeRefunded",
+    "operatingCosts",
+    "otherAdjustments",
+    "adjustedContribution",
+    "orderReconciliation",
+    "incomeReconciliation",
+  ] as const;
+  const x = (key: (typeof extraKeys)[number]) => `B${firstExtraRow + extraKeys.indexOf(key)}`;
+  const extraRows: Array<[string, string, number | string, string, string]> = [
     [
       "Unearned quoted opportunity (USD)",
-      'IF(COUNT(B21,B24)=2,B21-B24,"n.a.")',
+      `IF(COUNT(${m("potentialIncome")},${m("completedIncome")})=2,${m("potentialIncome")}-${m("completedIncome")},"n.a.")`,
       report.metrics.potentialIncome === null ||
       report.metrics.completedIncome === null
         ? NA
         : report.metrics.potentialIncome - report.metrics.completedIncome,
       "Open + cancelled/expired potential income.",
+      USD,
     ],
     [
       "Refunded orders",
       'IF(ISNUMBER(Adjustments!B5),Adjustments!B5,"n.a.")',
       NA,
       "Manual verified input. Refunds are not recorded in the order system.",
+      NUMBER,
     ],
     [
       "Refund rate",
-      'IF(COUNT(B29,B5)<>2,"n.a.",IF(B5=0,"n.a.",B29/B5))',
+      `IF(COUNT(${x("refundedOrders")},${m("orders")})<>2,"n.a.",IF(${m("orders")}=0,"n.a.",${x("refundedOrders")}/${m("orders")}))`,
       NA,
       "Refunded orders / all placed orders in the selected cohort.",
+      RATE,
     ],
     [
       "Income refunded (USD)",
       'IF(ISNUMBER(Adjustments!B6),Adjustments!B6,"n.a.")',
       NA,
       "Refunded fees and markup, not returned product/delivery costs.",
+      USD,
     ],
     [
       "Allocated operating costs (USD)",
       'IF(ISNUMBER(Adjustments!B7),Adjustments!B7,"n.a.")',
       NA,
       "Manual input for this cohort.",
+      USD,
     ],
     [
       "Other income adjustments (USD)",
       'IF(ISNUMBER(Adjustments!B8),Adjustments!B8,"n.a.")',
       NA,
       "Signed manual adjustment.",
+      USD,
     ],
     [
       "Adjusted contribution (USD)",
-      'IF(COUNT(B24,B31:B33)=4,B24-B31-B32+B33,"n.a.")',
+      `IF(COUNT(${m("completedIncome")},${x("incomeRefunded")},${x("operatingCosts")},${x("otherAdjustments")})=4,${m("completedIncome")}-${x("incomeRefunded")}-${x("operatingCosts")}+${x("otherAdjustments")},"n.a.")`,
       NA,
       "Completed income less refunded income and allocated costs, plus adjustments. Before taxes; not cash profit.",
+      USD,
     ],
     [
       "Order count reconciliation",
-      "SUM(B6:B9)-B5",
+      `${m("completed")}+${m("cancelled")}+${m("expired")}+${m("open")}-${m("orders")}`,
       0,
       "Completed + cancelled + expired + open less placed. Expected 0.",
+      NUMBER,
     ],
     [
       "Income reconciliation (USD)",
-      'IF(COUNT(B21,B24:B26)=4,SUM(B24:B26)-B21,"n.a.")',
+      `IF(COUNT(${m("potentialIncome")},${m("completedIncome")},${m("openIncome")},${m("lostIncome")})=4,${m("completedIncome")}+${m("openIncome")}+${m("lostIncome")}-${m("potentialIncome")},"n.a.")`,
       report.metrics.potentialIncome === null ? NA : 0,
       "Completed + open + cancelled/expired potential less total quoted opportunity. Expected 0.",
+      USD,
     ],
-  ] as const;
-  extraRows.forEach(([label, formula, result, definition], i) => {
-    const row = i + 28;
+  ];
+  extraRows.forEach(([label, formula, result, definition, numFmt], i) => {
+    const row = firstExtraRow + i;
     summary.getCell(`A${row}`).value = label;
     summary.getCell(`B${row}`).value = { formula, result };
     summary.getCell(`E${row}`).value = definition;
-    summary.getCell(`B${row}`).numFmt =
-      row === 30 ? RATE : row === 29 || row === 35 ? NUMBER : USD;
+    summary.getCell(`B${row}`).numFmt = numFmt;
   });
   summary.getCell("E4").value = report.partial
     ? "Definitions; current period to date vs full previous period"
@@ -586,7 +635,7 @@ export async function createReportWorkbook(
     vertical: "middle",
     indent: 1,
   };
-  for (let r = 5; r <= 36; r++) summary.getRow(r).height = 34;
+  for (let r = 5; r < firstExtraRow + extraRows.length; r++) summary.getRow(r).height = 34;
   definitions.getCell("B5").value =
     "Overview covers the last 30 days. Reports use UTC calendar months, quarters or years. Orders are grouped by creation date and current status; previous periods use the same basis.";
   definitions.getColumn("B").alignment = { wrapText: true, vertical: "middle" };

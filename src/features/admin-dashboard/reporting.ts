@@ -36,6 +36,8 @@ export interface ReportMetrics {
   completedService: number | null;
   completedMarkup: number | null;
   completedIncome: number | null;
+  openService: number | null;
+  openMarkup: number | null;
   openIncome: number | null;
   lostIncome: number | null;
   completionRate: number | null;
@@ -203,12 +205,16 @@ export function aggregateOrders(orders: ReportOrder[]): ReportMetrics {
       .length,
     goodsValue: sum(orders.map((o) => o.subtotal)),
     orderValue,
-    quotedService: sum(orders.map((o) => o.serviceFee)),
-    quotedMarkup: sum(orders.map((o) => o.markup)),
+    // "Quoted" fees and markup cover orders still earning or already earned: cancelled and
+    // expired orders are excluded here and reported separately as lost potential.
+    quotedService: sum([...completed, ...open].map((o) => o.serviceFee)),
+    quotedMarkup: sum([...completed, ...open].map((o) => o.markup)),
     potentialIncome,
     completedService: sum(completed.map((o) => o.serviceFee)),
     completedMarkup: sum(completed.map((o) => o.markup)),
     completedIncome,
+    openService: sum(open.map((o) => o.serviceFee)),
+    openMarkup: sum(open.map((o) => o.markup)),
     openIncome: sum(open.map(income)),
     lostIncome: sum(lost.map(income)),
     completionRate: ratio(completed.length, orders.length),
