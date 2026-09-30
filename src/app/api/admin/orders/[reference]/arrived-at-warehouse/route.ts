@@ -1,16 +1,10 @@
-import { actorFromSession, auditFields, recordActivity } from '@/features/admin-orders/audit';
+import { actorFromSession } from '@/features/admin-orders/audit';
 import { NextResponse } from 'next/server';
 import { requireAdminSession } from '@/core/admin-auth/session';
 import { toErrorResponse } from '@/core/utils/http-error';
-import { getOrderItemByReference, updateOrderItemFields } from '@/features/admin-orders/orders.repository';
 import { markArrivedAtWarehouseSchema } from '@/features/admin-orders/schemas';
+import { markOrderArrived, WarehouseActionError } from '@/features/admin-orders/warehouse-actions';
 
-// Staff-entered warehouse-arrival timestamp (owner-supplied storage-fee rule, 2026-07-28) —
-// mirrors the weight route's pattern exactly, since no automated warehouse-scanning
-// integration exists either. Storage fee itself is never written here or anywhere — it's
-// always live-computed from this timestamp (calculateStorageFeeUsd in aa_catalog/server's
-// pricing.service.ts, mirrored for display in ArrivedAtWarehouseCard), so there's nothing
-// to recalculate/store on this write beyond the timestamp itself.
 export async function PATCH(request: Request, { params }: { params: Promise<{ reference: string }> }) {
   try {
     const session = await requireAdminSession();
@@ -24,36 +18,19 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
         { status: 400 },
       );
     }
-    const { etag } = parsed.data;
 
-    const item = await getOrderItemByReference(decodeURIComponent(reference));
-    if (!item) {
-      return NextResponse.json({ error: { code: 'NOT_FOUND', message: 'Order not found' } }, { status: 404 });
-    }
-
-    if (item.fields.ArrivedAtWarehouseAt) {
-      return NextResponse.json(
-        { error: { code: 'ALREADY_ARRIVED', message: 'This order is already marked as arrived at the warehouse.' } },
-        { status: 409 },
-      );
-    }
-
-    const arrivedAt = new Date().toISOString();
-    const auditActor = actorFromSession(session);
-    const action = 'Marked arrived at warehouse';
-    const audit = auditFields(auditActor, action);
-    const newEtag = await updateOrderItemFields(item.id, etag, {
-      ...audit,
-      ArrivedAtWarehouseAt: arrivedAt,
+    const result = await markOrderArrived({
+      reference: decodeURIComponent(reference),
+      etag: parsed.data.etag,
+      actor: actorFromSession(session),
     });
 
-    await recordActivity({ reference: item.fields.OrderReference, actor: auditActor, action, occurredAt: audit.LastModifiedAt });
+    console.log(`[admin-orders] ${session.user?.email ?? 'unknown'} marked order ${reference} as arrived at warehouse: ${result.arrivedAt}`);
 
-    const actor = session.user?.email ?? 'unknown';
-    console.log(`[admin-orders] ${actor} marked order ${reference} as arrived at warehouse: ${arrivedAt}`);
-
-    return NextResponse.json({ success: true, data: { etag: newEtag, arrivedAtWarehouseAt: arrivedAt } });
+    return NextResponse.json({ success: true, data: { etag: result.etag, arrivedAtWarehouseAt: result.arrivedAt } });
   } catch (error) {
+    if (error instanceof WarehouseActionError)
+      return NextResponse.json({ error: { code: error.code, message: error.message } }, { status: error.status });
     return toErrorResponse(error);
   }
 }

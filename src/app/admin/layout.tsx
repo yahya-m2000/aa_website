@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { auth, signOut } from "@/core/admin-auth/auth";
 import { ToastProvider } from "@/shared/components/ui/toast";
 import { AdminChrome } from "@/shared/layouts/admin-chrome";
+import { WarehouseChrome } from "@/features/warehouse/components/warehouse-chrome";
+import { getWarehouseCopy } from "@/features/warehouse/language";
 import { Outfit, DM_Sans } from "next/font/google";
 import "./admin.css";
 
@@ -37,10 +39,16 @@ export default async function AdminLayout({
     await signOut({ redirectTo: "/admin/login" });
   }
 
+  const { lang } = await getWarehouseCopy();
+
   return (
     <div className={`admin-workspace ${outfit.variable} ${dmSans.variable}`}>
       <ToastProvider>
-        {session?.user ? (
+        {session?.user && session.role === "warehouse" ? (
+          <WarehouseChrome lang={lang} userLabel={session.user.name ?? session.username ?? ""} onSignOut={handleSignOut}>
+            {children}
+          </WarehouseChrome>
+        ) : session?.user ? (
           <AdminChrome
             userLabel={session.user.email ?? session.user.name ?? "Signed in"}
             onSignOut={handleSignOut}

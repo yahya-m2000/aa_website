@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { getGraphClient } from '@/core/graph/graph.client';
 import { graphEnv } from '@/core/graph/env';
 
-export type Actor = { name: string; email?: string; source: 'Admin portal' | 'Automation' | 'Customer' };
+export type Actor = { name: string; email?: string; source: 'Admin portal' | 'Warehouse' | 'Automation' | 'Customer' };
 export interface ActivityEvent {
   key: string;
   occurredAt: string;

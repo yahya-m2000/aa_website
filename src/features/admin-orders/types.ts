@@ -62,7 +62,7 @@ export interface OrderListItemFields {
   LastModifiedByEmail?: string;
   LastModifiedAt?: string;
   LastModifiedAction?: string;
-  LastModifiedSource?: 'Admin portal' | 'Automation' | 'Customer';
+  LastModifiedSource?: 'Admin portal' | 'Warehouse' | 'Automation' | 'Customer';
 
   OrderReference: string;
   CustomerFullName: string;

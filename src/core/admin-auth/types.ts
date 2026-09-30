@@ -1,12 +1,22 @@
 import type { DefaultSession } from 'next-auth';
+import type { PortalRole } from './access';
 
-// Module augmentation so `session.tenantId` (set in auth.config.ts's session callback) is
-// typed everywhere `auth()`/`useSession()` are called, instead of requiring an `as` cast at
-// every call site.
+// Module augmentation so the session/token fields set in auth.config.ts's callbacks are typed
+// everywhere `auth()` is called, instead of requiring an `as` cast at every call site.
 declare module 'next-auth' {
   interface Session {
     tenantId?: string;
+    role?: PortalRole;
+    username?: string;
+    sessionVersion?: number;
+    mustChangePassword?: boolean;
     user?: DefaultSession['user'];
+  }
+  interface User {
+    role?: PortalRole;
+    username?: string;
+    sessionVersion?: number;
+    mustChangePassword?: boolean;
   }
 }
 
@@ -18,5 +28,10 @@ declare module 'next-auth' {
 declare module '@auth/core/jwt' {
   interface JWT {
     tenantId?: string;
+    role?: PortalRole;
+    username?: string;
+    sessionVersion?: number;
+    mustChangePassword?: boolean;
+    lastSeenAt?: number;
   }
 }

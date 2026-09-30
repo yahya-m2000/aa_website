@@ -9,6 +9,15 @@ if (!tenantId) {
   throw new Error('ADMIN_AUTH_ENTRA_TENANT_ID is not set — required to scope sign-in to the A&A tenant.');
 }
 
+export const WAREHOUSE_PROVIDER_ID = 'warehouse';
+// Microsoft admins keep the previous behaviour: signed out after 8 hours without activity.
+const ADMIN_IDLE_MS = 8 * 60 * 60 * 1000;
+// Warehouse logins renew on every visit. Browsers cap cookie lifetime at about 400 days, so this
+// is effectively "never signs out" while the account stays active; admins revoke it instead.
+const SESSION_MAX_AGE_SECONDS = 400 * 24 * 60 * 60;
+
+// Edge-safe configuration shared by the middleware. The warehouse password provider (which
+// needs SharePoint and node:crypto) is added only in auth.ts, which runs in the Node runtime.
 export const authConfig: NextAuthConfig = {
   providers: [
     MicrosoftEntraID({
@@ -25,21 +34,17 @@ export const authConfig: NextAuthConfig = {
     // No database exists anywhere in this project — JWT sessions avoid needing one solely for
     // session storage, which would be disproportionate infrastructure for an internal tool.
     strategy: 'jwt',
-    // Forces re-auth roughly once per shift rather than relying on server-side session
-    // revocation (which JWT sessions don't support).
-    maxAge: 8 * 60 * 60,
+    maxAge: SESSION_MAX_AGE_SECONDS,
   },
   pages: {
     signIn: '/admin/login',
     error: '/admin/login',
   },
   callbacks: {
-    // Defense-in-depth (layer 2) — see auth.config.ts module doc above for layer 1. Even with
-    // a single-tenant app registration and tenant-scoped issuer, this guards against future
-    // Entra misconfiguration (e.g. someone widening the app registration's supported account
-    // types later without updating this code) and gives a clear, auditable rejection point in
-    // application logs distinct from Entra's own sign-in logs.
-    async signIn({ profile }) {
+    // Defense-in-depth (layer 2) for Microsoft sign-ins. Warehouse password sign-ins are
+    // verified against the Staff Accounts list in auth.ts's authorize() instead.
+    async signIn({ account, profile }) {
+      if (account?.provider === WAREHOUSE_PROVIDER_ID) return true;
       const profileTenantId = (profile as { tid?: string } | undefined)?.tid;
       if (!profileTenantId || profileTenantId !== tenantId) {
         console.error(
@@ -50,16 +55,31 @@ export const authConfig: NextAuthConfig = {
       }
       return true;
     },
-    async jwt({ token, profile }) {
-      if (profile) {
+    async jwt({ token, user, account, profile }) {
+      const now = Date.now();
+      if (account?.provider === WAREHOUSE_PROVIDER_ID && user) {
+        token.role = 'warehouse';
+        token.username = user.username;
+        token.sessionVersion = user.sessionVersion;
+        token.mustChangePassword = user.mustChangePassword;
+        token.name = user.name;
+        token.email = null;
+      } else if (profile) {
         token.tenantId = (profile as { tid?: string }).tid;
+        token.role = 'admin';
       }
+      // Microsoft sessions issued before roles existed.
+      if (!token.role && token.tenantId) token.role = 'admin';
+      if (token.role === 'admin' && token.lastSeenAt && now - token.lastSeenAt > ADMIN_IDLE_MS) return null;
+      token.lastSeenAt = now;
       return token;
     },
     async session({ session, token }) {
-      if (token.tenantId) {
-        session.tenantId = token.tenantId as string;
-      }
+      if (token.tenantId) session.tenantId = token.tenantId;
+      session.role = token.role;
+      session.username = token.username;
+      session.sessionVersion = token.sessionVersion;
+      session.mustChangePassword = token.mustChangePassword;
       return session;
     },
   },

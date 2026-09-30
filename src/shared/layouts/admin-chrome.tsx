@@ -56,6 +56,10 @@ export function AdminChrome({
                   ? "Orders"
                   : pathname.startsWith("/admin/deliveries")
                     ? "Deliveries"
+                    : pathname.startsWith("/admin/warehouse")
+                    ? "Warehouse"
+                    : pathname.startsWith("/admin/staff")
+                    ? "Staff"
                     : pathname.startsWith("/admin/help")
                       ? "Help Centre"
                       : "Overview"}
