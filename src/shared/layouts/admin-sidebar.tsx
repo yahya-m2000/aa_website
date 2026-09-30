@@ -11,7 +11,6 @@ import {
   ListOrdered,
   Truck,
   LogOut,
-  PackageCheck,
   Users,
   Menu,
   PanelLeftClose,
@@ -29,7 +28,6 @@ const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/orders", label: "Orders", icon: ListOrdered, exact: false },
   { href: "/admin/deliveries", label: "Deliveries", icon: Truck, exact: false },
-  { href: "/admin/warehouse", label: "Warehouse", icon: PackageCheck, exact: false },
   { href: "/admin/staff", label: "Staff", icon: Users, exact: false },
   { href: "/admin/help", label: "Help Centre", icon: HelpCircle, exact: false },
 ];
