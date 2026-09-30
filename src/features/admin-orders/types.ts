@@ -42,8 +42,10 @@ export type PushNotificationStatus = 'Sent' | 'Failed' | 'Not Provided';
 export interface OrderLineItem {
   productId: string;
   productTitle: string;
+  /** Seller's original Chinese title; present on orders placed after it started being kept. */
+  productTitleOriginal?: string;
   skuId?: string;
-  variantOptions?: Array<{ name: string; value: string }>;
+  variantOptions?: Array<{ name: string; value: string; originalName?: string; originalValue?: string }>;
   quantity: number;
   originalAmount: number;
   originalCurrency: string;

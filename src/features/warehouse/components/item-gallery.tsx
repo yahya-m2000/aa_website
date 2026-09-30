@@ -22,6 +22,18 @@ function Missing({ label, large = false }: { label: string; large?: boolean }) {
   );
 }
 
+// The selected language leads; the other language follows in smaller text so the worker can
+// match Taobao packaging (Chinese) and talk to admins about the same item (English).
+function texts(item: WarehouseItem, lang: WarehouseLang) {
+  const zhFirst = lang === "zh" && Boolean(item.titleZh);
+  return {
+    title: zhFirst ? item.titleZh! : item.title,
+    altTitle: zhFirst ? item.title : item.titleZh,
+    variant: lang === "zh" && item.variantZh ? item.variantZh : item.variant,
+    altVariant: lang === "zh" && item.variantZh ? item.variant : item.variantZh,
+  };
+}
+
 export function ItemGallery({ items, lang }: { items: WarehouseItem[]; lang: WarehouseLang }) {
   const t = warehouseCopy[lang];
   const [open, setOpen] = useState<number | null>(null);
@@ -35,13 +47,14 @@ export function ItemGallery({ items, lang }: { items: WarehouseItem[]; lang: War
       <ul className="divide-y divide-[rgb(var(--border))]">
         {items.map((item, index) => {
           const hasImage = Boolean(item.imageUrl) && !failed.has(index);
+          const text = texts(item, lang);
           return (
             <li key={index} className="flex min-w-0 gap-3 py-3 first:pt-0 last:pb-0">
               {hasImage ? (
                 <button
                   type="button"
                   onClick={() => setOpen(index)}
-                  aria-label={t.openImage(item.title)}
+                  aria-label={t.openImage(text.title)}
                   className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-[rgb(var(--border))]"
                 >
                   <Photo item={item} className="h-full w-full object-cover" onError={() => markFailed(index)} />
@@ -52,8 +65,10 @@ export function ItemGallery({ items, lang }: { items: WarehouseItem[]; lang: War
                 </span>
               )}
               <div className="min-w-0 flex-1">
-                <p className="break-words text-sm font-medium leading-snug">{item.title}</p>
-                {item.variant && <p className="mt-1 break-words text-xs text-[rgb(var(--muted-foreground))]">{item.variant}</p>}
+                <p className="break-words text-sm font-medium leading-snug">{text.title}</p>
+                {text.altTitle && <p className="mt-0.5 break-words text-xs text-[rgb(var(--muted-foreground))]">{text.altTitle}</p>}
+                {text.variant && <p className="mt-1.5 break-words text-sm">{text.variant}</p>}
+                {text.altVariant && <p className="mt-0.5 break-words text-xs text-[rgb(var(--muted-foreground))]">{text.altVariant}</p>}
                 <p className="mt-1.5 text-sm">
                   {t.quantity}: <span className="font-semibold tabular-nums">{item.quantity}</span>
                 </p>
@@ -87,10 +102,16 @@ export function ItemGallery({ items, lang }: { items: WarehouseItem[]; lang: War
                   <Missing label={t.noImage} large />
                 )}
               </div>
-              <DialogTitle className="mt-3 break-words pr-8 text-base">{active.title}</DialogTitle>
-              <DialogDescription className="mt-1 break-words">
-                {[active.variant, `${t.quantity}: ${active.quantity}`].filter(Boolean).join(" · ")}
+              <DialogTitle className="mt-3 break-words pr-8 text-base">{texts(active, lang).title}</DialogTitle>
+              {texts(active, lang).altTitle && (
+                <p className="mt-0.5 break-words text-xs text-[rgb(var(--muted-foreground))]">{texts(active, lang).altTitle}</p>
+              )}
+              <DialogDescription className="mt-2 break-words">
+                {[texts(active, lang).variant, `${t.quantity}: ${active.quantity}`].filter(Boolean).join(" · ")}
               </DialogDescription>
+              {texts(active, lang).altVariant && (
+                <p className="mt-0.5 break-words text-xs text-[rgb(var(--muted-foreground))]">{texts(active, lang).altVariant}</p>
+              )}
               {items.length > 1 && (
                 <div className="mt-4 flex items-center justify-between">
                   <button type="button" onClick={() => move(-1)} className="inline-flex h-11 items-center gap-1 rounded-xl border border-[rgb(var(--border))] px-4 text-sm">

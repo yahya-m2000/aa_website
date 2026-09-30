@@ -129,6 +129,30 @@ test("the warehouse order view never carries prices or customer contact details"
   assert.equal(view.supplierPaid, true);
 });
 
+test("Chinese text comes from new orders directly, or from the translations list for older ones", () => {
+  const { toWarehouseOrder } = loader()(src("features/warehouse/warehouse.repository.ts"));
+  const order = (line) => ({ "@odata.etag": "v1", fields: { OrderReference: "ORD-ZH", InternalStatus: "Payment Confirmed", LineItemsJson: JSON.stringify([line]) } });
+
+  const fresh = toWarehouseOrder(order({
+    productTitle: "Sim Card Ejector", productTitleOriginal: "手机通用取卡针", quantity: 1, sourceProductId: "878761108911", skuId: "5719868301668",
+    variantOptions: [{ name: "Color Classification", value: "[1]", originalName: "颜色分类", originalValue: "【1】" }],
+  }));
+  assert.equal(fresh.items[0].titleZh, "手机通用取卡针");
+  assert.equal(fresh.items[0].variantZh, "颜色分类: 【1】");
+  assert.equal(fresh.items[0].title, "Sim Card Ejector");
+
+  const olderLine = { productTitle: "Hoodie", quantity: 1, sourceProductId: "1056638781729", skuId: "6262053950412", variantOptions: [{ name: "Size", value: "L" }] };
+  const translations = new Map([["1056638781729:6262053950412", { titleZh: "男士防晒衣", variantZh: "尺码: L" }]]);
+  const older = toWarehouseOrder(order(olderLine), translations);
+  assert.equal(older.items[0].titleZh, "男士防晒衣");
+  assert.equal(older.items[0].variantZh, "尺码: L");
+  assert.equal(JSON.stringify(older).includes("1056638781729"), false, "lookup key must stay server-side");
+
+  const untranslated = toWarehouseOrder(order(olderLine));
+  assert.equal(untranslated.items[0].titleZh, undefined);
+  assert.equal(untranslated.items[0].title, "Hoodie");
+});
+
 function sessionModule(session, account) {
   const load = loader({
     "./auth": { auth: async () => session },
