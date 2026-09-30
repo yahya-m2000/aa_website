@@ -113,6 +113,7 @@ test("order list recomputes known charges instead of using stored estimated tota
     TotalUsd: 160,
     IsDeliveryEstimated: true,
   };
+  let appliedFilter = "";
   const request = {
     expand() {
       return this;
@@ -126,7 +127,13 @@ test("order list recomputes known charges instead of using stored estimated tota
     orderby() {
       return this;
     },
+    filter(value) {
+      appliedFilter = value;
+      return this;
+    },
     async get() {
+      // These are open orders: only the first (non-cancelled/expired) pass returns them.
+      if (!appliedFilter.includes("ne 'Cancelled'")) return { value: [] };
       return {
         value: [
           { id: "1", fields },

@@ -100,6 +100,40 @@ export interface ListOrdersResult {
  * stopgap for this app's current low volume — once those columns are indexed in SharePoint,
  * this header becomes unnecessary (safe to leave in place either way).
  */
+// Without a status filter the list reads in two passes: open and completed orders first, then
+// cancelled and expired orders, each newest first. A cursor records the pass, the Graph page to
+// read, and how many of that page's orders were already shown, so every page stays full.
+type ListPhase = 'all' | 'active' | 'closed';
+interface ListCursor {
+  phase: ListPhase;
+  link?: string;
+  skip: number;
+}
+const PHASE_FILTER: Record<ListPhase, string | undefined> = {
+  all: undefined,
+  active: "fields/InternalStatus ne 'Cancelled' and fields/InternalStatus ne 'Expired'",
+  closed: "(fields/InternalStatus eq 'Cancelled' or fields/InternalStatus eq 'Expired')",
+};
+
+export function encodeListCursor(cursor: ListCursor): string {
+  return Buffer.from(JSON.stringify(cursor)).toString('base64url');
+}
+
+// Cursors arrive from the page URL. Only Graph addresses are accepted, so a crafted cursor can
+// never make the server send its Graph credentials anywhere else.
+export function decodeListCursor(value: string | undefined): ListCursor | null {
+  if (!value) return null;
+  try {
+    const parsed = JSON.parse(Buffer.from(value, 'base64url').toString('utf8'));
+    if (!['all', 'active', 'closed'].includes(parsed?.phase)) return null;
+    if (parsed.link !== undefined && (typeof parsed.link !== 'string' || !parsed.link.startsWith('https://graph.microsoft.com/'))) return null;
+    if (!Number.isInteger(parsed.skip) || parsed.skip < 0 || parsed.skip > 1000) return null;
+    return { phase: parsed.phase, link: parsed.link, skip: parsed.skip };
+  } catch {
+    return null;
+  }
+}
+
 export async function listOrders(params: ListOrdersParams): Promise<ListOrdersResult> {
   try {
     const client = getGraphClient();
@@ -113,23 +147,43 @@ export async function listOrders(params: ListOrdersParams): Promise<ListOrdersRe
         `(startswith(fields/OrderReference,'${escaped}') or startswith(fields/CustomerEmail,'${escaped}') or startswith(fields/CustomerFullName,'${escaped}'))`,
       );
     }
+    const phases: ListPhase[] = params.status ? ['all'] : ['active', 'closed'];
 
-    // A cursor is itself a full pre-built Graph @odata.nextLink URL (already encodes filter/
-    // orderby/top from the first page), so filters/sort are only applied on the first page.
-    let request = client
-      .api(params.cursor ?? `${listBase()}/items`)
-      .expand('fields')
-      .header('Prefer', 'HonorNonIndexedQueriesWarningMayFailRandomly');
-    if (!params.cursor) {
-      request = request.top(params.pageSize).orderby('fields/CreatedAt desc');
-      if (filters.length > 0) {
-        request = request.filter(filters.join(' and '));
+    // A Graph @odata.nextLink already encodes filter/orderby/top, so those are only applied
+    // when a pass starts.
+    async function readPage(phase: ListPhase, link?: string) {
+      let request = client
+        .api(link ?? `${listBase()}/items`)
+        .expand('fields')
+        .header('Prefer', 'HonorNonIndexedQueriesWarningMayFailRandomly');
+      if (!link) {
+        const phaseFilters = [...filters, PHASE_FILTER[phase]].filter(Boolean);
+        request = request.top(params.pageSize).orderby('fields/CreatedAt desc');
+        if (phaseFilters.length) request = request.filter(phaseFilters.join(' and '));
+      }
+      const result = await request.get();
+      return { items: (result.value ?? []) as GraphListItem[], next: result['@odata.nextLink'] as string | undefined };
+    }
+
+    const start = decodeListCursor(params.cursor);
+    let next: ListCursor | null = start && phases.includes(start.phase) ? start : { phase: phases[0], skip: 0 };
+    const listed: GraphListItem[] = [];
+    while (next && listed.length < params.pageSize) {
+      const page = await readPage(next.phase, next.link);
+      const available = page.items.slice(next.skip);
+      const shown = available.slice(0, params.pageSize - listed.length);
+      listed.push(...shown);
+      if (shown.length < available.length) {
+        next = { ...next, skip: next.skip + shown.length };
+      } else if (page.next) {
+        next = { phase: next.phase, link: page.next, skip: 0 };
+      } else {
+        const following: ListPhase | undefined = phases[phases.indexOf(next.phase) + 1];
+        next = following ? { phase: following, skip: 0 } : null;
       }
     }
 
-    const result = await request.get();
-
-    const rows = ((result.value ?? []) as GraphListItem[]).map(toListRow);
+    const rows = listed.map(toListRow);
     const requested = new Set<string>();
     if (process.env.ADMIN_GRAPH_OPERATIONS_LIST_ID) {
       for (let offset = 0; offset < rows.length; offset += 25) {
@@ -138,8 +192,7 @@ export async function listOrders(params: ListOrdersParams): Promise<ListOrdersRe
       }
     }
     const items = rows.map(row => ({ ...row, paymentRequested: requested.has(`create:${row.reference}`) }));
-    const nextCursor = (result['@odata.nextLink'] as string | undefined) ?? null;
-    return { items, nextCursor };
+    return { items, nextCursor: next ? encodeListCursor(next) : null };
   } catch (error) {
     throw new GraphRequestError('Failed to list orders from SharePoint', undefined, error);
   }
