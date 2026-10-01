@@ -1,0 +1,340 @@
+/* Product share pages. Tokens and shapes mirror the A&A Shop launch pages ([locale]/launch.css);
+   everything is scoped under .aa-share so none of it reaches the main site or admin. */
+.aa-share {
+  --share-purple: #6836cf;
+  --share-purple-hover: #5123af;
+  --share-ink: #25212d;
+  --share-muted: #756d7d;
+  --share-cream: #fffcf7;
+  --share-lavender: #eee6f8;
+  --share-blob: #d7c2f0;
+  --share-line: #e7deee;
+  --share-soft: #9f87b0;
+  --share-shadow: 0 10px 30px #58387d1c;
+  min-height: 100vh;
+  background: var(--share-cream);
+  color: var(--share-ink);
+  font-family: var(--font-share-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.aa-share h1,
+.aa-share h2 {
+  font-family: var(--font-share-display), sans-serif;
+  margin: 0;
+}
+.aa-share p {
+  margin: 0;
+}
+.aa-share a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.aa-share .share-shell {
+  width: min(100% - 40px, 1040px);
+  margin-inline: auto;
+}
+
+/* Header */
+.aa-share .share-topbar {
+  background: var(--share-lavender);
+}
+.aa-share .share-topbar .share-shell {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.aa-share .share-brand img {
+  width: 68px;
+  height: auto;
+}
+.aa-share .share-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #eee6fb;
+  border: 1px solid #e4d7f7;
+  color: #684394;
+  border-radius: 30px;
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.aa-share .share-pill > span {
+  width: 5px;
+  height: 5px;
+  background: #8454c1;
+  border-radius: 50%;
+}
+
+/* Product hero */
+.aa-share .share-hero {
+  background: var(--share-lavender);
+  overflow: hidden;
+  padding-block: 8px 44px;
+}
+.aa-share .share-product-grid {
+  display: grid;
+  gap: 30px;
+}
+.aa-share .share-stage {
+  position: relative;
+  max-width: 320px;
+  width: 100%;
+  margin-inline: auto;
+  padding: 14px;
+}
+.aa-share .share-blob {
+  position: absolute;
+  inset: 0;
+  background: var(--share-blob);
+  border-radius: 50%;
+  transform: scale(1.08);
+}
+.aa-share .share-photo {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #fff;
+  box-shadow: var(--share-shadow);
+  transform: rotate(-3deg);
+}
+.aa-share .share-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.aa-share .share-photo-empty {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--share-soft);
+  font-size: 13px;
+}
+.aa-share .share-price {
+  position: absolute;
+  left: -4px;
+  bottom: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  border: 1px solid #fff;
+  background: #fffdfa;
+  border-radius: 13px;
+  box-shadow: var(--share-shadow);
+  transform: rotate(-6deg);
+}
+.aa-share .share-price strong {
+  font-family: var(--font-share-display), sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--share-purple);
+  line-height: 1.1;
+}
+.aa-share .share-price small {
+  font-size: 10px;
+  color: #a192a7;
+}
+
+.aa-share .share-copy .share-pill {
+  margin-bottom: 18px;
+}
+.aa-share .share-copy h1 {
+  font-size: clamp(26px, 3.6vw, 42px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.aa-share .share-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 26px;
+}
+.aa-share .share-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  width: 100%;
+  max-width: 340px;
+  border-radius: 50px;
+  background: var(--share-purple);
+  color: #fff;
+  padding: 17px 25px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background 0.25s,
+    transform 0.25s;
+}
+.aa-share .share-button:hover {
+  background: var(--share-purple-hover);
+  transform: translateY(-2px);
+}
+.aa-share .share-button[hidden] {
+  display: none;
+}
+.aa-share .share-play-badge {
+  display: inline-flex;
+  width: 190px;
+  margin-left: -11px;
+  transition: transform 0.25s;
+}
+.aa-share .share-play-badge:hover {
+  transform: translateY(-3px);
+}
+.aa-share .share-play-badge img {
+  width: 100%;
+  height: auto;
+}
+.aa-share .share-platform-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #93879e;
+  margin-top: -6px;
+}
+.aa-share .share-platform-note svg {
+  color: #795496;
+}
+
+/* Help block, mirrors .launch-download-help */
+.aa-share .share-help {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-block: 36px;
+  border-bottom: 1px solid var(--share-line);
+}
+.aa-share .share-help-icon {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: #eae1f3;
+  color: #87629f;
+  border-radius: 16px;
+}
+.aa-share .share-help h2 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+.aa-share .share-help p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #7b6787;
+  margin-top: 6px;
+}
+.aa-share .share-help .share-button {
+  width: auto;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.aa-share .share-notice {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--share-muted);
+  padding-block: 24px;
+  max-width: 620px;
+}
+
+.aa-share .share-footer {
+  padding-block: 28px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 11px;
+  color: #94899c;
+}
+.aa-share .share-footer a:hover {
+  color: var(--share-purple);
+}
+
+/* Not-found / error states */
+.aa-share .share-state {
+  background: var(--share-lavender);
+  padding-block: 40px 56px;
+}
+.aa-share .share-state h1 {
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.05em;
+  max-width: 560px;
+}
+.aa-share .share-state h1 > span {
+  color: var(--share-purple);
+}
+.aa-share .share-state p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--share-muted);
+  max-width: 440px;
+  margin-top: 18px;
+}
+.aa-share .share-state .share-actions {
+  margin-top: 28px;
+}
+
+@media (min-width: 820px) {
+  .aa-share .share-topbar .share-shell {
+    height: 84px;
+  }
+  .aa-share .share-brand img {
+    width: 76px;
+  }
+  .aa-share .share-hero {
+    padding-block: 24px 72px;
+  }
+  .aa-share .share-product-grid {
+    grid-template-columns: 1fr 1.05fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .aa-share .share-stage {
+    max-width: 460px;
+  }
+  .aa-share .share-help {
+    padding-block: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .aa-share .share-help {
+    flex-wrap: wrap;
+  }
+  .aa-share .share-help .share-button {
+    margin-left: 0;
+    width: 100%;
+    max-width: 340px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aa-share .share-button,
+  .aa-share .share-play-badge {
+    transition: none;
+  }
+}

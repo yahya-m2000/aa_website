@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'gsap', 'framer-motion'],
   },
+  // The product share preview image route reads this logo from disk at runtime (see
+  // src/features/product-share/lib/preview-image.ts), so Vercel must bundle it with that function.
+  outputFileTracingIncludes: {
+    '/p/[id]/preview.jpg': ['./public/images/aa-logo-ink.png'],
+  },
 };
 
 // withSentryConfig only adds source-map upload / release tracking at build time — it does not

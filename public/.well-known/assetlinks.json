@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.aatradesolutions.aacatalog",
+      "sha256_cert_fingerprints": [
+        "21:F1:4F:20:F9:9A:84:8A:AB:75:60:9E:08:98:C1:35:0D:03:4C:0F:FD:FF:C6:CA:D8:77:A5:F1:C3:47:2D:E2",
+        "52:9F:60:48:9C:69:90:67:C6:C7:22:87:29:15:2A:C9:0E:0B:AE:73:E0:46:2B:E4:C2:2A:45:7D:CE:8B:21:06"
+      ]
+    }
+  }
+]
